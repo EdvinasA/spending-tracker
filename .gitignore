@@ -1,0 +1,15 @@
+# package directories
+ui/node_modules
+server/node_modules
+jspm_packages
+.build
+
+# Serverless directories
+.serverless
+server/.webpack
+
+# Secrets
+server/.env.local
+server/.env.dev
+ui/.env.local
+ui/.env.dev

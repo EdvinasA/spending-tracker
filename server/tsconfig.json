@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "preserveConstEnums": true,
+    "strictNullChecks": true,
+    "sourceMap": true,
+    "allowJs": true,
+    "target": "ES5",
+    "outDir": ".webpack",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "lib": [
+      "es2015"
+    ],
+    "rootDir": "./"
+  }
+}

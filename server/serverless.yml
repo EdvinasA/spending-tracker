@@ -1,16 +1,29 @@
-# "org" ensures this Service is used with the correct Serverless Framework Access Key.
-org: edvinasalimas
-# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
-app: server
-# "service" is the name of this project. This will also be added to your AWS resource names.
 service: server
 
+plugins:
+  - serverless-offline
+  
 provider:
+  apiGateway:
+    binaryMediaTypes:
+      - "*/*"
   name: aws
+  stage: dev
+  region: eu-west-1
   runtime: nodejs20.x
+  environment:
+    REGION: eu-west-1
+
+package:
+  excludeDevDependencies: false
+  patterns:
+    - 'lib/**'
+    - 'node_modules/**'
 
 functions:
-  api:
-    handler: handler.handler
+  getUser:
+    handler: lib/user/controller.getUser
     events:
-      - httpApi: "*"
+      - httpApi:
+          path: /
+          method: get
