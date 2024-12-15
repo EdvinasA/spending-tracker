@@ -9,9 +9,9 @@ services:
     volumes:
       - dynamodb_data:/home/dynamodblocal/data
     environment:
-      AWS_REGION: us-east-1
-#      AWS_ACCESS_KEY_ID: fakeMyKeyId
-#      AWS_SECRET_ACCESS_KEY: fakeSecretKey
+      AWS_REGION: us-west-2
+      AWS_ACCESS_KEY_ID: fakeMyKeyId
+      AWS_SECRET_ACCESS_KEY: fakeSecretKey
     command: "-jar DynamoDBLocal.jar -sharedDb"
 
 volumes:

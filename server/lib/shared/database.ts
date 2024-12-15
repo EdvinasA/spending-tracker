@@ -14,32 +14,14 @@ import {
     PutCommandOutput,
 } from '@aws-sdk/lib-dynamodb';
 
-const dynamoDbClient = process.env.ENDPOINT !== '' ? new DynamoDBClient({ region: process.env.REGION, endpoint: process.env.ENDPOINT })
-    : new DynamoDBClient({ region: process.env.REGION,
-        credentials: {
-            accessKeyId: "fakeMyKeyId",
-            secretAccessKey: "fakeSecretKey"
-        }});
-
-export const getByEmail = async <T>(tableName: string, email: string): Promise<T | undefined> => {
-    const dynamoDBDocumentClient = DynamoDBDocumentClient.from(dynamoDbClient);
-
-    const input: GetCommandInput = {
-        TableName: tableName,
-        Key: { id: email }
-    };
-
-    try {
-        const getCommandOutput = (await dynamoDBDocumentClient.send(
-            new GetCommand(input)
-        )) as Omit<GetCommandOutput, 'Item'> & { Item?: T };
-
-        return getCommandOutput.Item;
-    } catch (err) {
-        console.error('DynamoDb getByEmail', err);
-        return Promise.reject();
+const dynamoDbClient = new DynamoDBClient({
+    region: "us-west-2",
+    endpoint: "http://localhost:8000",
+    credentials: {
+        accessKeyId: "fakeMyKeyId",
+        secretAccessKey: "fakeSecretKey"
     }
-}
+  });
 
 export const getByField = async (tableName: string, fieldName: string, fieldValue: string): Promise<ScanCommandOutput> => {
     const dynamoDBDocumentClient = DynamoDBDocumentClient.from(dynamoDbClient);
