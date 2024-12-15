@@ -2,6 +2,11 @@ service: server
 
 plugins:
   - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 3001
+    lambdaPort: 3003
   
 provider:
   apiGateway:

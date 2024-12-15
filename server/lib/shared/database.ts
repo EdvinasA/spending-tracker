@@ -15,14 +15,18 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 
 const dynamoDbClient = process.env.ENDPOINT !== '' ? new DynamoDBClient({ region: process.env.REGION, endpoint: process.env.ENDPOINT })
-    : new DynamoDBClient({ region: process.env.REGION });
+    : new DynamoDBClient({ region: process.env.REGION,
+        credentials: {
+            accessKeyId: "fakeMyKeyId",
+            secretAccessKey: "fakeSecretKey"
+        }});
 
 export const getByEmail = async <T>(tableName: string, email: string): Promise<T | undefined> => {
     const dynamoDBDocumentClient = DynamoDBDocumentClient.from(dynamoDbClient);
 
     const input: GetCommandInput = {
         TableName: tableName,
-        Key: { email: email }
+        Key: { id: email }
     };
 
     try {
