@@ -7,6 +7,7 @@ jspm_packages
 # Serverless directories
 .serverless
 server/.webpack
+server/undefined
 
 # Secrets
 server/.env.local
