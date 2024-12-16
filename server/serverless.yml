@@ -7,11 +7,8 @@ custom:
   serverless-offline:
     httpPort: 3001
     lambdaPort: 3003
-  
+
 provider:
-  apiGateway:
-    binaryMediaTypes:
-      - "*/*"
   name: aws
   stage: dev
   region: eu-west-1
@@ -29,6 +26,13 @@ functions:
   getUser:
     handler: lib/user/controller.getUser
     events:
-      - httpApi:
-          path: /
+      - http:
+          path: user/get
           method: get
+
+  saveUser:
+    handler: lib/user/controller.saveUser
+    events:
+      - http:
+          path: user/save
+          method: post

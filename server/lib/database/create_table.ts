@@ -14,11 +14,9 @@ const createTable = async () => {
     const params: CreateTableCommandInput = {
         TableName: 'Users',
         KeySchema: [
-            { AttributeName: "id", KeyType: "HASH" },
-            { AttributeName: "email", KeyType: "RANGE" }
+            { AttributeName: "email", KeyType: "HASH" }
         ],
         AttributeDefinitions: [
-            { AttributeName: "id", AttributeType: "S" },
             { AttributeName: "email", AttributeType: "S" }
         ],
         ProvisionedThroughput: {
