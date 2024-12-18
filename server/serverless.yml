@@ -36,3 +36,18 @@ functions:
       - httpApi:
           path: user/save
           method: post
+
+Resources:
+  TableName:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${NAME}
+      AttributeDefinitions:
+        - AttributeName: email
+          AttributeType: S
+      KeySchema:
+        - AttributeName: email
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
