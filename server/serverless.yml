@@ -26,13 +26,13 @@ functions:
   getUser:
     handler: lib/user/controller.getUser
     events:
-      - http:
+      - httpApi:
           path: user/get
           method: get
 
   saveUser:
-    handler: lib/user/controller.saveUser
+    handler: lib/user/post/controller.handler
     events:
-      - http:
+      - httpApi:
           path: user/save
           method: post
