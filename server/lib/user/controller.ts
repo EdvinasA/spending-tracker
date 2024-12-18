@@ -1,14 +1,13 @@
 import { Context, APIGatewayProxyCallback, APIGatewayEvent } from 'aws-lambda';
-import {getByField, postItem} from "../shared/database";
+import { getByField } from "../shared/database";
+import { handleResult } from '../shared/result-handler';
+import { handleError } from '../shared/error-handling';
 
 export async function getUser(event: APIGatewayEvent, _: Context, callback: APIGatewayProxyCallback) {
   try {
-    // First value is table name, second, field by which searching and third is value that needs to be found
     const user = await getByField('Users', 'email', 'asdas');
-    callback(null, { statusCode: 200, body: JSON.stringify({ data: user }) });
+    return handleResult(callback, user, 200);
   } catch (e) {
-    console.log(e)
+    return handleError(callback, e);
   }
-
-  callback(null, { statusCode: 200, body: JSON.stringify({ data: '' }) });
 }

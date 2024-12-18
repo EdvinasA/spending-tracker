@@ -1,6 +1,6 @@
 import { APIGatewayProxyCallback } from 'aws-lambda';
 
-export const handleError = (error: any, callback: APIGatewayProxyCallback) => {
+export const handleError = (callback: APIGatewayProxyCallback, error: any) => {
     if (error.statusCode) {
         const errorResponse = {
             message: error.message === '' ? undefined : error.message,
@@ -21,5 +21,4 @@ export const handleError = (error: any, callback: APIGatewayProxyCallback) => {
         statusCode: 500,
         body: JSON.stringify({ error, requestId: global.traceIdForRequest }),
     });
-
 }
