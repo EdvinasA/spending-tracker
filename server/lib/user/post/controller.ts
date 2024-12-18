@@ -1,5 +1,8 @@
 import {APIGatewayEvent, APIGatewayProxyCallback, Context} from "aws-lambda";
 import {postItem} from "../../shared/database";
+import {saveUser} from "./service";
+import {handleResult} from "../../shared/result-handler";
+import {handleError} from "../../shared/error-handling";
 
 export async function handler(event: APIGatewayEvent, _: Context, callback: APIGatewayProxyCallback) {
     try {
@@ -7,23 +10,10 @@ export async function handler(event: APIGatewayEvent, _: Context, callback: APIG
         const requestBody = JSON.parse(event.body || '{}');
         const email = requestBody.email;
 
-        if (!email) {
-            callback(null, { statusCode: 400, body: JSON.stringify({ message: "Email is required" }) });
-            return;
-        }
-        // User Object
-        const user = {
-            email: email,
-            createdAt: new Date().toISOString()
-        };
+        saveUser(email);
 
-        // Save user to database
-        await postItem('Users', user);
-
-        // Return success response
-        callback(null, { statusCode: 200, body: JSON.stringify({ message: "User saved successfully", data: user }) });
+        return handleResult(callback, { message: "User saved" }, 200);
     } catch (e) {
-        console.error(e);
-        callback(null, { statusCode: 500, body: JSON.stringify({ message: "Error saving user" }) });
+        return handleError(callback, e);
     }
 }
