@@ -7,11 +7,8 @@ custom:
   serverless-offline:
     httpPort: 3001
     lambdaPort: 3003
-  
+
 provider:
-  apiGateway:
-    binaryMediaTypes:
-      - "*/*"
   name: aws
   stage: dev
   region: eu-west-1
@@ -30,5 +27,27 @@ functions:
     handler: lib/user/controller.getUser
     events:
       - httpApi:
-          path: /
+          path: user/get
           method: get
+
+  saveUser:
+    handler: lib/user/post/controller.handler
+    events:
+      - httpApi:
+          path: user/save
+          method: post
+
+Resources:
+  TableName:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${NAME}
+      AttributeDefinitions:
+        - AttributeName: email
+          AttributeType: S
+      KeySchema:
+        - AttributeName: email
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
