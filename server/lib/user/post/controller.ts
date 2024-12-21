@@ -1,9 +1,9 @@
-import {APIGatewayEvent, APIGatewayProxyCallback, Context} from "aws-lambda";
-import {postItem} from "../../shared/database";
-import {saveUser} from "./service";
-import {handleResult} from "../../shared/result-handler";
-import {handleError} from "../../shared/error-handling";
-import {userValidationSchema} from "../model/register-user";
+import { APIGatewayEvent, APIGatewayProxyCallback, Context } from "aws-lambda";
+import { saveUser } from "./service";
+import { handleResult } from "../../shared/result-handler";
+import { handleError } from "../../shared/error-handling";
+import { userValidationSchema } from "../model/register-user";
+import { BadRequestException } from "../../shared/exception";
 
 export async function handler(event: APIGatewayEvent, _: Context, callback: APIGatewayProxyCallback) {
     try {
@@ -13,7 +13,7 @@ export async function handler(event: APIGatewayEvent, _: Context, callback: APIG
         // Validate request body
         const { error } = userValidationSchema.validate(requestBody);
         if (error) {
-            return handleError(callback, new Error(`Validation error: ${error.details[0].message}`));
+            throw new BadRequestException(error)
         }
 
         const email: string = requestBody.email;
