@@ -1,14 +1,14 @@
-import { ValidationError } from "class-validator";
+import { ValidationError } from "joi";
 
 export class CustomException extends Error {
     public statusCode: number;
-    public validationErrors?: ValidationError[];
+    public validationErrors?: ValidationError;
     public requestId: string;
 
     constructor(
         statusCode: number,
         message?: string,
-        validationErrors?: ValidationError[]
+        validationErrors?: ValidationError
     ) {
         super(message);
         this.statusCode = statusCode;
@@ -24,10 +24,11 @@ export class UnauthorizedException extends CustomException {
 }
 
 export class BadRequestException extends CustomException {
-    constructor(validationErrors: ValidationError[]) {
+    constructor(validationErrors: ValidationError) {
         super(400, undefined, validationErrors);
     }
 }
+
 export class BadRequestExceptionMessage extends CustomException {
     constructor(message?: string) {
         super(400, message);
