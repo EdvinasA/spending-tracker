@@ -10,8 +10,7 @@ export async function handler(event: APIGatewayEvent, _: Context, callback: APIG
 
         const requestBody = JSON.parse(event.body || '{}');
 
-        // Validate request body
-        const { error } = userValidationSchema.validate(requestBody);
+        const { error } = await userValidationSchema.validateAsync(requestBody);
         if (error) {
             throw new BadRequestException(error)
         }
