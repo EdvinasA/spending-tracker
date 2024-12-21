@@ -1,7 +1,5 @@
 import { Context, APIGatewayProxyCallback, APIGatewayEvent } from 'aws-lambda';
-import { getByField } from "../shared/database";
-import { handleResult } from '../shared/result-handler';
-import { handleError } from '../shared/error-handling';
+import { getByField, handleResult, handleError } from 'shared';
 
 export async function getUser(event: APIGatewayEvent, _: Context, callback: APIGatewayProxyCallback) {
   try {

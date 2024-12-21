@@ -1,4 +1,4 @@
-import {postItem} from "../../shared/database";
+import { postItem } from "shared";
 
 export const saveUser = async (email?: string): Promise<void> => {
 if (!email) {

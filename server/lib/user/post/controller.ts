@@ -1,9 +1,7 @@
 import { APIGatewayEvent, APIGatewayProxyCallback, Context } from "aws-lambda";
+import { BadRequestException, handleResult, handleError } from "shared";
+import { userValidationSchema } from "user/model";
 import { saveUser } from "./service";
-import { handleResult } from "../../shared/result-handler";
-import { handleError } from "../../shared/error-handling";
-import { userValidationSchema } from "../model/register-user";
-import { BadRequestException } from "../../shared/exception";
 
 export async function handler(event: APIGatewayEvent, _: Context, callback: APIGatewayProxyCallback) {
     try {

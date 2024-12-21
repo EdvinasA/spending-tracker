@@ -12,6 +12,7 @@
       "es2015"
     ],
     "rootDir": "./",
+    "baseUrl": "./lib",
     "allowSyntheticDefaultImports": true
   }
 }
