@@ -40,3 +40,9 @@ a {
     color-scheme: dark;
   }
 }
+
+.wrapper {
+  width: 100%;
+  height: calc(100vh - 63.99px);
+  margin: 20px;
+}
