@@ -1,9 +1,13 @@
-import { postItem } from "shared";
+import {BadRequestException, postItem} from "shared";
+import {userValidationSchema} from "../model";
 
 export const saveUser = async (email?: string): Promise<void> => {
-if (!email) {
-    throw new Error('Email is required');
-}
+
+
+    const { error } = await userValidationSchema.validateAsync({ email });
+    if (error) {
+        throw new BadRequestException(error)
+    }
 // User Object
 const user = {
     email: email,
