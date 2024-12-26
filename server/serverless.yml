@@ -16,7 +16,7 @@ package:
 
 functions:
   getUser:
-    handler: lib/user/controller.getUser
+    handler: lib/user/controller.handler
     events:
       - httpApi:
           path: user/get
