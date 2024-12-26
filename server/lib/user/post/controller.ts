@@ -19,6 +19,7 @@ export async function handler(event: APIGatewayEvent, _: Context, callback: APIG
 
         return handleResult(callback, { message: "User saved" }, 200);
     } catch (e) {
+        console.log(e);
         return handleError(callback, e);
     }
 }

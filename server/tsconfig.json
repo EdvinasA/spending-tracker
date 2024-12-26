@@ -8,6 +8,7 @@
     "outDir": ".webpack",
     "moduleResolution": "node",
     "experimentalDecorators": true,
+    "esModuleInterop": true,
     "lib": [
       "es2015"
     ],
