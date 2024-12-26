@@ -41,13 +41,31 @@ Resources:
   TableName:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: ${NAME}
+      TableName: Users
+
       AttributeDefinitions:
         - AttributeName: email
           AttributeType: S
       KeySchema:
         - AttributeName: email
           KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  TableName:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Expenses
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: email
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+        - AttributeName: email
+          KeyType: RANGE
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
