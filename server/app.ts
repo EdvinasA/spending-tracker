@@ -46,12 +46,13 @@ const handleLambdaRoute = (lambdaHandler: Function) => async (req: Request, res:
     }
 };
 
+
 app.get('/user', handleLambdaRoute(getUser));
 app.post('/user', handleLambdaRoute(postUser));
 
 // Start the app locally for development
 if (process.env.NODE_ENV !== 'production') {
-    const PORT = 3000;
+    const PORT = 3001;
     app.listen(PORT, () => {
         console.log(`Server is running locally on http://localhost:${PORT}`);
     });
