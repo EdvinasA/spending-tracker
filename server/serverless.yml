@@ -29,6 +29,8 @@ functions:
           path: user/save
           method: post
 
+
+
 Resources:
   TableName:
     Type: AWS::DynamoDB::Table
