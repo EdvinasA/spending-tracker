@@ -4,7 +4,7 @@ import { Box, AppBar, Toolbar, IconButton, Typography, Button } from "@mui/mater
 export default function Header() {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar sx={{ backgroundColor: '#494848' }} position="static">
         <Toolbar>
           <IconButton
             size="large"
@@ -16,7 +16,7 @@ export default function Header() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            News
+            Spending tracker
           </Typography>
           <Button color="inherit">Login</Button>
         </Toolbar>

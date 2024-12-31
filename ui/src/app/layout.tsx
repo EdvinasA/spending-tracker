@@ -3,8 +3,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/header/Header";
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
-import { CssBaseline, ThemeProvider } from "@mui/material";
+import { CssBaseline, Divider, ThemeProvider } from "@mui/material";
 import theme from "@/theme";
+import NavBar from "@/components/tabs/NavBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,7 +36,11 @@ export default function RootLayout({
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <Header />
-            {children}
+            <Divider />
+            <NavBar />
+            <div>
+              {children}
+            </div>
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
