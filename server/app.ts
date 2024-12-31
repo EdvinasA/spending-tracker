@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import { APIGatewayEvent, APIGatewayProxyCallback, Context } from 'aws-lambda';
 import { handler as getUser } from './lib/user/controller';
 import { handler as postUser } from './lib/user/post/controller';
+import { handler as createExpense } from './lib/expense/controller';
 
 const app = express();
 
@@ -46,12 +47,14 @@ const handleLambdaRoute = (lambdaHandler: Function) => async (req: Request, res:
     }
 };
 
+
 app.get('/user', handleLambdaRoute(getUser));
 app.post('/user', handleLambdaRoute(postUser));
+app.post('/expense', handleLambdaRoute(createExpense));
 
 // Start the app locally for development
 if (process.env.NODE_ENV !== 'production') {
-    const PORT = 3000;
+    const PORT = 3001;
     app.listen(PORT, () => {
         console.log(`Server is running locally on http://localhost:${PORT}`);
     });
