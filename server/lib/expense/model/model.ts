@@ -3,5 +3,5 @@ export interface Expense {
     name: string;
     email: string;
     currency: string;
-    created_at: string;
+    createdAt: string;
 }

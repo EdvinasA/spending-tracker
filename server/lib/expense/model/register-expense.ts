@@ -5,3 +5,9 @@ export const expenseValidateSchema = Joi.object({
    email: Joi.string().email().required(),
    currency: Joi.string().required()
 });
+
+export interface CreateExpense {
+    name: string;
+    email: string;
+    currency: string;
+}

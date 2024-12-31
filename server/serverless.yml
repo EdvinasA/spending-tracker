@@ -29,6 +29,12 @@ functions:
           path: user/save
           method: post
 
+  saveExpense:
+    handler: lib/expense/controller.handler
+    events:
+      - httpApi:
+          path: expense/save
+          method: post
 
 
 Resources:
