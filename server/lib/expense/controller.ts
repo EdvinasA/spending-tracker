@@ -1,7 +1,7 @@
 import { APIGatewayEvent, APIGatewayProxyCallback, Context } from "aws-lambda";
 import { handleError, handleResult } from "shared";
 import { saveExpense } from "./service";
-import {CreateExpense} from "./model";
+import { CreateExpense } from "./model";
 
 
 export const handler = async (event: APIGatewayEvent, _: Context, callback: APIGatewayProxyCallback) => {
@@ -15,3 +15,4 @@ export const handler = async (event: APIGatewayEvent, _: Context, callback: APIG
         return handleError(callback, e);
     }
 };
+
