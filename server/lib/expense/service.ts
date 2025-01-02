@@ -30,12 +30,3 @@ export const saveExpense = async (expense: CreateExpense): Promise<void> => {
 
     await postItem('Expenses', expenseObject);
 };
-
-export const getExpensesByEmail = async (email: string): Promise<Expense[]> => {
-    const result = await getByField('Expenses', "email", email);
-
-    if (!result || !result.Items || result.Items.length === 0) {
-        throw new BadRequestExceptionMessage(`No expenses found for email: ${email}`);
-    }
-    return result.Items as Expense[];
-}

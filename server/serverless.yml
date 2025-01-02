@@ -37,10 +37,10 @@ functions:
           method: post
 
   getExpenses:
-    handler: lib/expense/controller.getExpensesHandler
+    handler: lib/expense/get-expense/controller.handler
     events:
       - httpApi:
-          path: expense/get
+          path: expense/{email}
           method: get
 
 Resources:
