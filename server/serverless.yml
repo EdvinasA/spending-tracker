@@ -36,6 +36,12 @@ functions:
           path: expense/save
           method: post
 
+  getExpenses:
+    handler: lib/expense/controller.getExpensesHandler
+    events:
+      - httpApi:
+          path: expense/get
+          method: get
 
 Resources:
   TableName:
