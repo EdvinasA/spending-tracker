@@ -29,15 +29,15 @@ functions:
           path: user/save
           method: post
 
-  saveExpense:
-    handler: lib/expense/controller.handler
+  saveCategory:
+    handler: lib/category/create-category/controller.handler
     events:
       - httpApi:
           path: expense/save
           method: post
 
-  getExpenses:
-    handler: lib/expense/get-expense/controller.handler
+  getCategory:
+    handler: lib/category/get-category/controller.handler
     events:
       - httpApi:
           path: expense/{email}
@@ -61,7 +61,7 @@ Resources:
   TableName:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: Expenses
+      TableName: Categories
       AttributeDefinitions:
         - AttributeName: id
           AttributeType: S

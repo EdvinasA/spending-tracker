@@ -1,4 +1,4 @@
-import { CreateExpense, Expense, expenseValidateSchema } from './model';
+import { CategorySchema, CreateCategory, Category } from '../model';
 import {
     BadRequestException,
     BadRequestExceptionMessage,
@@ -7,9 +7,9 @@ import {
 } from 'shared';
 import { v4 as uuidv4 } from 'uuid';
 
-export const saveExpense = async (expense: CreateExpense): Promise<void> => {
+export const createCategory = async (expense: CreateCategory): Promise<void> => {
 
-    const { error } = expenseValidateSchema.validate(expense);
+    const { error } = CategorySchema.validate(expense);
     if (error) {
         throw new BadRequestException(error);
     }
@@ -20,7 +20,7 @@ export const saveExpense = async (expense: CreateExpense): Promise<void> => {
         throw new BadRequestExceptionMessage('User not found');
     }
 
-    const expenseObject: Expense = {
+    const categoryEntity: Category = {
         id: uuidv4(),
         name: expense.name,
         email: expense.email,
@@ -28,5 +28,5 @@ export const saveExpense = async (expense: CreateExpense): Promise<void> => {
         createdAt: new Date().toISOString(),
     };
 
-    await postItem('Expenses', expenseObject);
+    await postItem('Category', categoryEntity);
 };

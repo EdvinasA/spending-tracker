@@ -1,4 +1,4 @@
-export interface Expense {
+export interface Category {
     id: string;
     name: string;
     email: string;
