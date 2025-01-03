@@ -1,7 +1,7 @@
 import { Category } from "../model";
 import { BadRequestExceptionMessage, getByField } from "shared";
 
-export const getExpensesByEmail = async (email?: string): Promise<Category[]> => {
+export const getCategories = async (email?: string): Promise<Category[]> => {
     if (!email) {
         throw new BadRequestExceptionMessage("Email is required");
     }
