@@ -5,7 +5,7 @@ import Header from "@/components/header/Header";
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { CssBaseline, Divider, ThemeProvider } from "@mui/material";
 import theme from "@/theme";
-import NavBar from "@/components/tabs/NavBar";
+import NavBar from "@/components/nav-bar/NavBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
