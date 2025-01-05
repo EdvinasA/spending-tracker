@@ -28,5 +28,5 @@ export const createCategory = async (expense: CreateCategory): Promise<void> => 
         createdAt: new Date().toISOString(),
     };
 
-    await postItem('Category', categoryEntity);
+    await postItem('Categories', categoryEntity);
 };

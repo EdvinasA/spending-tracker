@@ -13,5 +13,6 @@ server/undefined
 server/.env.local
 server/.env.dev
 ui/.env.local
+ui/.env
 ui/.env.dev
 ui/.next

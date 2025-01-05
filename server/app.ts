@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import cors from 'cors';
 import { APIGatewayEvent, APIGatewayProxyCallback, Context } from 'aws-lambda';
 import { handler as getUser } from './lib/user/controller';
 import { handler as postUser } from './lib/user/post/controller';
@@ -8,6 +9,7 @@ import { handler as getCategory } from "./lib/category/get-category/controller";
 const app = express();
 
 app.use(express.json());
+app.use(cors())
 
 const expressToLambdaEvent = (req: Request): APIGatewayEvent => {
     return {
@@ -49,10 +51,10 @@ const handleLambdaRoute = (lambdaHandler: Function) => async (req: Request, res:
 };
 
 
-app.get('/user', handleLambdaRoute(getUser));
+app.get('/user/:email', handleLambdaRoute(getUser));
 app.post('/user', handleLambdaRoute(postUser));
-app.post('/expense', handleLambdaRoute(createCategory));
-app.get('/expense/:email', handleLambdaRoute(getCategory));
+app.post('/category', handleLambdaRoute(createCategory));
+app.get('/category/:email', handleLambdaRoute(getCategory));
 
 // Start the app locally for development
 if (process.env.NODE_ENV !== 'production') {
