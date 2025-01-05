@@ -43,6 +43,21 @@ functions:
           path: expense/{email}
           method: get
 
+  saveBalance:
+    handler: lib/balance/create-balance/controller.handler
+    events:
+      - httpApi:
+          path: balance/save
+          method: post
+
+  getBalance:
+    handler: lib/balance/get-balance/controller.handler
+    events:
+      - httpApi:
+          path: balance/{email}
+          method: get
+
+
 Resources:
   TableName:
     Type: AWS::DynamoDB::Table
@@ -71,6 +86,23 @@ Resources:
         - AttributeName: id
           KeyType: HASH
         - AttributeName: email
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  TableName:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Balance
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: category
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+        - AttributeName: category
           KeyType: RANGE
       ProvisionedThroughput:
         ReadCapacityUnits: 1
