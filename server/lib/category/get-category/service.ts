@@ -6,7 +6,7 @@ export const getCategories = async (email?: string): Promise<Category[]> => {
         throw new BadRequestExceptionMessage("Email is required");
     }
 
-    const result = await getByField('Expenses', "email", email);
+    const result = await getByField('Categories', "email", email);
 
     if (!result || !result.Items || result.Items.length === 0) {
         return [];

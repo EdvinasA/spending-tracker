@@ -10,7 +10,7 @@ export const handler = async (event: APIGatewayEvent, _: Context, callback: APIG
 
         await createCategory(requestBody as unknown as CreateCategory);
 
-        return handleResult(callback, { message: `Expense saved successfully` }, 200);
+        return handleResult(callback, { message: `Category saved successfully` }, 200);
     } catch (e) {
         return handleError(callback, e);
     }
