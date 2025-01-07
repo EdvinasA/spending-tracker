@@ -16,3 +16,4 @@ ui/.env.local
 ui/.env
 ui/.env.dev
 ui/.next
+.idea
