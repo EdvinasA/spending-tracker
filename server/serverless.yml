@@ -16,14 +16,14 @@ package:
 
 functions:
   getUser:
-    handler: lib/user/controller.handler
+    handler: lib/user/get-user/controller.handler
     events:
       - httpApi:
-          path: user/get
+          path: user/{email}
           method: get
 
   saveUser:
-    handler: lib/user/post/controller.handler
+    handler: lib/user/create-user/controller.handler
     events:
       - httpApi:
           path: user/save

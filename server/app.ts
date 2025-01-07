@@ -1,8 +1,8 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import { APIGatewayEvent, APIGatewayProxyCallback, Context } from 'aws-lambda';
-import { handler as getUser } from './lib/user/controller';
-import { handler as postUser } from './lib/user/post/controller';
+import { handler as getUser } from './lib/user/get-user/controller';
+import { handler as postUser } from './lib/user/create-user/controller';
 import { handler as createCategory } from './lib/category/create-category/controller';
 import { handler as getCategory } from "./lib/category/get-category/controller";
 import { handler as createBalance } from "./lib/balance/create-balance/controller";
@@ -11,14 +11,17 @@ import { handler as getBalance } from "./lib/balance/get-balance/controller";
 const app = express();
 
 app.use(express.json());
-app.use(cors())
+app.use(cors());
 
 const expressToLambdaEvent = (req: Request): APIGatewayEvent => {
     return {
         resource: req.path,
         path: req.path,
         httpMethod: req.method,
-        headers: req.headers,
+        headers: Object.keys(req.headers).reduce((acc, key) => {
+            acc[key] = req.headers[key]?.toString() || '';
+            return acc;
+        }, {} as Record<string, string>),
         queryStringParameters: req.query as Record<string, string>,
         pathParameters: req.params,
         stageVariables: null,
@@ -30,8 +33,7 @@ const expressToLambdaEvent = (req: Request): APIGatewayEvent => {
     };
 };
 
-
-export const handleLambdaResponse = (res: Response, error: any, result: any) => {
+export const handleLambdaResponse = (res: Response, result: any) => {
     res.status(result?.statusCode || 200).send(result?.body ? JSON.parse(result.body) : {});
 };
 
@@ -40,18 +42,17 @@ const handleLambdaRoute = (lambdaHandler: Function) => async (req: Request, res:
     const context: Context = {} as Context;
 
     const callback: APIGatewayProxyCallback = (error, result) => {
-        handleLambdaResponse(res, error, result);
+        handleLambdaResponse(res, result);
     };
 
     // Invoke the Lambda handler
     try {
         await lambdaHandler(event, context, callback);
     } catch (err) {
-        console.log(err)
+        console.log(err);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
-
 
 app.get('/user/:email', handleLambdaRoute(getUser));
 app.post('/user', handleLambdaRoute(postUser));
@@ -59,7 +60,6 @@ app.post('/category', handleLambdaRoute(createCategory));
 app.get('/category/:email', handleLambdaRoute(getCategory));
 app.post('/balance', handleLambdaRoute(createBalance));
 app.get('/balance/:email', handleLambdaRoute(getBalance));
-
 
 // Start the app locally for development
 if (process.env.NODE_ENV !== 'production') {
