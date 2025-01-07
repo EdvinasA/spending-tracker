@@ -33,14 +33,14 @@ functions:
     handler: lib/category/create-category/controller.handler
     events:
       - httpApi:
-          path: expense/save
+          path: category/save
           method: post
 
   getCategory:
     handler: lib/category/get-category/controller.handler
     events:
       - httpApi:
-          path: expense/{email}
+          path: category/{email}
           method: get
 
   saveBalance:
