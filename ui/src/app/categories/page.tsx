@@ -12,6 +12,14 @@ import {
 } from '@mui/material';
 import { cookies } from 'next/headers';
 
+export interface Category {
+    id: string;
+    name: string;
+    email: string;
+    currency: string;
+    createdAt: string;
+}
+
 export default async function Categories() {
     const cookieStore = await cookies();
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/category/${cookieStore.get('email')?.value}`);
@@ -35,11 +43,9 @@ export default async function Categories() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {data.data.map((category: { id: React.Key | null | undefined; name: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined; createdAt: string | number | Date; currency: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined; email: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined; }) => (
+                            {data.data.map((category: Category) => (
                                 <TableRow key={category.id}>
                                     <TableCell>{category.name}</TableCell>
-                                    <TableCell>{new Date(category.createdAt).toLocaleString()}</TableCell>
-                                    <TableCell>{category.currency}</TableCell>
                                     <TableCell>{category.email}</TableCell>
                                 </TableRow>
                             ))}
