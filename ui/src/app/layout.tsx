@@ -6,7 +6,6 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { CssBaseline, Divider, ThemeProvider } from "@mui/material";
 import theme from "@/theme";
 import NavBar from "@/components/nav-bar/NavBar";
-import { UserProvider } from "@/shared/user-context/UserContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,7 +23,7 @@ export const metadata: Metadata = {
 };
 
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -35,17 +34,15 @@ export default function RootLayout({
         <AppRouterCacheProvider
           options={{ key: 'css', enableCssLayer: true }}
         >
-          <UserProvider>
-            <ThemeProvider theme={theme}>
-              <CssBaseline />
-              <Header />
-              <Divider />
-              <NavBar />
-              <div>
-                {children}
-              </div>
-            </ThemeProvider>
-          </UserProvider>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Header />
+            <Divider />
+            <NavBar />
+            <div>
+              {children}
+            </div>
+          </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
     </html>
