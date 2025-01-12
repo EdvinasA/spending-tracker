@@ -2,13 +2,14 @@
 import { Box, Tab, Tabs } from '@mui/material';
 import * as React from 'react';
 import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function NavBar() {
     const router = useRouter();
     const pathname = usePathname();
-    const [selectedTab, setSelectedTab] = React.useState<string>("Categories");
+    const [selectedTab, setSelectedTab] = useState<string>("Categories");
 
-    React.useEffect(() => {
+    useEffect(() => {
         const currentTab = tabs.find((tab) => tab.path === pathname);
         if (currentTab) {
             setSelectedTab(currentTab.value);

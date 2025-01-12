@@ -25,6 +25,7 @@ export default async function Categories() {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/category/${cookieStore.get('email')?.value}`);
 
     const data = await response.json()
+    console.log(data);
     return (
         <Box sx={{ padding: 2 }}>
             <Typography variant="h4" gutterBottom>
