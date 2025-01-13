@@ -1,31 +1,43 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #242424;
+  --foreground: #f0f0f0;
+  --link-color: #9575cd;
+  --divider-color: #444444;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #1c1c1c;
+    --foreground: #e0e0e0;
+    --link-color: #b39ddb;
+    --divider-color: #555555;
   }
 }
 
 html,
 body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  height: 100vh;
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
 a {
-  color: inherit;
+  color: var(--link-color);
   text-decoration: none;
+  transition: color 0.3s ease;
 }
 
+hr {
+  border: 0;
+  height: 1px;
+  background-color: var(--divider-color);
+}
