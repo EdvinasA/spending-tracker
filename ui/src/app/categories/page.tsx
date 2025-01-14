@@ -8,10 +8,11 @@ import {
     TableRow,
     Paper,
     Typography,
-    Box, Stack, Button,
+    Box,
 } from '@mui/material';
 import { cookies } from 'next/headers';
 import { format } from 'date-fns';
+import { StyledTableCell } from '@/shared/style-components';
 
 export interface Category {
     id: string;
@@ -43,44 +44,12 @@ export default async function Categories() {
                 < TableContainer component={Paper} sx={{ backgroundColor: 'background.paper', borderRadius: '8px'}}>
                     <Table>
                         <TableHead
-                            sx={{ backgroundColor: 'background.default' }}>
+                            sx={{backgroundColor: 'background.default'}}>
                             <TableRow>
-                                <TableCell
-                                    sx={{
-                                        color: 'text.primary',
-                                        fontWeight: 'bold',
-                                        borderBottom: '2px solid #444',
-                                    }}
-                                >
-                                    Name
-                                </TableCell>
-                                <TableCell
-                                    sx={{
-                                        color: 'text.primary',
-                                        fontWeight: 'bold',
-                                        borderBottom: '2px solid #444',
-                                    }}
-                                >
-                                    Email
-                                </TableCell>
-                                <TableCell
-                                    sx={{
-                                        color: 'text.primary',
-                                        fontWeight: 'bold',
-                                        borderBottom: '2px solid #444',
-                                    }}
-                                >
-                                    Currency
-                                </TableCell>
-                                <TableCell
-                                    sx={{
-                                        color: 'text.primary',
-                                        fontWeight: 'bold',
-                                        borderBottom: '2px solid #444',
-                                    }}
-                                >
-                                    Created At
-                                </TableCell>
+                                <StyledTableCell>Name</StyledTableCell>
+                                <StyledTableCell>Email</StyledTableCell>
+                                <StyledTableCell>Currency</StyledTableCell>
+                                <StyledTableCell>Created At</StyledTableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
