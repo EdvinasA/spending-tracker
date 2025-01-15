@@ -13,6 +13,8 @@ import {
 import { cookies } from 'next/headers';
 import { format } from 'date-fns';
 import { StyledTableCell } from '@/shared/style-components';
+import { StyledBodyTableCell } from '@/shared/style-components';
+
 
 export interface Category {
     id: string;
@@ -64,12 +66,10 @@ export default async function Categories() {
                                         borderBottom: '1px solid #444',
                                     }}
                                 >
-                                    <TableCell sx={{ color: 'text.primary' }}>{category.name}</TableCell>
-                                    <TableCell sx={{ color: 'text.primary' }}>{category.email}</TableCell>
-                                    <TableCell sx={{ color: 'text.primary' }}>{category.currency}</TableCell>
-                                    <TableCell sx={{ color: 'text.primary' }}>
-                                        {format(new Date(category.createdAt), 'yyyy-MM-dd')}
-                                    </TableCell>
+                                    <StyledBodyTableCell>{category.name}</StyledBodyTableCell>
+                                    <StyledBodyTableCell>{category.email}</StyledBodyTableCell>
+                                    <StyledBodyTableCell>{category.currency}</StyledBodyTableCell>
+                                    <StyledBodyTableCell>{format(new Date(category.createdAt), 'yyyy-MM-dd')}</StyledBodyTableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
