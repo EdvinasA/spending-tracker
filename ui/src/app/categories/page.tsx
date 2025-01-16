@@ -11,9 +11,7 @@ import {
 } from '@mui/material';
 import { cookies } from 'next/headers';
 import { format } from 'date-fns';
-import { StyledTableCell } from '@/shared/style-components';
-import { StyledBodyTableCell } from '@/shared/style-components';
-
+import { StyledTableCell, StyledBodyTableCell } from '@/shared/style-components';
 
 export interface Category {
     id: string;
