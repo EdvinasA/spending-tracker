@@ -1,13 +1,5 @@
 service: server
 
-plugins:
-  - serverless-offline
-
-custom:
-  serverless-offline:
-    httpPort: 3001
-    lambdaPort: 3003
-
 provider:
   name: aws
   stage: dev
@@ -24,30 +16,94 @@ package:
 
 functions:
   getUser:
-    handler: lib/user/controller.getUser
+    handler: lib/user/get-user/controller.handler
     events:
       - httpApi:
-          path: user/get
+          path: user/{email}
           method: get
 
   saveUser:
-    handler: lib/user/post/controller.handler
+    handler: lib/user/create-user/controller.handler
     events:
       - httpApi:
           path: user/save
           method: post
 
+  saveCategory:
+    handler: lib/category/create-category/controller.handler
+    events:
+      - httpApi:
+          path: category/save
+          method: post
+
+  getCategory:
+    handler: lib/category/get-category/controller.handler
+    events:
+      - httpApi:
+          path: category/{email}
+          method: get
+
+  saveBalance:
+    handler: lib/balance/create-balance/controller.handler
+    events:
+      - httpApi:
+          path: balance/save
+          method: post
+
+  getBalance:
+    handler: lib/balance/get-balance/controller.handler
+    events:
+      - httpApi:
+          path: balance/{email}
+          method: get
+
+
 Resources:
   TableName:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: ${NAME}
+      TableName: Users
+
       AttributeDefinitions:
         - AttributeName: email
           AttributeType: S
       KeySchema:
         - AttributeName: email
           KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  TableName:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Categories
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: email
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+        - AttributeName: email
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  TableName:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Balance
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: category
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+        - AttributeName: category
+          KeyType: RANGE
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
