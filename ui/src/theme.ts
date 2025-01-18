@@ -64,12 +64,13 @@ const theme = createTheme({
             styleOverrides: {
                 root: {
                     color: '#ffffff',
+                    textDecoration: 'none',
                     borderRadius: '8px',
                     padding: '6px 16px',
-                    borderColor: '#9575cd',
+                    borderColor: '#ffffff',
                     transition: 'background-color 0.3s, color 0.3s',
                     "&:hover": {
-                        backgroundColor: "rgba(93,112,214,0.2)",
+                        backgroundColor: "rgba(255, 255, 255, 0.2)",
                     },
                 },
             },

@@ -1,5 +1,6 @@
 import { Menu as MenuIcon } from "@mui/icons-material";
 import { Box, AppBar, Toolbar, IconButton, Typography, Button } from "@mui/material";
+import Link from "next/link";
 
 export default function Header() {
     return (
@@ -18,7 +19,13 @@ export default function Header() {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 600 }}>
                         Spending tracker
                     </Typography>
-                    <Button variant="outlined">Login</Button>
+                    <Button
+                        variant="outlined"
+                        component={Link}
+                        href="/login"
+                    >
+                        Login
+                    </Button>
                 </Toolbar>
             </AppBar>
         </Box>
