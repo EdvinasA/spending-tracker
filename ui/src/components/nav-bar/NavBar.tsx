@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { Box, Tab, Tabs } from '@mui/material';
 import * as React from 'react';
 import { usePathname, useRouter } from "next/navigation";
@@ -21,8 +21,8 @@ export default function NavBar() {
             id: `simple-tab-${name}`,
             'aria-controls': `simple-tabpanel-${name}`,
         };
-    }
-    
+    };
+
     const tabs = [
         { label: "Categories", value: "Categories", path: "/categories" },
         { label: "Expenses", value: "Expenses", path: "/expenses" },
@@ -35,29 +35,15 @@ export default function NavBar() {
 
     return (
         <Box sx={{ width: '100%' }}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs
-                    sx={{
-                        backgroundColor: '#494848',
-                        borderTop: '1px',
-                        borderColor: 'white'
-                    }}
-                    value={tabs.findIndex((tab) => tab.value === selectedTab)}
-                    onChange={handleChange}
-                    aria-label="Tabs">
-                    {tabs.map((tab, index) => (
-                        <Tab
-                            sx={{
-                                '&.Mui-selected': {
-                                    color: 'white'
-                                },
-                            }}
-                            key={index}
-                            label={tab.label}
-                            {...a11yProps(tab.value)} />
-                    ))}
-                </Tabs>
-            </Box>
+            <Tabs
+                value={tabs.findIndex((tab) => tab.value === selectedTab)}
+                onChange={handleChange}
+                aria-label="Tabs"
+            >
+                {tabs.map((tab, index) => (
+                    <Tab key={index} label={tab.label} {...a11yProps(tab.value)} />
+                ))}
+            </Tabs>
         </Box>
     );
 }
