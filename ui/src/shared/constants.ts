@@ -1,0 +1,1 @@
+export const HIDDEN_HEADER_PATHS = ['login', 'register']
