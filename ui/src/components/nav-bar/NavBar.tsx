@@ -36,7 +36,7 @@ export default function NavBar() {
 
     return (
         <>
-            {HIDDEN_HEADER_PATHS.includes(pathname) &&
+            {!HIDDEN_HEADER_PATHS.includes(pathname) &&
                 <Box sx={{ width: '100%' }}>
                     <Tabs
                         value={tabs.findIndex((tab) => tab.value === selectedTab)}
