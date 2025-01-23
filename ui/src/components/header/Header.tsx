@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 
 export default function Header() {
   const pathname = usePathname();
-  console.log(pathname);
+
   return (
     <>
       {!HIDDEN_HEADER_PATHS.includes(pathname) &&
