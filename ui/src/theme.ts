@@ -22,7 +22,7 @@ const theme = createTheme({
             contrastText: '#ffffff',
         },
         info: {
-          main: '#2196f3',
+            main: '#2196f3',
             contrastText: '#ffffff',
         },
         error: {
@@ -63,15 +63,18 @@ const theme = createTheme({
         MuiButton: {
             styleOverrides: {
                 root: {
+                    height: "40px",
+                    transition: "0.3s",
                     color: '#ffffff',
                     textDecoration: 'none',
                     borderRadius: '8px',
                     padding: '6px 16px',
                     borderColor: '#ffffff',
-                    transition: 'background-color 0.3s, color 0.3s',
+                    boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.3)",
                     "&:hover": {
-                        backgroundColor: "rgba(255, 255, 255, 0.2)",
+                        backgroundColor: "#5f3dc4",
                     },
+                    "&:active": { transform: "scale(0.98)" },
                 },
             },
         },
@@ -96,6 +99,24 @@ const theme = createTheme({
                     },
                     "&.Mui-selected": {
                         color: '#ffffff',
+                    },
+                },
+            },
+        },
+        MuiTextField: {
+            styleOverrides: {
+                root: {
+                    "& .MuiOutlinedInput-root": {
+                        backgroundColor: "#222020",
+                        borderRadius: "4px",
+                        color: "white",
+                        "& fieldset": { borderColor: "#555" },
+                        "&:hover fieldset": { borderColor: "#888" },
+                        "&.Mui-focused fieldset": { borderColor: "#6a4fc1" },
+                    },
+                    "& .MuiInputLabel-root": {
+                        color: "#ccc",
+                        "&.Mui-focused": { color: "#fff" },
                     },
                 },
             },
