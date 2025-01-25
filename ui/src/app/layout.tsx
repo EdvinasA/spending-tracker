@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/header/Header";
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
-import { CssBaseline, Divider, ThemeProvider } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import theme from "@/theme";
+import Header from "@/components/header/Header";
 import NavBar from "@/components/nav-bar/NavBar";
 
 const geistSans = Geist({
@@ -22,8 +22,7 @@ export const metadata: Metadata = {
   description: "Spending tracker for everything",
 };
 
-
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -37,11 +36,8 @@ export default async function RootLayout({
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <Header />
-            <Divider />
             <NavBar />
-            <div>
-              {children}
-            </div>
+            {children}
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>

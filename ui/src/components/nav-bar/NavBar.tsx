@@ -3,6 +3,7 @@ import { Box, Tab, Tabs } from '@mui/material';
 import * as React from 'react';
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { HIDDEN_HEADER_PATHS } from '@/shared/constants';
 
 export default function NavBar() {
     const router = useRouter();
@@ -34,16 +35,20 @@ export default function NavBar() {
     };
 
     return (
-        <Box sx={{ width: '100%' }}>
-            <Tabs
-                value={tabs.findIndex((tab) => tab.value === selectedTab)}
-                onChange={handleChange}
-                aria-label="Tabs"
-            >
-                {tabs.map((tab, index) => (
-                    <Tab key={index} label={tab.label} {...a11yProps(tab.value)} />
-                ))}
-            </Tabs>
-        </Box>
+        <>
+            {!HIDDEN_HEADER_PATHS.includes(pathname) &&
+                <Box sx={{ width: '100%' }}>
+                    <Tabs
+                        value={tabs.findIndex((tab) => tab.value === selectedTab)}
+                        onChange={handleChange}
+                        aria-label="Tabs"
+                    >
+                        {tabs.map((tab, index) => (
+                            <Tab key={index} label={tab.label} {...a11yProps(tab.value)} />
+                        ))}
+                    </Tabs>
+                </Box>
+            }
+        </>
     );
 }
