@@ -9,28 +9,35 @@ jobs:
       - run:
           name: Install dependencies
           command: |
+            cd server
             npm ci
             sudo chown -R circleci:circleci /usr/local/lib/node_modules
       - run:
           name: Install Serverless framework and dotenv
           command: |
-            cd 
+            cd server
             sudo npm install -g serverless dotenv-cli
       - run:
           name: Configure AWS credentials
           command: |
+            cd server
             serverless config credentials --provider aws --key "${AWS_ACCESS_KEY_ID}" --secret "${AWS_SECRET_ACCESS_KEY}" -o
       - run:
           name: Serverless package
           command: |
+            cd server
             serverless package --package artifacts --verbose
       - run:
           name: Serverless deploy application
           command: |
+            cd server
             serverless deploy --package artifacts --verbose
 
 workflows:
   deploy-serverless-workflow:
-    when: << pipeline.git.branch == "develop" >>
     jobs:
-      - deploy-serverless
+      - deploy-serverless:
+          filters:
+            branches:
+              only:
+                - develop
