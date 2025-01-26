@@ -9,7 +9,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            # cd server uncomment this in order for the deployements to start working
+            cd server
             npm ci
             sudo chown -R circleci:circleci /usr/local/lib/node_modules
       - run:
@@ -32,12 +32,38 @@ jobs:
           command: |
             cd server
             serverless deploy --package artifacts --verbose
+  deploy-nextjs:
+    docker:
+      - image: cimg/node:20.18.2
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            cd ui
+            npm ci
+      - run:
+          name: Build Next.js application
+          command: |
+            cd ui
+            npm run build
+      - run:
+          name: Deploy Next.js application
+          command: |
+            cd ui
+            npm install -g vercel
+            vercel deploy --prod --token="${VERCEL_TOKEN}"
 
 workflows:
-  deploy-serverless-workflow:
+  deploy-workflow:
     jobs:
       - deploy-serverless:
-          filters:
-            branches:
-              only:
-                - develop
+          # filters:
+          #   branches:
+          #     only:
+          #       - develop
+      - deploy-nextjs:
+          # filters:
+          #   branches:
+          #     only:
+          #       - develop
