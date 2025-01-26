@@ -1,16 +1,36 @@
 version: 2.1
 
 jobs:
-  say-hello:
+  deploy-serverless:
     docker:
-      - image: cimg/base:current
+      - image: cimg/node:20.18.2
     steps:
       - checkout
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+          name: Install dependencies
+          command: |
+            npm ci
+            sudo chown -R circleci:circleci /usr/local/lib/node_modules
+      - run:
+          name: Install Serverless framework and dotenv
+          command: |
+            cd 
+            sudo npm install -g serverless dotenv-cli
+      - run:
+          name: Configure AWS credentials
+          command: |
+            serverless config credentials --provider aws --key "${AWS_ACCESS_KEY_ID}" --secret "${AWS_SECRET_ACCESS_KEY}" -o
+      - run:
+          name: Serverless package
+          command: |
+            serverless package --package artifacts --verbose
+      - run:
+          name: Serverless deploy application
+          command: |
+            serverless deploy --package artifacts --verbose
 
 workflows:
-  say-hello-workflow:
+  deploy-serverless-workflow:
+    when: << pipeline.git.branch == "develop" >>
     jobs:
-      - say-hello
+      - deploy-serverless
