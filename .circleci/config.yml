@@ -58,12 +58,12 @@ workflows:
   deploy-workflow:
     jobs:
       - deploy-serverless:
-          # filters:
-          #   branches:
-          #     only:
-          #       - develop
+          filters:
+            branches:
+              only:
+                - circleci-project-setup
       - deploy-nextjs:
-          # filters:
-          #   branches:
-          #     only:
-          #       - develop
+          filters:
+            branches:
+              only:
+                - circleci-project-setup
