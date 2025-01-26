@@ -9,7 +9,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            cd server
+            # cd server uncomment this in order for the deployements to start working
             npm ci
             sudo chown -R circleci:circleci /usr/local/lib/node_modules
       - run:
