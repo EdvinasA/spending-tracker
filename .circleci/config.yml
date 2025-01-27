@@ -25,11 +25,6 @@ jobs:
             npm install -g serverless
             npm install -g dotenv-cli
       - run:
-          name: Configure AWS credentials
-          command: |
-            cd server
-            npx serverless config credentials --provider aws --key "${AWS_ACCESS_KEY_ID}" --secret "${AWS_SECRET_ACCESS_KEY}" -o
-      - run:
           name: Serverless package
           command: |
             cd server
