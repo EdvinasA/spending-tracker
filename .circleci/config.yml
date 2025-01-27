@@ -7,16 +7,23 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Configure npm global install path
+          command: |
+            mkdir ~/.npm-global
+            npm config set prefix '~/.npm-global'
+            export PATH=~/.npm-global/bin:$PATH
+            echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.bashrc
+            source ~/.bashrc
+      - run:
           name: Install dependencies
           command: |
             cd server
             npm ci
-            sudo chown -R circleci:circleci /usr/local/lib/node_modules
       - run:
           name: Install Serverless framework and dotenv
           command: |
             cd server
-            sudo npm install -g serverless dotenv-cli
+            npm install -g serverless dotenv-cli
       - run:
           name: Configure AWS credentials
           command: |
@@ -32,11 +39,20 @@ jobs:
           command: |
             cd server
             serverless deploy --package artifacts --verbose
+
   deploy-nextjs:
     docker:
       - image: cimg/node:20.18.2
     steps:
       - checkout
+      - run:
+          name: Configure npm global install path
+          command: |
+            mkdir ~/.npm-global
+            npm config set prefix '~/.npm-global'
+            export PATH=~/.npm-global/bin:$PATH
+            echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.bashrc
+            source ~/.bashrc
       - run:
           name: Install dependencies
           command: |
