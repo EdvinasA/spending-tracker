@@ -57,13 +57,11 @@ functions:
           path: balance/{email}
           method: get
 
-
 Resources:
-  TableName:
+  UsersTable:
     Type: AWS::DynamoDB::Table
     Properties:
       TableName: Users
-
       AttributeDefinitions:
         - AttributeName: email
           AttributeType: S
@@ -73,7 +71,8 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
-  TableName:
+
+  CategoriesTable:
     Type: AWS::DynamoDB::Table
     Properties:
       TableName: Categories
@@ -90,7 +89,8 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
-  TableName:
+
+  BalanceTable:
     Type: AWS::DynamoDB::Table
     Properties:
       TableName: Balance
