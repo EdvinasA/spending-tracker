@@ -22,7 +22,8 @@ jobs:
           name: Install Serverless framework and dotenv
           command: |
             cd server
-            npx serverless --version && npx dotenv-cli --version
+            npm install -g serverless
+            npm install -g dotenv-cli
       - run:
           name: Configure AWS credentials
           command: |
