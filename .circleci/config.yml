@@ -47,33 +47,49 @@ jobs:
           name: Deploy to AWS
           command: serverless deploy
 
-  deploy-nextjs:
+  build:
     docker:
-      - image: cimg/node:20.18.2
+      - image: cimg/node:lts
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "ui/package-lock.json" }}
+            - v1-dependencies-
       - run:
-          name: Configure npm global install path
-          command: |
-            mkdir -p ~/.npm-global
-            npm config set prefix '~/.npm-global'
-            export PATH=~/.npm-global/bin:$PATH
-            echo 'export PATH=~/.npm-global/bin:$PATH' >> $BASH_ENV
+          name: Navigate to UI folder
+          command: cd ui
       - run:
           name: Install dependencies
-          command: |
-            cd ui
-            npm ci
+          command: npm install
+      - save_cache:
+          paths:
+            - ui/node_modules
+          key: v1-dependencies-{{ checksum "ui/package-lock.json" }}
       - run:
-          name: Build Next.js application
-          command: |
-            cd ui
-            npm run build
+          name: Build project
+          command: npm run build
+      - persist_to_workspace:
+          root: ui
+          paths:
+            - .next
+            - public
+            - package.json
+            - package-lock.json
+            - node_modules
+
+  deploy-nextjs:
+    docker:
+      - image: cimg/node:lts
+    steps:
+      - attach_workspace:
+          at: ui
       - run:
-          name: Deploy Next.js application
-          command: |
-            cd ui
-            npx vercel deploy --prod --token="${VERCEL_TOKEN}"
+          name: Install Vercel CLI
+          command: npm install -g vercel
+      - run:
+          name: Deploy to Vercel
+          command: vercel --prod --token $VERCEL_TOKEN
 
 workflows:
   deploy-workflow:
