@@ -41,7 +41,9 @@ jobs:
 
       - run:
           name: Deploy to AWS
-          command: serverless deploy
+          command: |
+            cd server
+            serverless deploy
 
   build:
     docker:
