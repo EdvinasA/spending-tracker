@@ -40,13 +40,6 @@ jobs:
           key: v1-dependencies-server-{{ checksum "server/package.json" }}
 
       - run:
-          name: Configure AWS CLI
-          command: |
-            aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID}
-            aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}
-            aws configure set region ${AWS_REGION}
-
-      - run:
           name: Deploy to AWS
           command: serverless deploy
 
@@ -86,7 +79,9 @@ jobs:
 
       - run:
           name: Build project
-          command: npm run build
+          command: | 
+            cd ui
+            npm run build
 
       - persist_to_workspace:
           root: ui
