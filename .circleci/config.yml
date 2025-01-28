@@ -3,37 +3,49 @@ version: 2.1
 jobs:
   deploy-serverless:
     docker:
-      - image: cimg/node:20.18.2
+      - image: circleci/node:14  # Use Node.js 14 (or your preferred version)
     steps:
       - checkout
+
+      # Navigate to the `server` folder
       - run:
-          name: Configure npm global install path
-          command: |
-            mkdir -p ~/.npm-global
-            npm config set prefix '~/.npm-global'
-            export PATH=~/.npm-global/bin:$PATH
-            echo 'export PATH=~/.npm-global/bin:$PATH' >> $BASH_ENV
+          name: Navigate to server folder
+          command: cd server
+
+      # Install Serverless Framework
       - run:
-          name: Install dependencies
-          command: |
-            cd server
-            npm ci
+          name: Install Serverless Framework
+          command: sudo npm install -g serverless
+
+      # Restore cached dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "server/package.json" }}
+            - v1-dependencies-
+
+      # Install project dependencies
       - run:
-          name: Install Serverless framework and dotenv
-          command: |
-            cd server
-            npm install -g serverless
-            npm install -g dotenv-cli
+          name: Install project dependencies
+          command: npm install
+
+      # Cache dependencies
+      - save_cache:
+          paths:
+            - server/node_modules
+          key: v1-dependencies-{{ checksum "server/package.json" }}
+
+      # Set up AWS credentials
       - run:
-          name: Serverless package
+          name: Configure AWS CLI
           command: |
-            cd server
-            npx serverless package --package artifacts --verbose
+            aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID}
+            aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}
+            aws configure set region ${AWS_REGION}
+
+      # Deploy the Serverless application
       - run:
-          name: Serverless deploy application
-          command: |
-            cd server
-            npx serverless deploy --package artifacts --verbose
+          name: Deploy to AWS
+          command: serverless deploy
 
   deploy-nextjs:
     docker:
