@@ -1,35 +1,41 @@
 "use client";
 
-import { Box, Paper, Typography } from "@mui/material";
+import { Button, Divider, TextField, Typography } from "@mui/material";
+import { FormBox, ImageBox, RegisterContainer, MainBox } from "@/components/register";
+import CustomLink from "@/components/register/CustomLink";
+import PasswordField from "@/components/common/PasswordField";
 
 export default function RegisterPage() {
     return (
-        <Box
-            sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "100vh",
-                width: "100vw",
-                backgroundColor: "background.default",
-            }}
-        >
-            <Paper
-                sx={{
-                    width: "400px",
-                    padding: "24px",
-                    borderRadius: "8px",
-                    boxShadow: 3,
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 2,
-                    alignItems: "center",
-                }}
-            >
-                <Typography variant="h5" fontWeight="bold">
-                    Register a New Account
-                </Typography>
-            </Paper>
-        </Box>
+        <MainBox>
+            <RegisterContainer>
+                <ImageBox />
+                <FormBox>
+                    <Typography variant="h4" fontWeight="bold">
+                        Create an account
+                    </Typography>
+                    <Typography variant="body2">
+                        Already have an account? <CustomLink href="/login" text="Log in" />
+                    </Typography>
+                    <TextField label="Email" type="email" variant="outlined" size="small" fullWidth />
+                    <TextField label="Username" variant="outlined" size="small" fullWidth />
+                    <PasswordField label="Password" variant="outlined" size="small" fullWidth />
+                    <PasswordField label="Confirm Password" variant="outlined" size="small" fullWidth />
+
+                    <Button variant="contained" color="primary" fullWidth>
+                        Sign Up
+                    </Button>
+                    <Divider sx={{ width: "100%", my: 2 }}>Or sign up with</Divider>
+                    <Button
+                        variant="outlined"
+                        color="secondary"
+                        fullWidth
+                        startIcon={<img src="/assets/google.svg" alt="Google" width="20px" height="20px" />}
+                    >
+                        Google
+                    </Button>
+                </FormBox>
+            </RegisterContainer>
+        </MainBox>
     );
 }

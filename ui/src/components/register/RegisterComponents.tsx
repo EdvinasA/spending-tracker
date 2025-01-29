@@ -1,8 +1,8 @@
 "use client";
 
 import { Box, Paper } from "@mui/material";
-import Image from "next/image";
 import React from "react";
+import Image from "next/image";
 
 export const MainBox = ({ children }: { children: React.ReactNode }) => (
     <Box
@@ -19,11 +19,12 @@ export const MainBox = ({ children }: { children: React.ReactNode }) => (
     </Box>
 );
 
-export const LoginContainer = ({ children }: { children: React.ReactNode }) => (
-    <Paper
+
+export const RegisterContainer = ({ children }: { children: React.ReactNode }) => (
+    <Box
         sx={{
             display: "flex",
-            flexDirection: "row",
+            flexDirection: "row-reverse",
             width: "800px",
             height: "550px",
             borderRadius: "12px",
@@ -32,8 +33,9 @@ export const LoginContainer = ({ children }: { children: React.ReactNode }) => (
         }}
     >
         {children}
-    </Paper>
+    </Box>
 );
+
 
 export const ImageBox = () => (
     <Box
@@ -53,8 +55,9 @@ export const ImageBox = () => (
     </Box>
 );
 
+
 export const FormBox = ({ children }: { children: React.ReactNode }) => (
-    <Box
+    <Paper
         sx={{
             flex: 1,
             display: "flex",
@@ -68,5 +71,5 @@ export const FormBox = ({ children }: { children: React.ReactNode }) => (
         }}
     >
         {children}
-    </Box>
+    </Paper>
 );
