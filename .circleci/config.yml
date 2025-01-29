@@ -118,15 +118,8 @@ workflows:
             branches:
               only:
                 - circleci-project-setup
-      - build:
-          filters:
-            branches:
-              only:
-                - circleci-project-setup
       - deploy-nextjs:
           filters:
             branches:
               only:
                 - circleci-project-setup
-          requires:
-            - build
