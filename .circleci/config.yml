@@ -103,11 +103,13 @@ jobs:
       - run:
           name: Build Project Artifacts
           command: |
+            cd ui
             ls -d */
             vercel build --prod --token=$VERCEL_TOKEN
       - run:
           name: Deploy Project Artifacts to Vercel
           command: |
+            cd ui
             vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
 
 workflows:
