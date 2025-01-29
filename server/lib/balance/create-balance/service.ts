@@ -21,8 +21,6 @@ export const createBalance = async (balance: CreateBalance): Promise<void> => {
         throw new BadRequestExceptionMessage('Category not found');
     }
 
-    // const category = categoryResult.Items[0];
-
     const balanceEntity: Balance = {
         id: uuidv4(),
         category: balance.category,
