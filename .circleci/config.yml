@@ -45,12 +45,11 @@ jobs:
             cd server
             serverless deploy
 
-  build:
+  deploy-nextjs:
     docker:
       - image: cimg/node:lts
     steps:
       - checkout
-
       - run:
           name: Configure npm to use a user directory
           command: |
@@ -86,13 +85,6 @@ jobs:
             - package.json
             - package-lock.json
             - node_modules
-
-  deploy-nextjs:
-    docker:
-      - image: cimg/node:lts
-    steps:
-      - attach_workspace:
-          at: ui
       - run:
           name: Configure npm to use a user directory
           command: |
