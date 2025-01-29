@@ -90,9 +90,6 @@ jobs:
   deploy-nextjs:
     docker:
       - image: cimg/node:lts
-    environment:
-      VERCEL_ORG_ID: $VERCEL_ORG_ID
-      VERCEL_PROJECT_ID: $VERCEL_PROJECT_ID
     steps:
       - attach_workspace:
           at: ui
