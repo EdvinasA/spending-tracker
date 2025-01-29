@@ -112,6 +112,7 @@ jobs:
           name: Build Project Artifacts
           command: |
             cd ui
+            ls -d */
             vercel build --prod --token=$VERCEL_TOKEN
       - run:
           name: Deploy Project Artifacts to Vercel
