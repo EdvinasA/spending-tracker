@@ -20,38 +20,38 @@ functions:
     events:
       - httpApi:
           method: GET
-          path: user/{email}
+          path: /user/{email}
   saveUser:
     handler: lib/user/create-user/controller.handler
     events:
       - httpApi:
           method: POST
-          path: user/save
+          path: /user/save
   saveCategory:
     handler: lib/category/create-category/controller.handler
     events:
       - httpApi:
           method: POST
-          path: category/save
+          path: /category/save
   getCategory:
     handler: lib/category/get-category/controller.handler
     events:
       - httpApi:
           method: GET
-          path: category/{email}
+          path: /category/{email}
   saveBalance:
     handler: lib/balance/create-balance/controller.handler
     events:
       - httpApi:
           method: POST
-          path: balance/save
+          path: /balance/save
   getBalance:
     handler: lib/balance/get-balance/controller.handler
     events:
       - httpApi:
           method: GET
-          path: balance/{email}
-          
+          path: /balance/{email}
+
 resources:
   Resources:
     UsersTable:
