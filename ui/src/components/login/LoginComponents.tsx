@@ -19,6 +19,7 @@ export const MainBox = ({ children }: { children: React.ReactNode }) => (
     </Box>
 );
 
+
 export const LoginContainer = ({ children }: { children: React.ReactNode }) => (
     <Paper
         sx={{
