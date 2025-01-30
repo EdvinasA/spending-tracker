@@ -31,8 +31,6 @@
   },
   "scripts": {
     "start": "nodemon ts-node -r tsconfig-paths/register app.ts",
-    "build": "webpack",
-    "deploy": "webpack && dotenv -e .env.dev serverless deploy",
     "create-table": "cd lib/database && npx ts-node create-table.ts",
     "test": "jest",
     "test:watch": "jest --watch"
