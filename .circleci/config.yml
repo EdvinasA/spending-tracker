@@ -1,0 +1,222 @@
+version: 2.1
+
+jobs:
+  deploy-serverless:
+    docker:
+      - image: cimg/node:lts
+    steps:
+      - checkout
+
+      - run:
+          name: Configure npm to use a user directory
+          command: |
+            mkdir -p ~/.npm-global
+            npm config set prefix '~/.npm-global'
+            echo 'export PATH=~/.npm-global/bin:$PATH' >> $BASH_ENV
+            source $BASH_ENV
+
+      - run:
+          name: Navigate to server folder
+          command: cd server
+
+      - run:
+          name: Install Serverless Framework
+          command: npm install -g serverless
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-server-{{ checksum "server/package.json" }}
+            - v1-dependencies-server-
+
+      - run:
+          name: Install project dependencies
+          command: |
+            cd server
+            npm install
+
+      - save_cache:
+          paths:
+            - server/node_modules
+          key: v1-dependencies-server-{{ checksum "server/package.json" }}
+
+      - run:
+          name: Deploy to AWS
+          command: |
+            cd server
+            serverless deploy
+
+  deploy-nextjs:
+    docker:
+      - image: cimg/node:lts
+    steps:
+      - checkout
+      - run:
+          name: Configure npm to use a user directory
+          command: |
+            mkdir -p ~/.npm-global
+            npm config set prefix '~/.npm-global'
+            echo 'export PATH=~/.npm-global/bin:$PATH' >> $BASH_ENV
+            source $BASH_ENV
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-ui-{{ checksum "ui/package-lock.json" }}
+            - v1-dependencies-ui-
+
+      - run:
+          name: Navigate to UI folder
+          command: cd ui
+
+      - run:
+          name: Install dependencies
+          command: | 
+            cd ui
+            npm install
+
+      - save_cache:
+          paths:
+            - ui/node_modules
+          key: v1-dependencies-ui-{{ checksum "ui/package-lock.json" }}
+
+      - persist_to_workspace:
+          root: ui
+          paths:
+            - public
+            - package.json
+            - package-lock.json
+            - node_modules
+      - run:
+          name: Configure npm to use a user directory
+          command: |
+            mkdir -p ~/.npm-global
+            npm config set prefix '~/.npm-global'
+            echo 'export PATH=~/.npm-global/bin:$PATH' >> $BASH_ENV
+            source $BASH_ENV
+      - run:
+          name: Install Vercel CLI
+          command: npm install -g vercel
+      - run:
+          name: Pull Vercel Environment Information
+          command: |
+            cd ui
+            vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+      - run:
+          name: Build Project Artifacts
+          command: |
+            cd ui
+            ls -d */
+            vercel build --prod --token=$VERCEL_TOKEN
+      - run:
+          name: Deploy Project Artifacts to Vercel
+          command: |
+            cd ui
+            vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
+
+  build-serverless:
+    docker:
+      - image: cimg/node:lts
+    steps:
+      - checkout
+      - run:
+          name: Configure npm to use a user directory
+          command: |
+            mkdir -p ~/.npm-global
+            npm config set prefix '~/.npm-global'
+            echo 'export PATH=~/.npm-global/bin:$PATH' >> $BASH_ENV
+            source $BASH_ENV
+
+      - run:
+          name: Navigate to server folder
+          command: cd server
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-server-{{ checksum "server/package.json" }}
+            - v1-dependencies-server-
+      - run:
+          name: Install Serverless Framework
+          command: npm install -g serverless
+          
+      - run:
+          name: Install project dependencies
+          command: |
+            cd server
+            npm install
+
+      - save_cache:
+          paths:
+            - server/node_modules
+          key: v1-dependencies-server-{{ checksum "server/package.json" }}
+
+      - run:
+          name: Build Serverless project
+          command: |
+            cd server
+            serverless package
+
+  build-nextjs:
+    docker:
+      - image: cimg/node:lts
+    steps:
+      - checkout
+      - run:
+          name: Configure npm to use a user directory
+          command: |
+            mkdir -p ~/.npm-global
+            npm config set prefix '~/.npm-global'
+            echo 'export PATH=~/.npm-global/bin:$PATH' >> $BASH_ENV
+            source $BASH_ENV
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-ui-{{ checksum "ui/package-lock.json" }}
+            - v1-dependencies-ui-
+
+      - run:
+          name: Navigate to UI folder
+          command: cd ui
+
+      - run:
+          name: Install dependencies
+          command: |
+            cd ui
+            npm install
+
+      - save_cache:
+          paths:
+            - ui/node_modules
+          key: v1-dependencies-ui-{{ checksum "ui/package-lock.json" }}
+
+      - run:
+          name: Build Next.js project
+          command: |
+            cd ui
+            npm run build
+
+workflows:
+  build-on-pr:
+    jobs:
+      - build-serverless:
+          filters:
+            branches:
+              ignore: develop
+            tags:
+              ignore: /.*/
+      - build-nextjs:
+          filters:
+            branches:
+              ignore: develop
+            tags:
+              ignore: /.*/
+  deploy-workflow:
+    jobs:
+      - deploy-serverless:
+          filters:
+            branches:
+              only:
+                - develop
+      - deploy-nextjs:
+          filters:
+            branches:
+              only:
+                - develop
