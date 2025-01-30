@@ -133,7 +133,10 @@ jobs:
           keys:
             - v1-dependencies-server-{{ checksum "server/package.json" }}
             - v1-dependencies-server-
-
+      - run:
+          name: Install Serverless Framework
+          command: npm install -g serverless
+          
       - run:
           name: Install project dependencies
           command: |
