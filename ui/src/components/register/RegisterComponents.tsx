@@ -1,8 +1,8 @@
 "use client";
 
 import { Box, Paper } from "@mui/material";
-import Image from "next/image";
 import React from "react";
+import Image from "next/image";
 
 export const MainBox = ({ children }: { children: React.ReactNode }) => (
     <Box
@@ -20,12 +20,11 @@ export const MainBox = ({ children }: { children: React.ReactNode }) => (
 );
 
 
-
-export const LoginContainer = ({ children }: { children: React.ReactNode }) => (
-    <Paper
+export const RegisterContainer = ({ children }: { children: React.ReactNode }) => (
+    <Box
         sx={{
             display: "flex",
-            flexDirection: { xs: "column-reverse", md: "row" },
+            flexDirection: { xs: "column", md: "row-reverse" },
             width: { xs: "90vw", md: "800px" },
             height: { xs: "auto", md: "550px" },
             borderRadius: "12px",
@@ -34,7 +33,7 @@ export const LoginContainer = ({ children }: { children: React.ReactNode }) => (
         }}
     >
         {children}
-    </Paper>
+    </Box>
 );
 
 
@@ -44,7 +43,7 @@ export const ImageBox = () => (
             flex: 1,
             position: "relative",
             width: "100%",
-            height: { xs: "150px", md: "100%" },
+            height: { xs: "200px", md: "100%" },
         }}
     >
         <Image
@@ -52,13 +51,15 @@ export const ImageBox = () => (
             alt="Login Image"
             layout="fill"
             objectFit="cover"
+            priority
         />
     </Box>
 );
 
 
+
 export const FormBox = ({ children }: { children: React.ReactNode }) => (
-    <Box
+    <Paper
         sx={{
             flex: 1,
             display: "flex",
@@ -69,8 +70,9 @@ export const FormBox = ({ children }: { children: React.ReactNode }) => (
             backgroundColor: "#2b2b3c",
             color: "#ffffff",
             gap: 2,
+            minHeight: "300px",
         }}
     >
         {children}
-    </Box>
+    </Paper>
 );
