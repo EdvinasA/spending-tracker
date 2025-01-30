@@ -149,7 +149,7 @@ jobs:
           name: Build Serverless project
           command: |
             cd server
-            npm run build # Replace with your build command
+            serverless package
 
   build-nextjs:
     docker:
@@ -188,7 +188,7 @@ jobs:
           name: Build Next.js project
           command: |
             cd ui
-            npm run build # Replace with your build command
+            npm run build
 
 workflows:
   build-on-pr:
@@ -196,15 +196,15 @@ workflows:
       - build-serverless:
           filters:
             branches:
-              ignore: develop # Ignore `develop` branch for this workflow
+              ignore: develop
             tags:
-              ignore: /.*/ # Ignore all tags
+              ignore: /.*/
       - build-nextjs:
           filters:
             branches:
-              ignore: develop # Ignore `develop` branch for this workflow
+              ignore: develop
             tags:
-              ignore: /.*/ # Ignore all tags
+              ignore: /.*/
   deploy-workflow:
     jobs:
       - deploy-serverless:
