@@ -119,9 +119,9 @@ workflows:
           filters:
             branches:
               only:
-                - circleci-project-setup
+                - main
       - deploy-nextjs:
           filters:
             branches:
               only:
-                - circleci-project-setup
+                - main
