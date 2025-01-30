@@ -23,9 +23,9 @@ export const LoginContainer = ({ children }: { children: React.ReactNode }) => (
     <Paper
         sx={{
             display: "flex",
-            flexDirection: "row",
-            width: "800px",
-            height: "550px",
+            flexDirection: { xs: "column-reverse", md: "row" },
+            width: { xs: "90vw", md: "800px" },
+            height: { xs: "auto", md: "550px" },
             borderRadius: "12px",
             overflow: "hidden",
             boxShadow: 3,
@@ -35,13 +35,14 @@ export const LoginContainer = ({ children }: { children: React.ReactNode }) => (
     </Paper>
 );
 
+
 export const ImageBox = () => (
     <Box
         sx={{
             flex: 1,
             position: "relative",
             width: "100%",
-            height: "100%",
+            height: { xs: "150px", md: "100%" },
         }}
     >
         <Image
@@ -52,6 +53,7 @@ export const ImageBox = () => (
         />
     </Box>
 );
+
 
 export const FormBox = ({ children }: { children: React.ReactNode }) => (
     <Box

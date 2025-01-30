@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Divider, TextField, Typography } from "@mui/material";
+import { Button, TextField, Typography } from "@mui/material";
 import { FormBox, ImageBox, RegisterContainer, MainBox } from "@/components/register";
 import CustomLink from "@/components/register/CustomLink";
 import PasswordField from "@/components/common/PasswordField";
@@ -25,15 +25,21 @@ export default function RegisterPage() {
                     <Button variant="contained" color="primary" fullWidth>
                         Sign Up
                     </Button>
-                    <Divider sx={{ width: "100%", my: 2 }}>Or sign up with</Divider>
-                    <Button
-                        variant="outlined"
-                        color="secondary"
-                        fullWidth
-                        startIcon={<img src="/assets/google.svg" alt="Google" width="20px" height="20px" />}
-                    >
-                        Google
-                    </Button>
+
+                    {/*Google Sign Up*/}
+
+                    {/*<Divider sx={{ width: "100%", my: 2 }}>Or sign up with</Divider>*/}
+                    {/*<Button*/}
+                    {/*    variant="outlined"*/}
+                    {/*    color="secondary"*/}
+                    {/*    fullWidth*/}
+                    {/*    startIcon={<img src="/assets/google.svg" alt="Google" width="20px" height="20px" />}*/}
+                    {/*>*/}
+                    {/*    Google*/}
+                    {/*</Button>*/}
+
+
+
                 </FormBox>
             </RegisterContainer>
         </MainBox>

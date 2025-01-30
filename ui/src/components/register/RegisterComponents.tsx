@@ -24,9 +24,9 @@ export const RegisterContainer = ({ children }: { children: React.ReactNode }) =
     <Box
         sx={{
             display: "flex",
-            flexDirection: "row-reverse",
-            width: "800px",
-            height: "550px",
+            flexDirection: { xs: "column", md: "row-reverse" },
+            width: { xs: "90vw", md: "800px" },
+            height: { xs: "auto", md: "550px" },
             borderRadius: "12px",
             overflow: "hidden",
             boxShadow: 3,
@@ -43,7 +43,7 @@ export const ImageBox = () => (
             flex: 1,
             position: "relative",
             width: "100%",
-            height: "100%",
+            height: { xs: "200px", md: "100%" },
         }}
     >
         <Image
@@ -51,9 +51,11 @@ export const ImageBox = () => (
             alt="Login Image"
             layout="fill"
             objectFit="cover"
+            priority
         />
     </Box>
 );
+
 
 
 export const FormBox = ({ children }: { children: React.ReactNode }) => (
@@ -68,6 +70,7 @@ export const FormBox = ({ children }: { children: React.ReactNode }) => (
             backgroundColor: "#2b2b3c",
             color: "#ffffff",
             gap: 2,
+            minHeight: "300px",
         }}
     >
         {children}
