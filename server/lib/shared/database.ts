@@ -15,8 +15,8 @@ const dynamoDbClient = new DynamoDBClient({
     region: process.env.REGION || "us-west-2",
     endpoint: process.env.ENVIRONMENT === "dev" ? undefined : "http://localhost:8000",
     credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID || "fakeMyKeyId",
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "fakeSecretKey"
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID_VALUE || "fakeMyKeyId",
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY_VALUE || "fakeSecretKey"
     }
   });
 
