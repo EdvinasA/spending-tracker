@@ -1,9 +1,6 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import {
     DynamoDBDocumentClient,
-    GetCommand,
-    GetCommandInput,
-    GetCommandOutput,
     ScanCommandInput,
     ScanCommand,
     ScanCommandOutput,
@@ -15,11 +12,11 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 
 const dynamoDbClient = new DynamoDBClient({
-    region: "us-west-2",
-    endpoint: "http://localhost:8000",
+    region: process.env.REGION || "us-west-2",
+    endpoint: process.env.ENVIRONMENT === "dev" ? undefined : "http://localhost:8000",
     credentials: {
-        accessKeyId: "fakeMyKeyId",
-        secretAccessKey: "fakeSecretKey"
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID || "fakeMyKeyId",
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "fakeSecretKey"
     }
   });
 
