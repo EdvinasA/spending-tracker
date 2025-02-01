@@ -1,7 +1,7 @@
 import { APIGatewayProxyCallback } from 'aws-lambda';
 
 export const handleError = (callback: APIGatewayProxyCallback, error: any) => {
-    if (error.statusCode) {
+    if (error?.statusCode) {
         const errorResponse = {
             message: error.message === '' ? undefined : error.message,
             errors: error.validationErrors,
