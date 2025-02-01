@@ -24,36 +24,42 @@ functions:
       - httpApi:
           method: GET
           path: /user/{email}
+          payloadFormatVersion: 2.0
   saveUser:
     handler: lib/user/create-user/controller.handler
     events:
       - httpApi:
           method: POST
           path: /user/save
+          payloadFormatVersion: 2.0
   saveCategory:
     handler: lib/category/create-category/controller.handler
     events:
       - httpApi:
           method: POST
           path: /category/save
+          payloadFormatVersion: 2.0
   getCategory:
     handler: lib/category/get-category/controller.handler
     events:
       - httpApi:
           method: GET
           path: /category/{email}
+          payloadFormatVersion: 2.0
   saveBalance:
     handler: lib/balance/create-balance/controller.handler
     events:
       - httpApi:
           method: POST
           path: /balance/save
+          payloadFormatVersion: 2.0
   getBalance:
     handler: lib/balance/get-balance/controller.handler
     events:
       - httpApi:
           method: GET
           path: /balance/{email}
+          payloadFormatVersion: 2.0
 
 resources:
   Resources:
