@@ -1,0 +1,1 @@
+export { MainBox, RegisterContainer, ImageBox, FormBox } from "./RegisterComponents";
