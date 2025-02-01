@@ -1,9 +1,8 @@
-import { APIGatewayEvent, APIGatewayProxyCallback, Context } from "aws-lambda";
-import { BadRequestException, handleResult, handleError } from "shared";
-import { userValidationSchema } from "user/model";
+import { APIGatewayEvent, APIGatewayProxyCallbackV2, Context } from "aws-lambda";
+import { handleResult, handleError } from "shared";
 import { saveUser } from "./service";
 
-export async function handler(event: APIGatewayEvent, _: Context, callback: APIGatewayProxyCallback) {
+export async function handler(event: APIGatewayEvent, _: Context, callback: APIGatewayProxyCallbackV2) {
     try {
 
         const requestBody = JSON.parse(event.body || '{}');
