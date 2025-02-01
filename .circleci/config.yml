@@ -99,6 +99,8 @@ jobs:
           name: Pull Vercel Environment Information
           command: |
             cd ui
+            vercel env add NEXT_PUBLIC_API_ENDPOINT $NEXT_PUBLIC_API_ENDPOINT
+            vercel env add NEXT_PUBLIC_ENVIRONMENT dev
             vercel pull --yes --environment=production --token=$VERCEL_TOKEN
       - run:
           name: Build Project Artifacts
