@@ -8,8 +8,8 @@ provider:
   environment:
     REGION: eu-west-1
     ENVIRONMENT: dev
-    AWS_ACCESS_KEY_ID: ${env:AWS_ACCESS_KEY_ID}
-    AWS_SECRET_ACCESS_KEY: ${env:AWS_SECRET_ACCESS_KEY}
+    AWS_ACCESS_KEY_ID_VALUE: ${env:AWS_ACCESS_KEY_ID}
+    AWS_SECRET_ACCESS_KEY_VALUE: ${env:AWS_SECRET_ACCESS_KEY}
 
 package:
   excludeDevDependencies: false
