@@ -6,12 +6,12 @@ import {
     TableHead,
     TableRow,
     Paper,
-    Typography,
     Box,
 } from '@mui/material';
 import { cookies } from 'next/headers';
 import { format } from 'date-fns';
 import { StyledTableCell, StyledBodyTableCell } from '@/shared/style-components';
+import CategoryForm from "@/components/category/CategoryForm";
 
 export interface Category {
     id: string;
@@ -28,16 +28,7 @@ export default async function Categories() {
 
     return (
         <Box sx={{ padding: '16px 16px 0' }}>
-            <Typography
-                variant="h4"
-                gutterBottom
-                sx={{
-                    color: 'text.primary',
-                    fontWeight: 'bold',
-                }}
-                >
-                Categories
-            </Typography>
+            <CategoryForm />
 
             {data &&
                 < TableContainer component={Paper} sx={{ backgroundColor: 'background.paper', borderRadius: '8px'}}>
