@@ -1,15 +1,11 @@
 import { Balance } from "../model";
-import { BadRequestExceptionMessage, getByField } from "shared";
+import { getByField, isValidString, TableName } from "shared";
 
-export const getBalance = async (email?: string): Promise<Balance[]> => {
-    if (!email) {
-        throw new BadRequestExceptionMessage("Email is required");
-    }
+export class GetBalanceService {
+    public getBalance = async (email?: string): Promise<Balance[]> => {
+        await isValidString(email);
 
-    const result = await getByField("Balance", "category", email);
+        return await getByField<Balance>(TableName.BALANCE, "category", email!);
+    };
+}
 
-    if (!result || !result.Items || result.Items.length === 0) {
-        return [];
-    }
-    return result.Items as Balance[];
-};

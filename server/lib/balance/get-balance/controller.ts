@@ -1,14 +1,16 @@
 import { APIGatewayEvent, APIGatewayProxyCallback, Context } from "aws-lambda";
 import { handleError, handleResult } from "shared";
-import { getBalance } from "./service";
+import { GetBalanceService } from "./service";
 
-export const handler = async (event: APIGatewayEvent, context: Context, callback: APIGatewayProxyCallback) => {
+export const handler = async (event: APIGatewayEvent, _: Context, callback: APIGatewayProxyCallback) => {
     try {
         const email = event.pathParameters?.email;
 
-        const balance = await getBalance(email);
+        const service = new GetBalanceService();
 
-        return handleResult(callback, { data: balance }, 200);
+        const balance = await service.getBalance(email);
+
+        return handleResult(callback, balance, 200);
     } catch (e) {
         return handleError(callback, e);
     }

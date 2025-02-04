@@ -1,32 +1,30 @@
-import { CategorySchema, CreateCategory, Category } from '../model';
+import { CreateCategory, CreateCategorySchema } from '../model';
 import {
-    BadRequestException,
     BadRequestExceptionMessage,
-    getByField,
-    postItem
+    addItemToTable,
+    TableName,
+    getOneByField,
+    validateRequestObject
 } from 'shared';
+import { User } from 'user/model';
 import { v4 as uuidv4 } from 'uuid';
 
-export const createCategory = async (expense: CreateCategory): Promise<void> => {
+export class CreateCategoryService {
+    public createCategory = async (request: CreateCategory): Promise<void> => {
+        await validateRequestObject(CreateCategorySchema, request)
 
-    const { error } = CategorySchema.validate(expense);
-    if (error) {
-        throw new BadRequestException(error);
-    }
+        const user = await getOneByField<User>(TableName.USERS, 'email', request.email);
 
-    const user = await getByField('Users', 'email', expense.email);
+        if (user) {
+            throw new BadRequestExceptionMessage(`User with email ${request.email} not found`);
+        }
 
-    if (user.Count === 0) {
-        throw new BadRequestExceptionMessage('User not found');
-    }
-
-    const categoryEntity: Category = {
-        id: uuidv4(),
-        name: expense.name,
-        email: expense.email,
-        currency: expense.currency,
-        createdAt: new Date().toISOString(),
+        await addItemToTable(TableName.CATEGORIES, {
+            id: uuidv4(),
+            name: request.name,
+            email: request.email,
+            currency: request.currency,
+            createdAt: new Date().toISOString(),
+        });
     };
-
-    await postItem('Categories', categoryEntity);
-};
+}

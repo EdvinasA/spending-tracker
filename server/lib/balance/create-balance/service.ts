@@ -1,34 +1,30 @@
-import { Balance, BalanceSchema, CreateBalance } from "../model";
+import { Balance, CreateBalanceRequest, CreateBalanceRequestSchema } from "../model";
 import {
-    BadRequestException,
     BadRequestExceptionMessage,
-    getByField,
-    postItem
+    addItemToTable,
+    getOneByField,
+    TableName,
+    validateRequestObject
 } from "shared";
 import { v4 as uuidv4 } from "uuid";
 
+export class CreateBalanceService {
+    public createBalance = async (request: CreateBalanceRequest): Promise<void> => {
+        await validateRequestObject(CreateBalanceRequestSchema, request)
 
-export const createBalance = async (balance: CreateBalance): Promise<void> => {
+        const categoryResult = await getOneByField(TableName.CATEGORIES, 'id', request.category);
 
-    const { error } = BalanceSchema.validate(balance);
-    if (error) {
-        throw new BadRequestException(error);
+        if (!categoryResult) {
+            throw new BadRequestExceptionMessage(`Category with id ${request.category} not found`);
+        }
+
+        await addItemToTable<Balance>(TableName.BALANCE, {
+            id: uuidv4(),
+            category: request.category,
+            amount: request.amount,
+            note: request.note || "",
+            createdAt: new Date().toISOString(),
+        })
+
     }
-
-    const categoryResult = await getByField('Categories', 'id', balance.category);
-
-    if (!categoryResult || categoryResult.Count === 0 || !categoryResult.Items) {
-        throw new BadRequestExceptionMessage('Category not found');
-    }
-
-    const balanceEntity: Balance = {
-        id: uuidv4(),
-        category: balance.category,
-        amount: balance.amount,
-        note: balance.note || "",
-        createdAt: new Date().toISOString(),
-    };
-
-    await postItem('Balance', balanceEntity)
-
 }
