@@ -1,6 +1,6 @@
 import { APIGatewayEvent, APIGatewayProxyCallback, Context } from "aws-lambda";
 import { handleError, handleResult } from "shared";
-import { CreateBalanceService } from "./service";
+import { CreateBalanceService } from "./create-balance-service";
 import { CreateBalanceRequest } from "balance/model";
 
 export const handler = async (event: APIGatewayEvent, _: Context, callback: APIGatewayProxyCallback) => {
