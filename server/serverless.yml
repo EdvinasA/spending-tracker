@@ -30,14 +30,14 @@ functions:
     events:
       - httpApi:
           method: POST
-          path: /user/save
+          path: /user
           payloadFormatVersion: 2.0
   saveCategory:
     handler: lib/category/create-category/controller.handler
     events:
       - httpApi:
           method: POST
-          path: /category/save
+          path: /category
           payloadFormatVersion: 2.0
   getCategory:
     handler: lib/category/get-category/controller.handler
@@ -51,7 +51,7 @@ functions:
     events:
       - httpApi:
           method: POST
-          path: /balance/save
+          path: /balance
           payloadFormatVersion: 2.0
   getBalance:
     handler: lib/balance/get-balance/controller.handler
