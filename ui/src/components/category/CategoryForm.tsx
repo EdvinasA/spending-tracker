@@ -1,15 +1,34 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import {Box, Button, TextField, MenuItem, Select, FormControl, FormLabel, FormHelperText } from "@mui/material";
-import { useState, useEffect } from "react";
+import { Button, TextField, MenuItem, Select, FormControl, FormLabel, FormHelperText } from "@mui/material";
+import { useState } from "react";
 
 interface CategoryFormData {
     name: string;
     currency: string;
 }
 
-export default function CategoryForm({ onCategoryAddedAction }: { onCategoryAddedAction: () => void }) {
+interface CategoryFormProps {
+    userEmail: string;
+    onCategoryAddedAction: () => void;
+}
+
+const currencies = [
+    { value: "EUR", label: "Euro (€)" },
+    { value: "USD", label: "US Dollar ($)" },
+    { value: "GBP", label: "British Pound (£)" },
+    { value: "CHF", label: "Swiss Franc (CHF)" },
+    { value: "NOK", label: "Norwegian Krone (NOK)" },
+    { value: "SEK", label: "Swedish Krona (SEK)" },
+    { value: "DKK", label: "Danish Krone (DKK)" },
+    { value: "PLN", label: "Polish Zloty (PLN)" },
+    { value: "HUF", label: "Hungarian Forint (HUF)" },
+    { value: "CZK", label: "Czech Koruna (CZK)" }
+];
+
+
+export default function CategoryForm({ userEmail, onCategoryAddedAction }: CategoryFormProps) {
     const {
         register,
         handleSubmit,
@@ -17,20 +36,7 @@ export default function CategoryForm({ onCategoryAddedAction }: { onCategoryAdde
         reset,
     } = useForm<CategoryFormData>();
 
-    const [userEmail, setUserEmail] = useState("");
     const [currency, setCurrency] = useState("EUR");
-
-    useEffect(() => {
-        const emailCookie = document.cookie
-            .split("; ")
-            .find((row) => row.startsWith("email="))
-            ?.split("=")[1];
-
-        if (emailCookie) {
-            setUserEmail(decodeURIComponent(emailCookie));
-        }
-    }, []);
-
 
     const onSubmit = async (data: CategoryFormData) => {
         try {
@@ -46,8 +52,6 @@ export default function CategoryForm({ onCategoryAddedAction }: { onCategoryAdde
                 }),
             });
 
-
-
             if (!response.ok) {
                 console.log("Failed to add category");
                 return;
@@ -61,13 +65,12 @@ export default function CategoryForm({ onCategoryAddedAction }: { onCategoryAdde
     };
 
     return (
-        <Box
-            component="form"
+        <form
             onSubmit={handleSubmit(onSubmit)}
-            sx={{
+            style={{
                 display: "flex",
                 flexDirection: "column",
-                gap: 2,
+                gap: "16px",
                 width: "300px",
                 marginBottom: "24px",
             }}
@@ -79,29 +82,26 @@ export default function CategoryForm({ onCategoryAddedAction }: { onCategoryAdde
                 helperText={errors.name?.message}
             />
 
-            <FormControl fullWidth sx={{ marginTop: 0 }}>
+            <FormControl fullWidth>
                 <FormLabel>Currency</FormLabel>
                 <Select
                     value={currency}
                     onChange={(e) => setCurrency(e.target.value)}
-                    displayEmpty
                     variant="outlined"
                     error={!!errors.currency}
                 >
-                    <MenuItem value="" disabled>Select currency</MenuItem>
-                    <MenuItem value="EUR">EUR</MenuItem>
-                    <MenuItem value="USD">USD</MenuItem>
-                    <MenuItem value="GBP">GBP</MenuItem>
+                    {currencies.map((curr) => (
+                        <MenuItem key={curr.value} value={curr.value}>
+                            {curr.label}
+                        </MenuItem>
+                    ))}
                 </Select>
                 {errors.currency && <FormHelperText>{errors.currency.message}</FormHelperText>}
             </FormControl>
 
-
-
-
             <Button type="submit" variant="contained" color="primary">
                 Add Category
             </Button>
-        </Box>
+        </form>
     );
 }
