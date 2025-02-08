@@ -3,6 +3,8 @@
 import { useForm } from "react-hook-form";
 import { Button, TextField, MenuItem, Select, FormControl, FormLabel, FormHelperText } from "@mui/material";
 import { useState } from "react";
+import { currencies } from "@/shared/currencies/constants";
+
 
 interface CategoryFormData {
     name: string;
@@ -13,20 +15,6 @@ interface CategoryFormProps {
     userEmail: string;
     onCategoryAddedAction: () => void;
 }
-
-const currencies = [
-    { value: "EUR", label: "Euro (€)" },
-    { value: "USD", label: "US Dollar ($)" },
-    { value: "GBP", label: "British Pound (£)" },
-    { value: "CHF", label: "Swiss Franc (CHF)" },
-    { value: "NOK", label: "Norwegian Krone (NOK)" },
-    { value: "SEK", label: "Swedish Krona (SEK)" },
-    { value: "DKK", label: "Danish Krone (DKK)" },
-    { value: "PLN", label: "Polish Zloty (PLN)" },
-    { value: "HUF", label: "Hungarian Forint (HUF)" },
-    { value: "CZK", label: "Czech Koruna (CZK)" }
-];
-
 
 export default function CategoryForm({ userEmail, onCategoryAddedAction }: CategoryFormProps) {
     const {
@@ -71,7 +59,8 @@ export default function CategoryForm({ userEmail, onCategoryAddedAction }: Categ
                 display: "flex",
                 flexDirection: "column",
                 gap: "16px",
-                width: "300px",
+                width: "100%",
+                maxWidth: "400px",
                 marginBottom: "24px",
             }}
         >
