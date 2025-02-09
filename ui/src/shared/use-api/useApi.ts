@@ -7,6 +7,8 @@ interface UseApiResult<T> {
   execute: (body?: any, method?: string) => Promise<void>;
 }
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_ENDPOINT;
+
 export function useApi<T>(
   url: string,
   defaultMethod: string = "GET",
@@ -16,18 +18,12 @@ export function useApi<T>(
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  /**
-   * Function to execute the API request on demand.
-   *
-   * @param body - Optional request body for POST/PUT methods.
-   * @param method - Optional method to override the default.
-   */
   const execute = useCallback(
     async (body?: any, method: string = defaultMethod) => {
       setLoading(true);
-      setError(null); // Reset error state before fetching
+      setError(null);
       try {
-        const response = await fetch(url, {
+        const response = await fetch(`${API_BASE_URL}${url}`, {
           method,
           headers: defaultHeaders,
           body: body ? JSON.stringify(body) : undefined,

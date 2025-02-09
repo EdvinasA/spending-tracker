@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
     Table,
     TableBody,
@@ -12,6 +12,7 @@ import {
 import { format } from "date-fns";
 import { StyledTableCell, StyledBodyTableCell } from "@/shared/style-components";
 import CategoryForm from "@/components/category/CategoryForm";
+import { useApi } from "@/shared/use-api/useApi";
 
 export interface Category {
     id: string;
@@ -26,27 +27,11 @@ interface CategoryProps {
 }
 
 export default function Category({ userEmail }: CategoryProps) {
-    const [categories, setCategories] = useState<Category[]>([]);
-
-    const fetchCategories = async (email: string) => {
-
-        try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/category/${email}`);
-
-            if (!response.ok) {
-                return;
-            }
-
-            const data = await response.json();
-            setCategories(data.data);
-        } catch (error) {
-            console.error("Error fetching categories:", error);
-        }
-    };
+    const { data, loading, execute } = useApi<Category[]>(`/category/${userEmail}`)
 
     useEffect(() => {
         if (userEmail) {
-            fetchCategories(userEmail).then(r => console.log(r)).catch(console.error);
+            execute()
         }
     }, [userEmail]);
 
@@ -54,20 +39,19 @@ export default function Category({ userEmail }: CategoryProps) {
         <Box sx={{ padding: "16px 16px 0" }}>
             <CategoryForm
                 userEmail={userEmail}
-                onCategoryAddedAction={() => fetchCategories(userEmail).catch(console.error)}
+                onCategoryAddedAction={() => execute()}
             />
             <TableContainer component={Paper} sx={{ backgroundColor: "background.paper", borderRadius: "8px" }}>
                 <Table>
                     <TableHead sx={{ backgroundColor: "background.default" }}>
                         <TableRow>
                             <StyledTableCell>Name</StyledTableCell>
-                            <StyledTableCell>Email</StyledTableCell>
                             <StyledTableCell>Currency</StyledTableCell>
                             <StyledTableCell>Created At</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {categories.map((category: Category) => (
+                        {!loading && data && data.map((category: Category) => (
                             <TableRow
                                 key={category.id}
                                 sx={{
@@ -79,7 +63,6 @@ export default function Category({ userEmail }: CategoryProps) {
                                 }}
                             >
                                 <StyledBodyTableCell>{category.name}</StyledBodyTableCell>
-                                <StyledBodyTableCell>{category.email}</StyledBodyTableCell>
                                 <StyledBodyTableCell>{category.currency}</StyledBodyTableCell>
                                 <StyledBodyTableCell>{format(new Date(category.createdAt), "yyyy-MM-dd")}</StyledBodyTableCell>
                             </TableRow>
