@@ -15,7 +15,7 @@ export class CreateCategoryService {
 
         const user = await getOneByField<User>(TableName.USERS, 'email', request.email);
 
-        if (user) {
+        if (!user) {
             throw new BadRequestExceptionMessage(`User with email ${request.email} not found`);
         }
 

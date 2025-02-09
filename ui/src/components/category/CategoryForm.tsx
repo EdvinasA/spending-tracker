@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { Button, TextField, MenuItem, Select, FormControl, FormLabel, FormHelperText } from "@mui/material";
 import { useState } from "react";
 import { currencies } from "@/shared/currencies/constants";
+import { useApi } from "@/shared/use-api/useApi";
 
 
 interface CategoryFormData {
@@ -11,12 +12,18 @@ interface CategoryFormData {
     currency: string;
 }
 
-interface CategoryFormProps {
-    userEmail: string;
-    onCategoryAddedAction: () => void;
+interface CategoryRequest {
+    name: string;
+    email: string;
+    currency: string;
 }
 
-export default function CategoryForm({ userEmail, onCategoryAddedAction }: CategoryFormProps) {
+interface CategoryFormProps {
+    userEmail: string;
+    refetchData: () => void;
+}
+
+export default function CategoryForm({ userEmail, refetchData }: CategoryFormProps) {
     const {
         register,
         handleSubmit,
@@ -26,30 +33,18 @@ export default function CategoryForm({ userEmail, onCategoryAddedAction }: Categ
 
     const [currency, setCurrency] = useState("EUR");
 
+    const { error, execute } = useApi<CategoryRequest>(`/category`, 'POST');
+
     const onSubmit = async (data: CategoryFormData) => {
-        try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/category`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    name: data.name,
-                    email: userEmail,
-                    currency: currency,
-                }),
-            });
+        await execute({
+            name: data.name,
+            email: userEmail,
+            currency: currency,
+        }, 'POST')
 
-            if (!response.ok) {
-                console.log("Failed to add category");
-                return;
-            }
+        reset();
+        refetchData();
 
-            reset();
-            onCategoryAddedAction();
-        } catch (error) {
-            console.error("Error adding category:", error);
-        }
     };
 
     return (
