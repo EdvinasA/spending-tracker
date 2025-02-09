@@ -39,7 +39,7 @@ export default function Category({ userEmail }: CategoryProps) {
         <Box sx={{ padding: "16px 16px 0" }}>
             <CategoryForm
                 userEmail={userEmail}
-                onCategoryAddedAction={() => execute()}
+                refetchData={() => execute()}
             />
             <TableContainer component={Paper} sx={{ backgroundColor: "background.paper", borderRadius: "8px" }}>
                 <Table>
