@@ -17,3 +17,4 @@ ui/.env
 ui/.env.dev
 ui/.next
 .idea
+server/.env

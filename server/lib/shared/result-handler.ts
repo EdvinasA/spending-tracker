@@ -1,7 +1,7 @@
 import { APIGatewayProxyCallback } from "aws-lambda";
 
-export const handleResult = (callback: APIGatewayProxyCallback, result: any, statusCode: number) => {
-    const responseBody = typeof result === "object" ? result : { message: result };
+export const handleResult = (callback: APIGatewayProxyCallback, data: any, statusCode: number) => {
+    const responseBody = typeof data === "object" ? data : { data };
 
     callback(null, {
         statusCode,

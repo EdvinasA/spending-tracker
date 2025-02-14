@@ -1,29 +1,29 @@
 import { sign, verify } from 'jsonwebtoken';
-import { genSaltSync, hashSync, compareSync } from 'bcryptjs';
+import { genSaltSync, hashSync, compareSync } from 'bcrypt';
 import { UnauthorizedException } from './exception';
 
 export let tokenData: { email: string } | null = null;
 
-export const signToken = async (email: string): Promise<string> => {
-    return sign({ email: email }, 'secret', {
-        expiresIn: 86400 // expires in 24 hours
+export const signToken = async (email: string): Promise<any> => {
+    return sign({ email: email }, 'polaas885', {
+        expiresIn: 864000 // expires in 24 hours
     });
 }
 
-export const verifyToken = async (token?: string | null) => {
+export const verifyToken = async (token?: string | null): Promise<boolean> => {
     try {
-        return await verify(token, 'secret');
+        return await verify(token, 'polaas885');
     } catch (error) {
         console.log(error);
-        return null;
+        return false;
     }
 }
 
-export const encryptData = async (value: string) => {
+export const encryptData = async (value: string): Promise<string> => {
     return hashSync(value, genSaltSync(10, 'b'));
 }
 
-export const compareEncryptedData = async (value: string, hashedValue: string) => {
+export const compareEncryptedData = async (value: string, hashedValue: string): Promise<boolean> => {
     return compareSync(value, hashedValue);
 }
 

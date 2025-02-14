@@ -33,7 +33,7 @@ export const getOneByField = async <T>(tableName: string, fieldName: string, fie
     try {
         const response = await dynamoDBDocumentClient.send(new ScanCommand(input));
 
-        if ((!response.Items || response.Items.length === 0)) {
+        if (!response.Items || response.Items.length === 0) {
             throw new BadRequestExceptionMessage(
                 `No record found in ${tableName} where ${fieldName} = ${fieldValue}`
             );
