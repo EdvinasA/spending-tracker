@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
     Table,
     TableBody,
@@ -7,7 +7,7 @@ import {
     TableHead,
     TableRow,
     Paper,
-    Box,
+    Box, Modal, Button, Dialog,
 } from "@mui/material";
 import { format } from "date-fns";
 import { StyledTableCell, StyledBodyTableCell } from "@/shared/style-components";
@@ -27,6 +27,7 @@ interface CategoryProps {
 }
 
 export default function Category({ userEmail }: CategoryProps) {
+    const [open, setOpen] = useState<boolean>(false);
     const { data, loading, execute } = useApi<Category[]>(`/category/${userEmail}`)
 
     useEffect(() => {
@@ -37,10 +38,21 @@ export default function Category({ userEmail }: CategoryProps) {
 
     return (
         <Box sx={{ padding: "16px 16px 0" }}>
+
+
+            <Button onClick={() => setOpen(true)} variant="contained" color="primary">
+                Add Category
+            </Button>
+
+            <Dialog
+                open={open}
+                onClose={() => setOpen(false)}
+            >
             <CategoryForm
                 userEmail={userEmail}
-                refetchData={() => execute()}
+                refetchDataAction={() => execute()}
             />
+            </Dialog>
             <TableContainer component={Paper} sx={{ backgroundColor: "background.paper", borderRadius: "8px" }}>
                 <Table>
                     <TableHead sx={{ backgroundColor: "background.default" }}>

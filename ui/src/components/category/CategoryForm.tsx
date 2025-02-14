@@ -20,10 +20,10 @@ interface CategoryRequest {
 
 interface CategoryFormProps {
     userEmail: string;
-    refetchData: () => void;
+    refetchDataAction: () => void;
 }
 
-export default function CategoryForm({ userEmail, refetchData }: CategoryFormProps) {
+export default function CategoryForm({ userEmail, refetchDataAction }: CategoryFormProps) {
     const {
         register,
         handleSubmit,
@@ -33,7 +33,7 @@ export default function CategoryForm({ userEmail, refetchData }: CategoryFormPro
 
     const [currency, setCurrency] = useState("EUR");
 
-    const { error, execute } = useApi<CategoryRequest>(`/category`, 'POST');
+    const { execute } = useApi<CategoryRequest>(`/category`, 'POST');
 
     const onSubmit = async (data: CategoryFormData) => {
         await execute({
@@ -43,7 +43,7 @@ export default function CategoryForm({ userEmail, refetchData }: CategoryFormPro
         }, 'POST')
 
         reset();
-        refetchData();
+        refetchDataAction();
 
     };
 
