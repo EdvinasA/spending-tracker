@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import {
     Table,
     TableBody,
@@ -37,10 +37,9 @@ export default function Category({ userEmail }: CategoryProps) {
 
     return (
         <Box sx={{ padding: "16px 16px 0" }}>
-            <CategoryForm
-                userEmail={userEmail}
-                refetchData={() => execute()}
-            />
+            <Box sx={{ display: "flex", justifyContent:"flex-end", marginBottom:"16px" }}>
+            <CategoryForm userEmail={userEmail} refetchDataAction={() => execute()}/>
+            </Box>
             <TableContainer component={Paper} sx={{ backgroundColor: "background.paper", borderRadius: "8px" }}>
                 <Table>
                     <TableHead sx={{ backgroundColor: "background.default" }}>
