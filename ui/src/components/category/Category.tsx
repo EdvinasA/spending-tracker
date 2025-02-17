@@ -31,9 +31,12 @@ export default function Category({ userEmail }: CategoryProps) {
 
     useEffect(() => {
         if (userEmail) {
-            execute()
+            execute().then(() => {
+                console.log("Fetched data:", data);
+            });
         }
     }, [userEmail]);
+
 
     return (
         <Box sx={{ padding: "16px 16px 0" }}>
@@ -50,7 +53,7 @@ export default function Category({ userEmail }: CategoryProps) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {!loading && data && data.map((category: Category) => (
+                        {!loading && Array.isArray(data) && data.map((category: Category) => (
                             <TableRow
                                 key={category.id}
                                 sx={{
@@ -67,6 +70,7 @@ export default function Category({ userEmail }: CategoryProps) {
                             </TableRow>
                         ))}
                     </TableBody>
+
                 </Table>
             </TableContainer>
         </Box>

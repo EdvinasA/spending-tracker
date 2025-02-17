@@ -46,6 +46,13 @@ functions:
           method: GET
           path: /category/{email}
           payloadFormatVersion: 2.0
+  deleteCategory:
+    handler: lib/category/delete-category/controller.handler
+    events:
+      - httpApi:
+          method: DELETE
+          path: /category/{categoryId}
+          payloadFormatVersion: 2.0
   saveBalance:
     handler: lib/balance/create-balance/controller.handler
     events:

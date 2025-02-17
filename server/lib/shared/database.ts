@@ -91,8 +91,8 @@ export const deleteItem = async (tableName: string, itemId: string, sortKey: str
 
     const input: DeleteCommandInput = {
         Key: {
-            id: { itemId },
-            email: { sortKey }
+            id: itemId,
+            email: sortKey
         },
         TableName: tableName,
     };
