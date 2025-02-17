@@ -1,5 +1,5 @@
 import { sign, verify } from 'jsonwebtoken';
-import { genSaltSync, hashSync, compareSync } from 'bcrypt';
+import { genSaltSync, hashSync, compareSync } from 'bcryptjs';
 import { UnauthorizedException } from './exception';
 
 export let tokenData: { email: string } | null = null;
