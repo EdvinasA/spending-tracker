@@ -8,6 +8,7 @@ export async function handler(event: APIGatewayEvent, _: Context, callback: APIG
     const requestBody = JSON.parse(event.body || '{}');
 
     const service = new LoginService();
+
     const token = await service.getSignedToken(requestBody as unknown as LoginRequest);
 
     return handleResult(callback, { token }, 200);
