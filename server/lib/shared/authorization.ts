@@ -4,26 +4,28 @@ import { UnauthorizedException } from './exception';
 
 export let tokenData: { email: string } | null = null;
 
-export const signToken = async (email: string): Promise<string> => {
-    return sign({ email: email }, 'secret', {
-        expiresIn: 86400 // expires in 24 hours
+const JWT_SECRET_KEY = process.env.TOKEN_SECRET_KEY;
+
+export const signToken = async (email: string): Promise<any> => {
+    return sign({ email: email }, JWT_SECRET_KEY, {
+        expiresIn: 864000 // expires in 24 hours
     });
 }
 
-export const verifyToken = async (token?: string | null) => {
+export const verifyToken = async (token?: string | null): Promise<boolean> => {
     try {
-        return await verify(token, 'secret');
+        return await verify(token, JWT_SECRET_KEY);
     } catch (error) {
         console.log(error);
-        return null;
+        return false;
     }
 }
 
-export const encryptData = async (value: string) => {
+export const encryptData = async (value: string): Promise<string> => {
     return hashSync(value, genSaltSync(10, 'b'));
 }
 
-export const compareEncryptedData = async (value: string, hashedValue: string) => {
+export const compareEncryptedData = async (value: string, hashedValue: string): Promise<boolean> => {
     return compareSync(value, hashedValue);
 }
 

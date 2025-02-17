@@ -3,6 +3,7 @@ import cors from 'cors';
 import { APIGatewayEvent, APIGatewayProxyCallback, Context } from 'aws-lambda';
 import { handler as getUser } from './lib/user/get-user/controller';
 import { handler as postUser } from './lib/user/create-user/controller';
+import { handler as loginUser } from './lib/user/login/controller';
 import { handler as createCategory } from './lib/category/create-category/controller';
 import { handler as getCategory } from "./lib/category/get-category/controller";
 import { handler as createBalance } from "./lib/balance/create-balance/controller";
@@ -55,7 +56,8 @@ const handleLambdaRoute = (lambdaHandler: Function) => async (req: Request, res:
 };
 
 app.get('/user/:email', handleLambdaRoute(getUser));
-app.post('/user', handleLambdaRoute(postUser));
+app.post('/register', handleLambdaRoute(postUser));
+app.post('/login', handleLambdaRoute(loginUser));
 app.post('/category', handleLambdaRoute(createCategory));
 app.get('/category/:email', handleLambdaRoute(getCategory));
 app.post('/balance', handleLambdaRoute(createBalance));
