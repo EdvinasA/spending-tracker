@@ -10,6 +10,7 @@ provider:
     ENVIRONMENT: dev
     AWS_ACCESS_KEY_ID_VALUE: ${env:AWS_ACCESS_KEY_ID}
     AWS_SECRET_ACCESS_KEY_VALUE: ${env:AWS_SECRET_ACCESS_KEY}
+    TOKEN_SECRET_KEY: ${env:TOKEN_SECRET_KEY}
 
 package:
   excludeDevDependencies: false
