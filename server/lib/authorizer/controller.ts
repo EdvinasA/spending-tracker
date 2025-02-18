@@ -8,11 +8,13 @@ export async function handler(event: APIGatewayEvent, _: Context, callback: APIG
     if (!token) return handleResult(callback, { message: 'Access Denied' }, 401);
 
     const decoded = await verifyToken(token) as unknown as { email: string };
+    console.log(token);
     const user = await getOneByField<User>(TableName.USERS, 'email', decoded.email);
+    console.log(user);
 
     event.requestContext.authorizer = { user };
 
-    return handleResult(callback, { token }, 200);
+    return handleResult(callback, 'Validated', 200);
   } catch (error) {
     return handleError(callback, error);
   }
