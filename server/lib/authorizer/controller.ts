@@ -6,7 +6,7 @@ export async function handler(event: APIGatewayEvent, _: Context, callback: APIG
   try {
 
     console.log(event);
-    console.log(event.headers?.Authorization);
+    // console.log(event.headers?.Authorization);
     // const token = event.headers?.authorization?.split(' ')[1];
     // if (!token) return handleResult(callback, { message: 'Access Denied' }, 401);
 
