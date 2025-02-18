@@ -4,6 +4,8 @@ import { User } from 'user/model';
 
 export async function handler(event: APIGatewayEvent, _: Context, callback: APIGatewayProxyCallback) {
   try {
+
+    console.log(event);
     const token = event.headers?.Authorization?.split(' ')[1];
     if (!token) return handleResult(callback, { message: 'Access Denied' }, 401);
 
