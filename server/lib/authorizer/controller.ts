@@ -16,7 +16,7 @@ export async function handler(event: APIGatewayEvent, _: Context, callback: APIG
 
     // event.requestContext.authorizer = { user };
 
-    return handleResult(callback, 'Validated', 200);
+    return handleResult(callback, { message: 'Validated' }, 200);
   } catch (error) {
     return handleError(callback, error);
   }
