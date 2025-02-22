@@ -1,7 +1,7 @@
 import { APIGatewayAuthorizerCallback, APIGatewayRequestAuthorizerEventV2, Context } from 'aws-lambda';
 import { generatePolicy } from 'shared';
 
-export async function handler(event: APIGatewayRequestAuthorizerEventV2, _: Context, callback: APIGatewayAuthorizerCallback) {
+export async function handler(event: APIGatewayRequestAuthorizerEventV2, _: Context) {
   try {
 
     console.log(event);
@@ -16,7 +16,7 @@ export async function handler(event: APIGatewayRequestAuthorizerEventV2, _: Cont
 
     // event.requestContext.authorizer = { user };
 
-    callback(null, generatePolicy(event.requestContext.accountId, 'Allow', event.routeArn));
+    return { isAuthorized: true }
   } catch (error) {
     throw new Error("Unauthorized")
   }
