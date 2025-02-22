@@ -17,7 +17,7 @@ export async function handler(event: APIGatewayRequestAuthorizerEventV2, _: Cont
 
     // event.requestContext.authorizer = { user };
 
-    callback(null, generatePolicy("user", 'Allow', event.routeArn));
+    callback(null, generatePolicy(event.requestContext.accountId, 'Allow', event.routeArn));
   } catch (error) {
     throw new Error("Unauthorized")
   }
