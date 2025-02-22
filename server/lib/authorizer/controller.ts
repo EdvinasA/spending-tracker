@@ -1,8 +1,8 @@
-import { Context, APIGatewayProxyCallback, APIGatewayRequestAuthorizerEventV2 } from 'aws-lambda';
+import { APIGatewayRequestAuthorizerEventV2 } from 'aws-lambda';
 import { generatePolicy } from 'shared';
 import { User } from 'user/model';
 
-export async function handler(event: APIGatewayRequestAuthorizerEventV2, _: Context, callback: APIGatewayProxyCallback) {
+export async function handler(event: APIGatewayRequestAuthorizerEventV2) {
   try {
 
     console.log(event);
