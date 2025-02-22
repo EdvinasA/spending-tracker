@@ -70,7 +70,7 @@ export const generatePolicy = (
           {
             Action: "execute-api:Invoke",
             Effect: effect,
-            Resource: resource,
+            Resource: "arn:aws:execute-api:eu-west-1:875563562468:9brgkw2op5/$default/POST/login",
           },
         ],
       },
