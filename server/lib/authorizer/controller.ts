@@ -1,8 +1,8 @@
-import { Context, APIGatewayProxyCallback, APIGatewayEvent } from 'aws-lambda';
-import { handleResult, handleError, verifyToken, getOneByField, TableName } from 'shared';
+import { Context, APIGatewayProxyCallback, APIGatewayRequestAuthorizerEventV2 } from 'aws-lambda';
+import { generatePolicy } from 'shared';
 import { User } from 'user/model';
 
-export async function handler(event: APIGatewayEvent, _: Context, callback: APIGatewayProxyCallback) {
+export async function handler(event: APIGatewayRequestAuthorizerEventV2, _: Context, callback: APIGatewayProxyCallback) {
   try {
 
     console.log(event);
@@ -17,8 +17,8 @@ export async function handler(event: APIGatewayEvent, _: Context, callback: APIG
 
     // event.requestContext.authorizer = { user };
 
-    return handleResult(callback, { message: 'Validated' }, 200);
+    return generatePolicy("user", 'Allow', event.routeArn)
   } catch (error) {
-    return handleError(callback, error);
+    throw new Error("Unauthorized")
   }
 }

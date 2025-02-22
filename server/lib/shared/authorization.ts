@@ -1,6 +1,7 @@
 import { sign, verify } from 'jsonwebtoken';
 import { genSaltSync, hashSync, compareSync } from 'bcryptjs';
 import { UnauthorizedException } from './exception';
+import { APIGatewayAuthorizerResult } from 'aws-lambda';
 
 export let tokenData: { email: string } | null = null;
 
@@ -55,3 +56,23 @@ export function Authorization() {
         return descriptor;
     };
 }
+
+export const generatePolicy = (
+    principalId: string,
+    effect: "Allow" | "Deny",
+    resource: string,
+  ): APIGatewayAuthorizerResult => {
+    return {
+      principalId,
+      policyDocument: {
+        Version: "2012-10-17",
+        Statement: [
+          {
+            Action: "execute-api:Invoke",
+            Effect: effect,
+            Resource: resource,
+          },
+        ],
+      },
+    };
+  };
