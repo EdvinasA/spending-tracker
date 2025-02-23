@@ -56,23 +56,3 @@ export function Authorization() {
         return descriptor;
     };
 }
-
-export const generatePolicy = (
-    principalId: string,
-    effect: "Allow" | "Deny",
-    resource: string,
-  ): APIGatewayAuthorizerResult => {
-    return {
-      principalId,
-      policyDocument: {
-        Version: "2012-10-17",
-        Statement: [
-          {
-            Action: "execute-api:Invoke",
-            Effect: effect,
-            Resource: "arn:aws:execute-api:eu-west-1:875563562468:9brgkw2op5/$default/POST/login",
-          },
-        ],
-      },
-    };
-  };

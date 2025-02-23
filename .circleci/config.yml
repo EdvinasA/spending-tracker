@@ -214,9 +214,9 @@ workflows:
           filters:
             branches:
               only:
-                - task/spending-tracker-48-update-login
+                - develop
       - deploy-nextjs:
           filters:
             branches:
               only:
-                - task/spending-tracker-48-update-login
+                - develop
