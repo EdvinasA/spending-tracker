@@ -10,10 +10,9 @@ export async function handler(event: APIGatewayEvent, _: Context, callback: APIG
     const service = new LoginService();
 
     console.log(event);
+    console.log(_);
 
     const token = await service.getSignedToken(requestBody as unknown as LoginRequest);
-
-    console.log(token);
 
     return handleResult(callback, { token }, 200);
   } catch (error) {
