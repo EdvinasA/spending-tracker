@@ -8,7 +8,7 @@ const JWT_SECRET_KEY = process.env.TOKEN_SECRET_KEY;
 
 export const signToken = async (email: string): Promise<any> => {
     return sign({ email: email }, JWT_SECRET_KEY, {
-        expiresIn: 864000 // expires in 24 hours
+        expiresIn: 8640000 // expires in 24 hours
     });
 }
 
@@ -16,7 +16,6 @@ export const verifyToken = async (token?: string | null): Promise<boolean> => {
     try {
         return await verify(token, JWT_SECRET_KEY);
     } catch (error) {
-        console.log(error);
         return false;
     }
 }
