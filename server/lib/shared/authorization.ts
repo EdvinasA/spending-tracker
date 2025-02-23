@@ -1,25 +1,21 @@
 import { sign, verify } from 'jsonwebtoken';
 import { genSaltSync, hashSync, compareSync } from 'bcryptjs';
 import { UnauthorizedException } from './exception';
-import { APIGatewayAuthorizerResult } from 'aws-lambda';
 
 export let tokenData: { email: string } | null = null;
 
 const JWT_SECRET_KEY = process.env.TOKEN_SECRET_KEY;
 
 export const signToken = async (email: string): Promise<any> => {
-    console.log(JWT_SECRET_KEY);
     return sign({ email: email }, JWT_SECRET_KEY, {
-        expiresIn: 864000 // expires in 24 hours
+        expiresIn: 8640000 // expires in 24 hours
     });
 }
 
 export const verifyToken = async (token?: string | null): Promise<boolean> => {
     try {
-        console.log(JWT_SECRET_KEY);
         return await verify(token, JWT_SECRET_KEY);
     } catch (error) {
-        console.log(error);
         return false;
     }
 }
