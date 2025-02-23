@@ -14,7 +14,7 @@ export async function handler(event: APIGatewayRequestAuthorizerEventV2, _: Cont
 
     event.requestContext.domainName = user.email;
 
-    return { isAuthorized: true }
+    return { isAuthorized: user ? true : false }
   } catch (error) {
     throw new Error("Unauthorized")
   }
