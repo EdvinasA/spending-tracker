@@ -8,7 +8,9 @@ import {
     TableRow,
     Paper,
     Box,
+    IconButton,
 } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { format } from "date-fns";
 import { StyledTableCell, StyledBodyTableCell } from "@/shared/style-components";
 import CategoryForm from "@/components/category/CategoryForm";
@@ -27,21 +29,33 @@ interface CategoryProps {
 }
 
 export default function Category({ userEmail }: CategoryProps) {
-    const { data, loading, execute } = useApi<Category[]>(`/category/${userEmail}`)
+    const { data, loading, execute } = useApi<Category[]>(`/category/${userEmail}`);
 
     useEffect(() => {
         if (userEmail) {
-            execute().then(() => {
-                console.log("Fetched data:", data);
-            });
+            execute();
         }
     }, [userEmail]);
 
 
+    const { execute: deleteExecute } = useApi<Category[]>(`/category`, "DELETE");
+
+    const deleteCategory = async (categoryId: string) => {
+        try {
+            const deleteUrl = `/category/${categoryId}?email=${userEmail}`;
+
+            await deleteExecute(undefined, "DELETE", deleteUrl);
+            await execute();
+
+        } catch (error) {
+            console.error("Error deleting category", error);
+        }
+    };
+
     return (
         <Box sx={{ padding: "16px 16px 0" }}>
-            <Box sx={{ display: "flex", justifyContent:"flex-end", marginBottom:"16px" }}>
-            <CategoryForm userEmail={userEmail} refetchDataAction={() => execute()}/>
+            <Box sx={{ display: "flex", justifyContent: "flex-end", marginBottom: "16px" }}>
+                <CategoryForm userEmail={userEmail} refetchDataAction={() => execute()} />
             </Box>
             <TableContainer component={Paper} sx={{ backgroundColor: "background.paper", borderRadius: "8px" }}>
                 <Table>
@@ -50,6 +64,7 @@ export default function Category({ userEmail }: CategoryProps) {
                             <StyledTableCell>Name</StyledTableCell>
                             <StyledTableCell>Currency</StyledTableCell>
                             <StyledTableCell>Created At</StyledTableCell>
+                            <StyledTableCell>Delete</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -67,6 +82,11 @@ export default function Category({ userEmail }: CategoryProps) {
                                 <StyledBodyTableCell>{category.name}</StyledBodyTableCell>
                                 <StyledBodyTableCell>{category.currency}</StyledBodyTableCell>
                                 <StyledBodyTableCell>{format(new Date(category.createdAt), "yyyy-MM-dd")}</StyledBodyTableCell>
+                                <StyledBodyTableCell>
+                                    <IconButton onClick={() => deleteCategory(category.id)} color="error">
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </StyledBodyTableCell>
                             </TableRow>
                         ))}
                     </TableBody>
