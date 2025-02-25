@@ -53,7 +53,7 @@ export default function Category({ userEmail }: CategoryProps) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {!loading && Array.isArray(data) && data.map((category: Category) => (
+                        {!loading && data && data.map((category: Category) => (
                             <TableRow
                                 key={category.id}
                                 sx={{
@@ -70,7 +70,6 @@ export default function Category({ userEmail }: CategoryProps) {
                             </TableRow>
                         ))}
                     </TableBody>
-
                 </Table>
             </TableContainer>
         </Box>

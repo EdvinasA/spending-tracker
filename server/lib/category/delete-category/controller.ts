@@ -6,8 +6,8 @@ import { DeleteCategoryRequest } from "../model";
 
 export const handler = async (event: APIGatewayEvent, _: Context, callback: APIGatewayProxyCallback) => {
     try {
-        const categoryId = event.pathParameters?.categoryId;
-        const email = event.queryStringParameters?.email;
+        const categoryId = event.pathParameters?.categoryId ?? "";
+        const email = event.queryStringParameters?.email ?? "";
 
         if (!categoryId || !email) {
             return handleError(callback, new Error("Missing categoryId or email"));
