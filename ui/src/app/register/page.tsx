@@ -4,8 +4,44 @@ import { Button, TextField, Typography } from "@mui/material";
 import { FormBox, ImageBox, RegisterContainer, MainBox } from "@/components/register";
 import CustomLink from "@/components/register/CustomLink";
 import PasswordField from "@/components/common/PasswordField";
+import { useApi } from "@/shared/use-api/useApi";
+import { useState } from "react";
+import { redirect } from "next/navigation";
+
+interface RegisterForm {
+    email: string;
+    password: string;
+    confirmPassword: string;
+}
 
 export default function RegisterPage() {
+    const [registerRequest, setReqisterRequest] = useState<RegisterForm>({
+        email: '',
+        password: '',
+        confirmPassword: '',
+    });
+    const [error, setError] = useState<string | null>(null);
+
+    const { statusCode, execute } = useApi('/register', 'POST');
+
+    const onSubmit = async () => {
+        setError(null);
+        if (registerRequest.password !== registerRequest.confirmPassword) {
+            setError('Passwords do not match');
+            return;
+        }
+        await execute({ email: registerRequest.email, password: registerRequest.password });
+        if (statusCode === 200) {
+            redirect('/login')
+        }
+    };
+
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setReqisterRequest({
+            ...registerRequest,
+            [e.target.name]: e.target.value
+        });
+    };
     return (
         <MainBox>
             <RegisterContainer>
@@ -17,12 +53,13 @@ export default function RegisterPage() {
                     <Typography variant="body2">
                         Already have an account? <CustomLink href="/login" text="Log in" />
                     </Typography>
-                    <TextField label="Email" type="email" variant="outlined" size="small" fullWidth />
-                    <TextField label="Username" variant="outlined" size="small" fullWidth />
-                    <PasswordField label="Password" variant="outlined" size="small" fullWidth />
-                    <PasswordField label="Confirm Password" variant="outlined" size="small" fullWidth />
+                    <TextField onChange={onChange} name='email' label="Email" type="email" variant="outlined" size="small" fullWidth />
+                    <PasswordField onChange={onChange} name='password' label="Password" variant="outlined" size="small" fullWidth />
+                    <PasswordField onChange={onChange} name='confirmPassword' label="Confirm Password" variant="outlined" size="small" fullWidth />
+                    {statusCode >= 400 && statusCode < 409 && <Typography variant="body2" color="error">User with this email already exists</Typography>}
+                    {error && <Typography variant="body2" color="error">{error}</Typography>}
 
-                    <Button variant="contained" color="primary" fullWidth>
+                    <Button onClick={onSubmit} variant="contained" color="primary" fullWidth>
                         Sign Up
                     </Button>
 

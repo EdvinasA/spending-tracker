@@ -5,6 +5,7 @@ interface UseApiResult<T> {
   loading: boolean;
   error: string | null;
   execute: (body?: any, method?: string) => Promise<void>;
+  statusCode: number;
 }
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_ENDPOINT;
@@ -15,6 +16,7 @@ export function useApi<T>(
   defaultHeaders: HeadersInit = { "Content-Type": "application/json" }
 ): UseApiResult<T> {
   const [data, setData] = useState<T | null>(null);
+  const [statusCode, setStatusCode] = useState<number>(0)
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -30,10 +32,12 @@ export function useApi<T>(
         });
 
         if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+            setStatusCode(response.status);
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
         const result = await response.json();
+        setStatusCode(response.status);
         setData(result);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Something went wrong");
@@ -44,5 +48,5 @@ export function useApi<T>(
     [url, defaultMethod, defaultHeaders]
   );
 
-  return { data, loading, error, execute };
+  return { data, loading, error, execute, statusCode };
 }
