@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import { useState, useCallback } from "react";
 
 interface UseApiResult<T> {
@@ -13,7 +14,8 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_ENDPOINT;
 export function useApi<T>(
   url: string,
   defaultMethod: string = "GET",
-  defaultHeaders: HeadersInit = { "Content-Type": "application/json" }
+  defaultHeaders: HeadersInit = { "Content-Type": "application/json" },
+  token?: string
 ): UseApiResult<T> {
   const [data, setData] = useState<T | null>(null);
   const [statusCode, setStatusCode] = useState<number>(0)
@@ -27,13 +29,16 @@ export function useApi<T>(
       try {
         const response = await fetch(`${API_BASE_URL}${url}`, {
           method,
-          headers: defaultHeaders,
+          headers: {
+            ...defaultHeaders,
+            ...(token ? { Authorization: `Bearer ${token}` } : {})
+          },
           body: body ? JSON.stringify(body) : undefined,
         });
 
         if (!response.ok) {
-            setStatusCode(response.status);
-            throw new Error(`HTTP error! Status: ${response.status}`);
+          setStatusCode(response.status);
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
         const result = await response.json();

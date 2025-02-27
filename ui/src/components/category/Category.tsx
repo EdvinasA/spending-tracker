@@ -24,10 +24,11 @@ export interface Category {
 
 interface CategoryProps {
     userEmail: string;
+    token: string;
 }
 
-export default function Category({ userEmail }: CategoryProps) {
-    const { data, loading, execute } = useApi<Category[]>(`/category/${userEmail}`)
+export default function Category({ userEmail, token }: CategoryProps) {
+    const { data, loading, execute } = useApi<Category[]>(`/category/${userEmail}`, token)
 
     useEffect(() => {
         if (userEmail) {
