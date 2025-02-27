@@ -27,13 +27,15 @@ export interface Category {
 
 interface CategoryProps {
     userEmail: string;
+    token: string;
 }
 
-export default function Category({ userEmail }: CategoryProps) {
-    const { data, loading, execute } = useApi<Category[]>(`/category/${userEmail}`);
+export default function Category({ userEmail, token }: CategoryProps) {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState("");
     const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">("success");
+
+    const { data, loading, execute } = useApi<Category[]>(`/category/${userEmail}`, token)
 
     useEffect(() => {
         if (userEmail) {
