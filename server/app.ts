@@ -8,6 +8,7 @@ import { handler as createCategory } from './lib/category/create-category/contro
 import { handler as getCategory } from "./lib/category/get-category/controller";
 import { handler as createBalance } from "./lib/balance/create-balance/controller";
 import { handler as getBalance } from "./lib/balance/get-balance/controller";
+import { handler as deleteCategory } from "./lib/category/delete-category/controller";
 
 const app = express();
 
@@ -62,6 +63,7 @@ app.post('/category', handleLambdaRoute(createCategory));
 app.get('/category/:email', handleLambdaRoute(getCategory));
 app.post('/balance', handleLambdaRoute(createBalance));
 app.get('/balance/:email', handleLambdaRoute(getBalance));
+app.delete('/category/:categoryId', handleLambdaRoute(deleteCategory));
 
 // Start the app locally for development
 if (process.env.NODE_ENV !== 'production') {

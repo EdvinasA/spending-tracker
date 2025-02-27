@@ -24,12 +24,7 @@ export default function LoginComponent() {
     const onSubmit = async () => {
         await execute(loginForm);
         if (data && statusCode === 200) {
-            Cookies.set('token', data.token, {
-                httpOnly: true,
-                secure: true,
-                sameSite: "strict",
-                maxAge: 6000 * 600 * 24 * 30,
-            })
+            Cookies.set('token', data.token);
             redirect('/')
         }
     };

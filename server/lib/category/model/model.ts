@@ -6,6 +6,11 @@ export const CreateCategorySchema = Joi.object({
     currency: Joi.string().required()
 });
 
+export const DeleteCategorySchema = Joi.object({
+    categoryId: Joi.string().uuid().required(),
+    email: Joi.string().email().required()
+});
+
 export interface CreateCategory {
     name: string;
     email: string;
@@ -18,4 +23,9 @@ export interface Category {
     email: string;
     currency: string;
     createdAt: string;
+}
+
+export interface DeleteCategoryRequest {
+    categoryId: string;
+    email: string;
 }
