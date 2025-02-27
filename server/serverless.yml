@@ -27,70 +27,42 @@ functions:
       - httpApi:
           method: GET
           path: /user/{email}
-    authorizer:
-            name: authorizer
-            type: REQUEST
-            identitySource: method.request.header.Authorization
   saveUser:
     handler: lib/user/create-user/controller.handler
     events:
       - httpApi:
           method: POST
           path: /register
-    authorizer:
-            name: authorizer
-            type: REQUEST
-            identitySource: method.request.header.Authorization
   loginUser:
     handler: lib/user/login/controller.handler
     events:
       - httpApi:
           method: POST
           path: /login
-    authorizer:
-            name: authorizer
-            type: REQUEST
-            identitySource: method.request.header.Authorization
   saveCategory:
     handler: lib/category/create-category/controller.handler
     events:
       - httpApi:
           method: POST
           path: /category
-    authorizer:
-            name: authorizer
-            type: REQUEST
-            identitySource: method.request.header.Authorization
   getCategory:
     handler: lib/category/get-category/controller.handler
     events:
       - httpApi:
           method: GET
           path: /category/{email}
-    authorizer:
-            name: authorizer
-            type: REQUEST
-            identitySource: method.request.header.Authorization
   saveBalance:
     handler: lib/balance/create-balance/controller.handler
     events:
       - httpApi:
           method: POST
           path: /balance
-    authorizer:
-            name: authorizer
-            type: REQUEST
-            identitySource: method.request.header.Authorization
   getBalance:
     handler: lib/balance/get-balance/controller.handler
     events:
       - httpApi:
           method: GET
           path: /balance/{email}
-    authorizer:
-            name: authorizer
-            type: REQUEST
-            identitySource: method.request.header.Authorization
 
 resources:
   Resources:
