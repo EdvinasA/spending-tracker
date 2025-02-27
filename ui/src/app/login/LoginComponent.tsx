@@ -7,17 +7,14 @@ import PasswordField from "@/components/common/PasswordField";
 import { useState } from "react";
 import { useApi } from "@/shared/use-api/useApi";
 import { redirect } from "next/navigation";
+import Cookies from 'js-cookie'
 
 interface LoginForm {
     email: string;
     password: string;
 }
 
-interface LoginResponse {
-    saveToken: (token: string) => void;
-}
-
-export default function LoginComponent({ saveToken }: LoginResponse) {
+export default function LoginComponent() {
     const [loginForm, setLoginForm] = useState<LoginForm>({
         email: '',
         password: '',
@@ -27,7 +24,12 @@ export default function LoginComponent({ saveToken }: LoginResponse) {
     const onSubmit = async () => {
         await execute(loginForm);
         if (data && statusCode === 200) {
-            saveToken(data.token);
+            Cookies.set('token', data.token, {
+                httpOnly: true,
+                secure: true,
+                sameSite: "strict",
+                maxAge: 6000 * 600 * 24 * 30,
+            })
             redirect('/')
         }
     };
@@ -52,7 +54,6 @@ export default function LoginComponent({ saveToken }: LoginResponse) {
                     <Button onClick={onSubmit} variant="contained" color="primary" fullWidth>
                         LOGIN
                     </Button>
-
 
                     {/*<Divider sx={{ width: "100%", my: 2 }}>Or log in with</Divider>*/}
                     {/*<Button*/}

@@ -1,4 +1,3 @@
-import { cookies } from "next/headers";
 import { useState, useCallback } from "react";
 
 interface UseApiResult<T> {
