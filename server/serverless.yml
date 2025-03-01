@@ -26,7 +26,7 @@ functions:
     events:
       - httpApi:
           method: GET
-          path: /user/{email}
+          path: /user
   saveUser:
     handler: lib/user/create-user/controller.handler
     events:
@@ -62,7 +62,7 @@ functions:
     events:
       - httpApi:
           method: GET
-          path: /balance/{email}
+          path: /balance
 
 resources:
   Resources:

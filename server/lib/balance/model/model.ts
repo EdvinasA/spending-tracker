@@ -2,10 +2,11 @@ import Joi from 'joi';
 
 export interface Balance {
     id: string;
+    userId: string;
     category: string;
     amount: number;
-    note?: string | null;
     createdAt: string;
+    note?: string | null;
 }
 
 export const CreateBalanceRequestSchema = Joi.object({

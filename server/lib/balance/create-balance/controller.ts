@@ -6,10 +6,11 @@ import { CreateBalanceRequest } from "balance/model";
 export const handler = async (event: APIGatewayEvent, _: Context, callback: APIGatewayProxyCallback) => {
     try {
         const requestBody = JSON.parse(event.body || '{}');
+        const token = event.headers?.authorization?.split(' ')[1];
 
         const service = new CreateBalanceService();
 
-        await service.createBalance(requestBody as CreateBalanceRequest);
+        await service.createBalance(requestBody as CreateBalanceRequest, token!);
 
         return handleResult(callback, { message: `Balance entry saved successfully` }, 200);
     } catch (e) {

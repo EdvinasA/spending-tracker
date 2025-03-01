@@ -4,11 +4,11 @@ import { GetBalanceService } from "./get-balance-service";
 
 export const handler = async (event: APIGatewayEvent, _: Context, callback: APIGatewayProxyCallback) => {
     try {
-        const email = event.pathParameters?.email;
+        const token = event.headers?.authorization?.split(' ')[1];
 
         const service = new GetBalanceService();
 
-        const balance = await service.getBalance(email);
+        const balance = await service.getBalance(token!);
 
         return handleResult(callback, balance, 200);
     } catch (e) {

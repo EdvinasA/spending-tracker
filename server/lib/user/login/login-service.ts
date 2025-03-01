@@ -14,7 +14,7 @@ export class LoginService {
             throw new UnauthorizedException("Invalid password provided");
         }
 
-        return await signToken(request.email);
+        return await signToken(user.id, user.email);
     };
 
 }
