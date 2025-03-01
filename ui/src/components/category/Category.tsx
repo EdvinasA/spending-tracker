@@ -27,14 +27,8 @@ interface CategoryProps {
     token: string;
 }
 
-export default function Category({ userEmail, token }: CategoryProps) {
-    const { data, loading, execute } = useApi<Category[]>(`/category/${userEmail}`, token)
-
-    useEffect(() => {
-        if (userEmail) {
-            execute()
-        }
-    }, [userEmail]);
+export default function Category({ userEmail }: CategoryProps) {
+    const { data, loading, execute } = useApi<Category[]>(`/category/${userEmail}`)
 
     return (
         <Box sx={{ padding: "16px 16px 0" }}>

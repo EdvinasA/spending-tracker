@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import Cookies from 'js-cookie'
 
 interface UseApiResult<T> {
   data: T | null;
@@ -13,8 +14,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_ENDPOINT;
 export function useApi<T>(
   url: string,
   defaultMethod: string = "GET",
-  defaultHeaders: HeadersInit = { "Content-Type": "application/json" },
-  token?: string
+  defaultHeaders: HeadersInit = { "Content-Type": "application/json" }
 ): UseApiResult<T> {
   const [data, setData] = useState<T | null>(null);
   const [statusCode, setStatusCode] = useState<number>(0)
@@ -26,6 +26,7 @@ export function useApi<T>(
       setLoading(true);
       setError(null);
       try {
+        const token = Cookies.get('token');
         const response = await fetch(`${API_BASE_URL}${url}`, {
           method,
           headers: {
