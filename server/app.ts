@@ -13,8 +13,12 @@ import { handler as deleteCategory } from "./lib/category/delete-category/contro
 const app = express();
 
 app.use(express.json());
-app.use(cors());
-
+app.use(cors({
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+}));
 const expressToLambdaEvent = (req: Request): APIGatewayEvent => {
     return {
         resource: req.path,

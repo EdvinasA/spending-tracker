@@ -4,7 +4,7 @@ import { Button, TextField, Typography } from "@mui/material";
 import { FormBox, ImageBox, LoginContainer, MainBox } from "@/components/login/LoginComponents";
 import CustomLink from "@/components/login/CustomLink";
 import PasswordField from "@/components/common/PasswordField";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useApi } from "@/shared/use-api/useApi";
 import { redirect } from "next/navigation";
 import Cookies from 'js-cookie'
@@ -19,14 +19,17 @@ export default function LoginComponent() {
         email: '',
         password: '',
     });
-    const { data, statusCode, execute } = useApi<{ token: string }>('/login', 'POST');
+    const { data, loading, statusCode, execute } = useApi<{ token: string }>('/login', 'POST');
 
-    const onSubmit = async () => {
-        await execute(loginForm);
-        if (data && statusCode === 200) {
+    useEffect(() => {
+        if (loading && data && statusCode === 200) {
             Cookies.set('token', data.token);
             redirect('/')
         }
+    }, [data, loading, statusCode]);
+
+    const onSubmit = async () => {
+        await execute(loginForm);
     };
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {

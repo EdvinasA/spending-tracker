@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
     Table,
     TableBody,
@@ -35,13 +35,7 @@ export default function Category({ userEmail, token }: CategoryProps) {
     const [snackbarMessage, setSnackbarMessage] = useState("");
     const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">("success");
 
-    const { data, loading, execute } = useApi<Category[]>(`/category/${userEmail}`, token)
-
-    useEffect(() => {
-        if (userEmail) {
-            execute();
-        }
-    }, [userEmail]);
+    const { data, loading, execute } = useApi<Category[]>(`/category/${userEmail}`)
 
     const handleSnackbarOpen = (message: string, severity: "success" | "error") => {
         setSnackbarMessage(message);

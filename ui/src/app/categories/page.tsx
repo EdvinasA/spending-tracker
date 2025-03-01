@@ -6,5 +6,7 @@ export default async function Page() {
     const userEmail = cookieStore.get("email")?.value || "";
     const token = cookieStore.get("token")?.value || "";
 
+    console.log(token);
+
     return <Category token={token} userEmail={userEmail} />;
 }
