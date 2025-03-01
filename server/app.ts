@@ -19,6 +19,7 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
 }));
+
 const expressToLambdaEvent = (req: Request): APIGatewayEvent => {
     return {
         resource: req.path,
@@ -60,13 +61,13 @@ const handleLambdaRoute = (lambdaHandler: Function) => async (req: Request, res:
     }
 };
 
-app.get('/user/:email', handleLambdaRoute(getUser));
+app.get('/user', handleLambdaRoute(getUser));
 app.post('/register', handleLambdaRoute(postUser));
 app.post('/login', handleLambdaRoute(loginUser));
 app.post('/category', handleLambdaRoute(createCategory));
 app.get('/category/:email', handleLambdaRoute(getCategory));
 app.post('/balance', handleLambdaRoute(createBalance));
-app.get('/balance/:email', handleLambdaRoute(getBalance));
+app.get('/balance', handleLambdaRoute(getBalance));
 app.delete('/category/:categoryId', handleLambdaRoute(deleteCategory));
 
 // Start the app locally for development

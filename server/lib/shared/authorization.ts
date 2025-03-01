@@ -1,22 +1,23 @@
 import { sign, verify } from 'jsonwebtoken';
 import { genSaltSync, hashSync, compareSync } from 'bcryptjs';
 import { UnauthorizedException } from './exception';
+import { TokenData } from './models';
 
 export let tokenData: { email: string } | null = null;
 
 const JWT_SECRET_KEY = process.env.TOKEN_SECRET_KEY;
 
-export const signToken = async (email: string): Promise<any> => {
-    return sign({ email: email }, JWT_SECRET_KEY, {
+export const signToken = async (id: string, email: string): Promise<any> => {
+    return sign({ id, email }, JWT_SECRET_KEY, {
         expiresIn: 8640000 // expires in 24 hours
     });
 }
 
-export const verifyToken = async (token?: string | null): Promise<boolean> => {
+export const verifyToken = async (token?: string | null): Promise<TokenData> => {
     try {
         return await verify(token, JWT_SECRET_KEY);
     } catch (error) {
-        return false;
+        throw new UnauthorizedException('Missing or Invalid token!');
     }
 }
 
