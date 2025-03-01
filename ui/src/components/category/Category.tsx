@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useState } from "react";
 import {
     Table,
     TableBody,
@@ -8,11 +8,14 @@ import {
     TableRow,
     Paper,
     Box,
+    Snackbar,
+    Alert,
 } from "@mui/material";
 import { format } from "date-fns";
 import { StyledTableCell, StyledBodyTableCell } from "@/shared/style-components";
 import CategoryForm from "@/components/category/CategoryForm";
 import { useApi } from "@/shared/use-api/useApi";
+import ConfirmDeleteModal from "@/components/category/ConfirmDeleteModal";
 
 export interface Category {
     id: string;
@@ -27,13 +30,42 @@ interface CategoryProps {
     token: string;
 }
 
-export default function Category({ userEmail }: CategoryProps) {
+export default function Category({ userEmail, token }: CategoryProps) {
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState("");
+    const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">("success");
+
     const { data, loading, execute } = useApi<Category[]>(`/category/${userEmail}`)
+
+    const handleSnackbarOpen = (message: string, severity: "success" | "error") => {
+        setSnackbarMessage(message);
+        setSnackbarSeverity(severity);
+        setSnackbarOpen(true);
+    };
 
     return (
         <Box sx={{ padding: "16px 16px 0" }}>
-            <Box sx={{ display: "flex", justifyContent:"flex-end", marginBottom:"16px" }}>
-            <CategoryForm userEmail={userEmail} refetchDataAction={() => execute()}/>
+
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={3000}
+                onClose={() => setSnackbarOpen(false)}
+                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+            >
+                <Alert sx={{ fontWeight: "bold"}} variant="filled" severity={snackbarSeverity} onClose={() => setSnackbarOpen(false)}>
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
+
+            <Box sx={{ display: "flex", justifyContent: "flex-end", marginBottom: "16px" }}>
+                <CategoryForm
+                    userEmail={userEmail}
+                    refetchDataAction={() => {
+                        execute();
+                        handleSnackbarOpen("Category added successfully", "success");
+                    }}
+                    onError={() => handleSnackbarOpen("Failed to add category", "error")}
+                />
             </Box>
             <TableContainer component={Paper} sx={{ backgroundColor: "background.paper", borderRadius: "8px" }}>
                 <Table>
@@ -42,6 +74,7 @@ export default function Category({ userEmail }: CategoryProps) {
                             <StyledTableCell>Name</StyledTableCell>
                             <StyledTableCell>Currency</StyledTableCell>
                             <StyledTableCell>Created At</StyledTableCell>
+                            <StyledTableCell></StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -59,6 +92,18 @@ export default function Category({ userEmail }: CategoryProps) {
                                 <StyledBodyTableCell>{category.name}</StyledBodyTableCell>
                                 <StyledBodyTableCell>{category.currency}</StyledBodyTableCell>
                                 <StyledBodyTableCell>{format(new Date(category.createdAt), "yyyy-MM-dd")}</StyledBodyTableCell>
+                                <StyledBodyTableCell>
+                                    <ConfirmDeleteModal
+                                        categoryId={category.id}
+                                        categoryName={category.name}
+                                        userEmail={userEmail}
+                                        onSuccess={() => {
+                                            execute();
+                                            handleSnackbarOpen("Category deleted successfully", "success");
+                                        }}
+                                        onError={() => handleSnackbarOpen("Failed to delete category", "error")}
+                                    />
+                                </StyledBodyTableCell>
                             </TableRow>
                         ))}
                     </TableBody>

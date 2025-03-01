@@ -19,14 +19,14 @@ export default function LoginComponent() {
         email: '',
         password: '',
     });
-    const { data, statusCode, execute } = useApi<{ token: string }>('/login', 'POST');
+    const { data, loading, statusCode, execute } = useApi<{ token: string }>('/login', 'POST');
 
     useEffect(() => {
-        if (data && statusCode === 200) {
-            Cookies.set('token', data.token)
+        if (loading && data && statusCode === 200) {
+            Cookies.set('token', data.token);
             redirect('/')
         }
-    });
+    }, [data, loading, statusCode]);
 
     const onSubmit = async () => {
         await execute(loginForm);
