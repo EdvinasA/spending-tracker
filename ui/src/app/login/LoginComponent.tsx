@@ -22,9 +22,9 @@ export default function LoginComponent() {
     const { data, loading, statusCode, execute } = useApi<{ token: string }>('/login', 'POST');
 
     useEffect(() => {
-        if (loading && data && statusCode === 200) {
+        if (!loading && data && statusCode === 200) {
             Cookies.set('token', data.token);
-            redirect('/')
+            redirect('/categories')
         }
     }, [data, loading, statusCode]);
 
