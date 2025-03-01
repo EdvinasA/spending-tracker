@@ -19,6 +19,7 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
 }));
+
 const expressToLambdaEvent = (req: Request): APIGatewayEvent => {
     return {
         resource: req.path,
