@@ -14,8 +14,8 @@ import {
 import { format } from "date-fns";
 import { StyledTableCell, StyledBodyTableCell } from "@/shared/style-components";
 import CategoryForm from "@/components/category/CategoryForm";
-import { useApi } from "@/shared/use-api/useApi";
 import ConfirmDeleteModal from "@/components/category/ConfirmDeleteModal";
+import { useGetFetch } from "@/shared/use-get-fetch/useGetFetch";
 
 export interface Category {
     id: string;
@@ -27,15 +27,14 @@ export interface Category {
 
 interface CategoryProps {
     userEmail: string;
-    token: string;
 }
 
-export default function Category({ userEmail, token }: CategoryProps) {
+export default function Category({ userEmail }: CategoryProps) {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState("");
     const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">("success");
 
-    const { data, loading, execute } = useApi<Category[]>(`/category/${userEmail}`)
+    const { data, loading, refetch } = useGetFetch<Category[]>(`/category/${userEmail}`)
 
     const handleSnackbarOpen = (message: string, severity: "success" | "error") => {
         setSnackbarMessage(message);
@@ -61,7 +60,7 @@ export default function Category({ userEmail, token }: CategoryProps) {
                 <CategoryForm
                     userEmail={userEmail}
                     refetchDataAction={() => {
-                        execute();
+                        refetch();
                         handleSnackbarOpen("Category added successfully", "success");
                     }}
                     onError={() => handleSnackbarOpen("Failed to add category", "error")}
@@ -98,7 +97,7 @@ export default function Category({ userEmail, token }: CategoryProps) {
                                         categoryName={category.name}
                                         userEmail={userEmail}
                                         onSuccess={() => {
-                                            execute();
+                                            refetch();
                                             handleSnackbarOpen("Category deleted successfully", "success");
                                         }}
                                         onError={() => handleSnackbarOpen("Failed to delete category", "error")}
