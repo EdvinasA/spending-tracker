@@ -7,6 +7,7 @@ import PasswordField from "@/components/common/PasswordField";
 import { useApi } from "@/shared/use-api/useApi";
 import { useState } from "react";
 import { redirect } from "next/navigation";
+import { Routes } from "@/shared/constants";
 
 interface RegisterForm {
     email: string;
@@ -32,7 +33,7 @@ export default function RegisterPage() {
         }
         await execute({ email: registerRequest.email, password: registerRequest.password });
         if (statusCode === 200) {
-            redirect('/login')
+            redirect(Routes.Categories)
         }
     };
 
@@ -51,7 +52,7 @@ export default function RegisterPage() {
                         Create an account
                     </Typography>
                     <Typography variant="body2">
-                        Already have an account? <CustomLink href="/login" text="Log in" />
+                        Already have an account? <CustomLink href={Routes.Login} text="Log in" />
                     </Typography>
                     <TextField onChange={onChange} name='email' label="Email" type="email" variant="outlined" size="small" fullWidth />
                     <PasswordField onChange={onChange} name='password' label="Password" variant="outlined" size="small" fullWidth />

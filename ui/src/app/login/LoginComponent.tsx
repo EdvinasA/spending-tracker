@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useApi } from "@/shared/use-api/useApi";
 import { redirect } from "next/navigation";
 import Cookies from 'js-cookie'
+import { Routes } from "@/shared/constants";
 
 interface LoginForm {
     email: string;
@@ -24,7 +25,7 @@ export default function LoginComponent() {
     useEffect(() => {
         if (!loading && data && statusCode === 200) {
             Cookies.set('token', data.token);
-            redirect('/categories')
+            redirect(Routes.Categories)
         }
     }, [data, loading, statusCode]);
 
@@ -66,7 +67,7 @@ export default function LoginComponent() {
 
 
                     <Typography variant="body2" marginTop={2}>
-                        Don't have an account? <CustomLink href="/register" text="Sign Up" />
+                        Don't have an account? <CustomLink href={Routes.Register} text="Sign Up" />
                     </Typography>
                 </FormBox>
             </LoginContainer>
