@@ -1,13 +1,16 @@
 import { DeleteCategoryRequest, DeleteCategorySchema } from "../model";
 import {
     deleteItem,
-    TableName,
-    validateRequestObject
+    TableName, TokenData,
+    validateRequestObject, verifyToken
 } from "shared";
 
 export class DeleteCategoryService {
-    public async deleteCategory(request: DeleteCategoryRequest): Promise<void> {
+    public async deleteCategory(request: DeleteCategoryRequest, token: string): Promise<void> {
         await validateRequestObject(DeleteCategorySchema, request);
-        await deleteItem(TableName.CATEGORIES, request.categoryId, request.email);
+
+        const userData = await verifyToken(token) as unknown as TokenData;
+
+        await deleteItem(TableName.CATEGORIES, request.categoryId, userData.email);
     }
 }
