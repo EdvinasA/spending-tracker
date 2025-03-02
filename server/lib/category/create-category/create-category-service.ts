@@ -3,26 +3,24 @@ import {
     BadRequestExceptionMessage,
     addItemToTable,
     TableName,
-    getOneByField,
-    validateRequestObject
+    validateRequestObject, verifyToken, TokenData
 } from 'shared';
-import { User } from 'user/model';
 import { v4 as uuidv4 } from 'uuid';
 
 export class CreateCategoryService {
-    public createCategory = async (request: CreateCategory): Promise<void> => {
-        await validateRequestObject(CreateCategorySchema, request)
+    public createCategory = async (request: CreateCategory, token: string): Promise<void> => {
+        await validateRequestObject(CreateCategorySchema, request);
 
-        const user = await getOneByField<User>(TableName.USERS, 'email', request.email);
+        const userData = await verifyToken(token) as unknown as TokenData;
 
-        if (!user) {
-            throw new BadRequestExceptionMessage(`User with email ${request.email} not found`);
+        if (!userData) {
+            throw new BadRequestExceptionMessage(`Invalid token`);
         }
 
         await addItemToTable(TableName.CATEGORIES, {
             id: uuidv4(),
             name: request.name,
-            email: request.email,
+            email: userData.email,
             currency: request.currency,
             createdAt: new Date().toISOString(),
         });

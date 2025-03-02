@@ -4,13 +4,13 @@ import { GetCategoriesService } from "./get-categories-service";
 
 export const handler = async (event: APIGatewayEvent, _: Context, callback: APIGatewayProxyCallback) => {
     try {
-        const email = event.pathParameters?.email;
+        const token = event.headers?.authorization?.split(' ')[1];
 
         const service = new GetCategoriesService();
 
-        const expenses = await service.getCategories(email);
+        const categories = await service.getCategories(token!);
 
-        return handleResult(callback, expenses, 200);
+        return handleResult(callback, categories, 200);
     } catch (e) {
         return handleError(callback, e);
     }
