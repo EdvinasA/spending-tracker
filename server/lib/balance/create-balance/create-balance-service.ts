@@ -1,4 +1,4 @@
-import { Balance, CreateBalanceRequest, CreateBalanceRequestSchema } from "../model";
+import { AmountType, Balance, CreateBalanceRequest, CreateBalanceRequestSchema } from "../model";
 import {
     BadRequestExceptionMessage,
     addItemToTable,
@@ -25,8 +25,9 @@ export class CreateBalanceService {
             userId: userData.id,
             category: request.category,
             amount: request.amount,
-            note: request.note || "",
+            note: request.note || null,
             createdAt: new Date().toISOString(),
+            type: request.type
         })
 
     }

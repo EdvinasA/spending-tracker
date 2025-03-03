@@ -29,12 +29,11 @@ interface CategoryRequest {
 }
 
 interface CategoryFormProps {
-    userEmail: string;
     refetchDataAction: () => void;
     onError: () => void;
 }
 
-export default function CategoryForm({ userEmail, refetchDataAction, onError }: CategoryFormProps) {
+export default function CategoryForm({ refetchDataAction, onError }: CategoryFormProps) {
     const {
         register,
         handleSubmit,
@@ -50,7 +49,6 @@ export default function CategoryForm({ userEmail, refetchDataAction, onError }: 
         try {
             await execute({
                 name: data.name,
-                email: userEmail,
                 currency: currency,
             }, "POST");
 

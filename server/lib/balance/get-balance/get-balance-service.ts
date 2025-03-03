@@ -1,11 +1,16 @@
-import { Balance } from "../model";
+import { Balance, GetBalanceQueryFilters } from "../model";
 import { getByField, TableName, TokenData, verifyToken } from "shared";
+import { GetBalanceRepository } from "./get-balance-repository";
 
 export class GetBalanceService {
-    public getBalance = async (token: string): Promise<Balance[]> => {
+    private repository = new GetBalanceRepository();
+
+    public getBalance = async (token: string, queryParams: GetBalanceQueryFilters): Promise<Balance[]> => {
         const userData = await verifyToken(token) as unknown as TokenData;
 
-        return await getByField<Balance>(TableName.BALANCE, "userId", userData.id);
+        console.log(this.repository);
+
+        return await this.repository.getBalance(userData.id, queryParams);
     };
 }
 

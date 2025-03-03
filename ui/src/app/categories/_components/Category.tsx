@@ -13,9 +13,9 @@ import {
 } from "@mui/material";
 import { format } from "date-fns";
 import { StyledTableCell, StyledBodyTableCell } from "@/shared/style-components";
-import CategoryForm from "@/components/category/CategoryForm";
-import ConfirmDeleteModal from "@/components/category/ConfirmDeleteModal";
 import { useGetFetch } from "@/shared/use-get-fetch/useGetFetch";
+import CategoryForm from "./CategoryForm";
+import ConfirmDeleteModal from "./ConfirmDeleteModal";
 
 export interface Category {
     id: string;
@@ -25,16 +25,12 @@ export interface Category {
     createdAt: string;
 }
 
-interface CategoryProps {
-    userEmail: string;
-}
-
-export default function Category({ userEmail }: CategoryProps) {
+export default function Category() {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState("");
     const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">("success");
 
-    const { data, loading, refetch } = useGetFetch<Category[]>(`/category/${userEmail}`)
+    const { data, loading, refetch } = useGetFetch<Category[]>('/category');
 
     const handleSnackbarOpen = (message: string, severity: "success" | "error") => {
         setSnackbarMessage(message);
@@ -51,14 +47,13 @@ export default function Category({ userEmail }: CategoryProps) {
                 onClose={() => setSnackbarOpen(false)}
                 anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
             >
-                <Alert sx={{ fontWeight: "bold"}} variant="filled" severity={snackbarSeverity} onClose={() => setSnackbarOpen(false)}>
+                <Alert sx={{ fontWeight: "bold" }} variant="filled" severity={snackbarSeverity} onClose={() => setSnackbarOpen(false)}>
                     {snackbarMessage}
                 </Alert>
             </Snackbar>
 
             <Box sx={{ display: "flex", justifyContent: "flex-end", marginBottom: "16px" }}>
                 <CategoryForm
-                    userEmail={userEmail}
                     refetchDataAction={() => {
                         refetch();
                         handleSnackbarOpen("Category added successfully", "success");
@@ -95,7 +90,6 @@ export default function Category({ userEmail }: CategoryProps) {
                                     <ConfirmDeleteModal
                                         categoryId={category.id}
                                         categoryName={category.name}
-                                        userEmail={userEmail}
                                         onSuccess={() => {
                                             refetch();
                                             handleSnackbarOpen("Category deleted successfully", "success");

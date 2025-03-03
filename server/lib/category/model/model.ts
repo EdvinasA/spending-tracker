@@ -2,7 +2,6 @@ import Joi from 'joi';
 
 export const CreateCategorySchema = Joi.object({
     name: Joi.string().required(),
-    email: Joi.string().email().required(),
     currency: Joi.string().required()
 });
 
