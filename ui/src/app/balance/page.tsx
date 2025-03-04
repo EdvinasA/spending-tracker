@@ -1,8 +1,5 @@
-export default async function Page() {
+import Balance from "./_components/Balance";
 
-    return (
-        <div>
-            Balance
-        </div>
-    );
+export default async function Page() {
+    return (<Balance />)
 }

@@ -4,7 +4,6 @@ import { executeScan } from "shared";
 
 export class GetBalanceRepository {
     public async getBalance(userId: string, filters: GetBalanceQueryFilters): Promise<Balance[]> {
-        console.log(filters);
         const input = new ScanCommand({
             TableName: 'Balance',
             FilterExpression: 'userId = :userId AND createdAt > :startDate AND createdAt < :endDate',
@@ -15,10 +14,7 @@ export class GetBalanceRepository {
             }
         })
 
-        console.log(input);
         const response = await executeScan<Balance>(input);
-
-        console.log(response);
 
         return response;
     }

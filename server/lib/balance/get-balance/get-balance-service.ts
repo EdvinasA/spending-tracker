@@ -7,9 +7,7 @@ export class GetBalanceService {
 
     public getBalance = async (token: string, queryParams: GetBalanceQueryFilters): Promise<Balance[]> => {
         const userData = await verifyToken(token) as unknown as TokenData;
-
-        console.log(this.repository);
-
+        
         return await this.repository.getBalance(userData.id, queryParams);
     };
 }

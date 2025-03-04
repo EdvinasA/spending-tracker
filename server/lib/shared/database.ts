@@ -60,7 +60,7 @@ export const getByField = async <T>(tableName: string, fieldName: string, fieldV
         return (response.Items || []) as T[];
     } catch (err) {
         console.error(err);
-        throw err;
+        return [];
     }
 }
 
