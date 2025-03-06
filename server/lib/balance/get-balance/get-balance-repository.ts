@@ -7,12 +7,16 @@ export class GetBalanceRepository {
         const input = new ScanCommand({
             TableName: 'Balance',
             FilterExpression: 'userId = :userId AND createdAt > :startDate AND createdAt < :endDate',
+            // FilterExpression: 'userId = :userId',
             ExpressionAttributeValues: {
                 ':userId': userId,
                 ':startDate': this.getStartOfTheDay(filters.date),
                 ':endDate': this.getEndOfTheDay(filters.date),
             }
         })
+
+        console.log(this.getStartOfTheDay(filters.date));
+        console.log(this.getEndOfTheDay(filters.date));
 
         const response = await executeScan<Balance>(input);
 

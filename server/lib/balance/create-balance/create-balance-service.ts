@@ -26,7 +26,7 @@ export class CreateBalanceService {
             category: request.category,
             amount: request.amount,
             note: request.note || null,
-            createdAt: new Date().toISOString(),
+            createdAt: request.createdAt,
             type: request.type
         })
 

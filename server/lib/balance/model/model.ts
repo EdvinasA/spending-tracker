@@ -22,6 +22,7 @@ export interface CreateBalanceRequest {
     category: string;
     amount: number;
     type: AmountType;
+    createdAt: string;
     note?: string | null;
 }
 
