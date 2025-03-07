@@ -1,4 +1,5 @@
 "use client";
+
 import { useGetFetch } from "@/shared/use-get-fetch/useGetFetch";
 import dayjs, { Dayjs } from 'dayjs';
 import {
@@ -9,19 +10,17 @@ import {
     TableRow,
     Paper,
     Box,
-    Snackbar,
-    Alert,
     Container,
-    Divider,
-    Button,
     TableFooter,
 } from "@mui/material";
 
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { useState } from "react";
-import { format } from "date-fns";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { StyledTableCell, StyledBodyTableCell } from "@/shared/style-components";
+import { Category } from "@/app/categories/_components/Category";
+import { formatDate } from "@/shared/utils/data-utils";
+import BalanceActions from "./BalanceActions";
 
 export interface Balance {
     id: string;
@@ -39,21 +38,34 @@ export enum AmountType {
 }
 
 export default function Balance() {
-    const [value, setValue] = useState<Dayjs | null>(dayjs('2022-04-17'));
-    // With request also get categories and map id's to categories for correct display
-    const { data, loading, refetch } = useGetFetch<Balance[]>('/balance?date=2025-03-03');
+    const [dateFilter, setDateFilter] = useState<Dayjs | null>(dayjs(new Date()));
+    const { data: categories, loading: categoriesLoading } = useGetFetch<Category[]>('/category');
+    const { data, loading, refetch } = useGetFetch<Balance[]>(`/balance?date=${dateFilter}`);
 
-    const calculateIncome = (data: Balance[]) => {
+    useEffect(() => {
+        refetch();
+    }, [dateFilter])
+
+    const totalIncome = useMemo(() => {
+        if (!data) return 0;
         return data
             .filter(item => item.type === AmountType.INCOME)
             .reduce((sum, item) => sum + item.amount, 0);
-    }
+    }, [data]);
 
-    const calculateExpense = (data: Balance[]) => {
+    const totalExpense = useMemo(() => {
+        if (!data) return 0;
         return data
             .filter(item => item.type === AmountType.EXPENSE)
             .reduce((sum, item) => sum + item.amount, 0);
-    }
+    }, [data]);
+
+    const findCategory = useCallback(
+        (id: string): Category | undefined => {
+            return categories?.find(category => category.id === id);
+        },
+        [categories]
+    );
 
     return (
         <Container>
@@ -66,10 +78,9 @@ export default function Balance() {
                     <DatePicker
                         sx={{
                             width: "150px",
-
                         }}
-                        value={value}
-                        onChange={(newValue) => setValue(newValue)}
+                        value={dateFilter}
+                        onChange={(newValue) => setDateFilter(newValue)}
                     />
                 </LocalizationProvider>
             </Box>
@@ -89,7 +100,7 @@ export default function Balance() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {!loading && data &&
+                        {!loading && !categoriesLoading && data &&
                             data.map((item: Balance) => (
                                 <TableRow
                                     key={item.id}
@@ -101,32 +112,33 @@ export default function Balance() {
                                         borderBottom: "1px solid #444",
                                     }}
                                 >
-                                    <StyledBodyTableCell>Salary</StyledBodyTableCell>
-                                    <StyledBodyTableCell>{format(new Date(item.createdAt), "yyyy-MM-dd")}</StyledBodyTableCell>
+                                    <StyledBodyTableCell>{findCategory(item.category)?.name}</StyledBodyTableCell>
+                                    <StyledBodyTableCell>{formatDate(item.createdAt)}</StyledBodyTableCell>
                                     <StyledBodyTableCell>{item.type === AmountType.EXPENSE ? '-' : '+'}{item.amount}$</StyledBodyTableCell>
                                 </TableRow>
                             ))}
                     </TableBody>
                     <TableFooter sx={{ backgroundColor: "background.default", position: "sticky", bottom: 0 }}>
-                        {!loading && data && (
+                        {!loading && !categoriesLoading && data && (
                             <>
                                 <TableRow>
                                     <StyledBodyTableCell colSpan={2}>Total Income</StyledBodyTableCell>
-                                    <StyledBodyTableCell>{calculateIncome(data)}</StyledBodyTableCell>
+                                    <StyledBodyTableCell>{totalIncome}</StyledBodyTableCell>
                                 </TableRow>
                                 <TableRow>
                                     <StyledBodyTableCell colSpan={2}>Total Expenses</StyledBodyTableCell>
-                                    <StyledBodyTableCell>{calculateExpense(data)}</StyledBodyTableCell>
+                                    <StyledBodyTableCell>{totalExpense}</StyledBodyTableCell>
                                 </TableRow>
                                 <TableRow>
                                     <StyledBodyTableCell colSpan={2}>Balance</StyledBodyTableCell>
-                                    <StyledBodyTableCell>{calculateIncome(data) - calculateExpense(data)}</StyledBodyTableCell>
+                                    <StyledBodyTableCell>{totalIncome - totalExpense}</StyledBodyTableCell>
                                 </TableRow>
                             </>
                         )}
                     </TableFooter>
                 </Table>
             </TableContainer>
+            <BalanceActions categories={categories || []} />
         </Container>
     );
 }

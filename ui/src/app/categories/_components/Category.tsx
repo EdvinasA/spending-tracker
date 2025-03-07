@@ -11,11 +11,11 @@ import {
     Snackbar,
     Alert,
 } from "@mui/material";
-import { format } from "date-fns";
 import { StyledTableCell, StyledBodyTableCell } from "@/shared/style-components";
 import { useGetFetch } from "@/shared/use-get-fetch/useGetFetch";
 import CategoryForm from "./CategoryForm";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
+import { formatDate } from "@/shared/utils/data-utils";
 
 export interface Category {
     id: string;
@@ -85,7 +85,7 @@ export default function Category() {
                             >
                                 <StyledBodyTableCell>{category.name}</StyledBodyTableCell>
                                 <StyledBodyTableCell>{category.currency}</StyledBodyTableCell>
-                                <StyledBodyTableCell>{format(new Date(category.createdAt), "yyyy-MM-dd")}</StyledBodyTableCell>
+                                <StyledBodyTableCell>{formatDate(category.createdAt)}</StyledBodyTableCell>
                                 <StyledBodyTableCell>
                                     <ConfirmDeleteModal
                                         categoryId={category.id}
