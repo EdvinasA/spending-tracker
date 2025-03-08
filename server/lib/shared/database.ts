@@ -3,16 +3,16 @@ import {
     DynamoDBDocumentClient,
     ScanCommandInput,
     ScanCommand,
-    ScanCommandOutput,
     PutCommandInput,
     PutCommand,
     DeleteCommand,
     DeleteCommandInput,
     PutCommandOutput,
+    QueryCommand
 } from '@aws-sdk/lib-dynamodb';
 import { BadRequestExceptionMessage } from './exception';
 
-const dynamoDbClient = new DynamoDBClient({
+export const dynamoDbClient = new DynamoDBClient({
     region: process.env.REGION || "us-west-2",
     endpoint: process.env.ENVIRONMENT === "dev" ? undefined : "http://localhost:8000",
     credentials: {
@@ -60,7 +60,7 @@ export const getByField = async <T>(tableName: string, fieldName: string, fieldV
         return (response.Items || []) as T[];
     } catch (err) {
         console.error(err);
-        throw err;
+        return [];
     }
 }
 
@@ -75,8 +75,6 @@ export const addItemToTable = async <T extends Record<string, any>>(
         TableName: tableName,
         Item: itemToPost
     };
-
-    console.log(input);
 
     try {
         return await dynamoDBDocumentClient.send(new PutCommand(input));
@@ -104,3 +102,21 @@ export const deleteItem = async (tableName: string, itemId: string, sortKey: str
         return Promise.reject(null);
     }
 }
+
+export const executeScan = async <T>(
+    input: ScanCommand
+): Promise<T[]> => {
+    const dynamoDBDocumentClient = DynamoDBDocumentClient.from(dynamoDbClient);
+    try {
+        const response = await dynamoDBDocumentClient.send(input);
+
+        if (response.Items && response.Items.length > 0) {
+            return response.Items as T[];
+        }
+
+        return [];
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+};
