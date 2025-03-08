@@ -31,7 +31,7 @@ export default function FormSelect({
             <Controller
                 control={control}
                 render={({ field }) => (
-                    <Select labelId={labelId} label={label} onChange={(e) => field.onChange(e)}>
+                    <Select labelId={labelId} label={label} defaultValue={options[0].value} onChange={(e) => field.onChange(e)}>
                         {options.map((option: FormSelectOption) => (
                             <MenuItem key={option.value} value={option.value}>
                                 {option.label}

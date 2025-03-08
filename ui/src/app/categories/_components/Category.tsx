@@ -16,6 +16,7 @@ import { useGetFetch } from "@/shared/use-get-fetch/useGetFetch";
 import CategoryForm from "./CategoryForm";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import { formatDate } from "@/shared/utils/data-utils";
+import { AmountType } from "@/app/balance/_components/Balance";
 
 export interface Category {
     id: string;
@@ -23,6 +24,7 @@ export interface Category {
     email: string;
     currency: string;
     createdAt: string;
+    amountType: AmountType;
 }
 
 export default function Category() {

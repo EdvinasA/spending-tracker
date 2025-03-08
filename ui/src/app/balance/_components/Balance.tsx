@@ -1,7 +1,7 @@
 "use client";
 
 import { useGetFetch } from "@/shared/use-get-fetch/useGetFetch";
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import {
     Table,
     TableBody,
@@ -22,6 +22,9 @@ import { Category } from "@/app/categories/_components/Category";
 import { formatDate } from "@/shared/utils/data-utils";
 import BalanceActions from "./BalanceActions";
 
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(utc);
+
 export interface Balance {
     id: string;
     userId: string;
@@ -38,7 +41,7 @@ export enum AmountType {
 }
 
 export default function Balance() {
-    const [dateFilter, setDateFilter] = useState<Dayjs | null>(dayjs(new Date()));
+    const [dateFilter, setDateFilter] = useState<string | null>(dayjs(new Date()).format("YYYY-MM-DD"));
     const { data: categories, loading: categoriesLoading } = useGetFetch<Category[]>('/category');
     const { data, loading, refetch } = useGetFetch<Balance[]>(`/balance?date=${dateFilter}`);
 
@@ -79,8 +82,8 @@ export default function Balance() {
                         sx={{
                             width: "150px",
                         }}
-                        value={dateFilter}
-                        onChange={(newValue) => setDateFilter(newValue)}
+                        value={dayjs(dateFilter)}
+                        onChange={(newValue) => setDateFilter(dayjs(newValue).format("YYYY-MM-DD"))}
                     />
                 </LocalizationProvider>
             </Box>
@@ -138,7 +141,7 @@ export default function Balance() {
                     </TableFooter>
                 </Table>
             </TableContainer>
-            <BalanceActions categories={categories || []} />
+            <BalanceActions categories={categories || []} refetch={refetch} />
         </Container>
     );
 }

@@ -18,7 +18,7 @@ export class CreateCategoryService {
             id: uuidv4(),
             name: request.name,
             email: userData.email,
-            currency: request.currency,
+            amountType: request.amountType,
             createdAt: new Date().toISOString(),
         });
     };

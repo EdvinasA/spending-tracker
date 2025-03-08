@@ -107,10 +107,8 @@ export const executeScan = async <T>(
     input: ScanCommand
 ): Promise<T[]> => {
     const dynamoDBDocumentClient = DynamoDBDocumentClient.from(dynamoDbClient);
-    console.log(input);
     try {
         const response = await dynamoDBDocumentClient.send(input);
-        console.log(response);
 
         if (response.Items && response.Items.length > 0) {
             return response.Items as T[];

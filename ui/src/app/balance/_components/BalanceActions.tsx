@@ -12,9 +12,12 @@ import FormSelect from "@/shared/form-select/FormSelect";
 import FormDatePicker from "@/shared/form-date-picker/FormDatePicker";
 import { AmountType } from "./Balance";
 import { useApi } from "@/shared/use-api/useApi";
+import { formatDate } from "@/shared/utils/data-utils";
+import { useState } from "react";
 
 interface BalanceActionsProps {
     categories: Category[];
+    refetch: () => void;
 }
 
 interface BalanceForm {
@@ -25,7 +28,28 @@ interface BalanceForm {
     type: AmountType;
 }
 
-export default function BalanceActions({ categories }: BalanceActionsProps) {
+export default function BalanceActions({ categories, refetch }: BalanceActionsProps) {
+    const [openExpense, setOpenExpense] = useState<boolean>(false);
+    const [openIncome, setOpenIncome] = useState<boolean>(false);
+
+    const handleExpenseOpen = () => {
+        setValue("type", AmountType.EXPENSE)
+        setOpenExpense(true);
+    };
+
+    const handleExpenseClose = () => {
+        setOpenExpense(false);
+    };
+
+    const handleIncomeOpen = () => {
+        setValue("type", AmountType.INCOME)
+        setOpenIncome(true);
+    };
+
+    const handleIncomeClose = () => {
+        setOpenIncome(false);
+    };
+
     const {
         register,
         handleSubmit,
@@ -38,14 +62,20 @@ export default function BalanceActions({ categories }: BalanceActionsProps) {
     const { execute } = useApi<BalanceForm>(`/balance`);
 
     const onSubmit = async (data: BalanceForm) => {
-        await execute(data, "POST");
+        await execute({ ...data, amount: Number(data.amount), createdAt: formatDate(data.createdAt.toString()) }, "POST");
+
+
+        handleIncomeClose()
+        handleExpenseClose()
+        refetch();
+        reset();
     };
 
-    const formFields = (amountType: AmountType) => {
-        setValue('type', amountType)
+    const formFields = (filteredCategories: Category[]) => {
         return (<>
             <TextField
                 label="Amount"
+                type="number"
                 {...register("amount", { required: "Amount name is required" })}
                 error={!!errors.amount}
                 helperText={errors.amount?.message}
@@ -60,7 +90,7 @@ export default function BalanceActions({ categories }: BalanceActionsProps) {
                 name='category'
                 label='Category'
                 control={control}
-                options={categories.map((category) => ({
+                options={filteredCategories.map((category) => ({
                     value: category.id,
                     label: category.name,
                 }))} />
@@ -77,14 +107,20 @@ export default function BalanceActions({ categories }: BalanceActionsProps) {
             <CustomDialog
                 buttonTitle={'Add Expense'}
                 title={'Add Expense'}
-                onSubmit={handleSubmit(onSubmit)}>
-                {formFields(AmountType.EXPENSE)}
+                handleOpen={handleExpenseOpen}
+                handleClose={handleExpenseClose}
+                onSubmit={handleSubmit(onSubmit)}
+                open={openExpense}>
+                {formFields(categories.filter(category => category.amountType === AmountType.EXPENSE))}
             </CustomDialog>
             <CustomDialog
                 buttonTitle={'Add Income'}
                 title={'Add Income'}
-                onSubmit={handleSubmit(onSubmit)} >
-                {formFields(AmountType.INCOME)}
+                handleOpen={handleIncomeOpen}
+                handleClose={handleIncomeClose}
+                onSubmit={handleSubmit(onSubmit)}
+                open={openIncome} >
+                {formFields(categories.filter(category => category.amountType === AmountType.INCOME))}
             </CustomDialog>
         </Box >
     );

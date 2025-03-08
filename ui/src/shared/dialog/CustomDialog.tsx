@@ -12,22 +12,26 @@ interface DialogProps {
     buttonTitle: ReactNode
     title: ReactNode;
     children?: ReactNode;
+    open: boolean;
     onSubmit: () => void;
+    handleOpen: () => void;
+    handleClose: () => void;
 }
 
 export default function CustomDialog({
     buttonTitle,
     title,
     children,
-    onSubmit
+    open,
+    onSubmit,
+    handleOpen,
+    handleClose,
 }: DialogProps) {
-    const [open, setOpen] = useState<boolean>(false);
-
-    return (
+        return (
         <>
             <Button variant="contained"
                 color="primary"
-                onClick={() => setOpen(true)}
+                onClick={handleOpen}
                 sx={{
                     minWidth: "130px",
                     height: "48px"
@@ -35,7 +39,7 @@ export default function CustomDialog({
                 {buttonTitle}
             </Button>
 
-            <Dialog open={open} onClose={() => setOpen(false)} maxWidth="sm" fullWidth>
+            <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
                 <DialogTitle sx={{ fontWeight: "bold", fontSize: "1.5rem", color: "text.primary" }}>
                     {title}
                 </DialogTitle>
@@ -50,7 +54,7 @@ export default function CustomDialog({
                         }}>
                         {children}
                         <DialogActions sx={{ gap: "8px" }}>
-                            <Button onClick={() => setOpen(false)}
+                            <Button onClick={handleClose}
                                 color="error"
                                 sx={{
                                     backgroundColor: "error.main",

@@ -1,8 +1,9 @@
+import { AmountType } from 'balance/model';
 import Joi from 'joi';
 
 export const CreateCategorySchema = Joi.object({
     name: Joi.string().required(),
-    currency: Joi.string().required()
+    amountType: Joi.string().required()
 });
 
 export const DeleteCategorySchema = Joi.object({
@@ -14,14 +15,14 @@ export const DeleteCategorySchema = Joi.object({
 export interface CreateCategory {
     name: string;
     email: string;
-    currency: string;
+    amountType: AmountType;
 }
 
 export interface Category {
     id: string;
     name: string;
     email: string;
-    currency: string;
+    amountType: AmountType;
     createdAt: string;
 }
 

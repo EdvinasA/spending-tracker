@@ -7,6 +7,9 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { Control, Controller } from "react-hook-form";
 
+import utc from 'dayjs/plugin/utc'; 
+dayjs.extend(utc);
+
 interface FormDatePickerProps {
     name: string;
     label: string;
@@ -18,6 +21,7 @@ export default function FormDatePicker({
     label,
     control,
 }: FormDatePickerProps) {
+    const defaultDate = dayjs(new Date()).utcOffset(0).startOf('date');
     return (
         <FormControl fullWidth>
             <FormLabel>{label}</FormLabel>
@@ -26,11 +30,12 @@ export default function FormDatePicker({
                 render={({ field }) => (
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
-                            onChange={(newValue) => field.onChange(newValue)}
+                            onChange={(newValue) => field.onChange(dayjs(newValue).utcOffset(0).startOf('date'))}
+                            defaultValue={defaultDate}
                         />
                     </LocalizationProvider>
                 )}
-                defaultValue={dayjs(new Date())}
+                defaultValue={defaultDate}
                 name={name}
             />
         </FormControl>

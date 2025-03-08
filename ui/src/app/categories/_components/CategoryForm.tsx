@@ -4,28 +4,23 @@ import { useForm } from "react-hook-form";
 import {
     Button,
     TextField,
-    MenuItem,
-    Select,
-    FormControl,
-    FormLabel,
-    FormHelperText,
     Dialog, DialogTitle, DialogContent,
     DialogActions
 } from "@mui/material";
 import { useState } from "react";
-import { currencies } from "@/shared/currencies/constants";
 import { useApi } from "@/shared/use-api/useApi";
+import FormSelect from "@/shared/form-select/FormSelect";
+import { AmountType } from "@/app/balance/_components/Balance";
 
 
 interface CategoryFormData {
     name: string;
-    currency: string;
+    amountType: AmountType
 }
 
 interface CategoryRequest {
     name: string;
-    email: string;
-    currency: string;
+    amountType: AmountType;
 }
 
 interface CategoryFormProps {
@@ -35,22 +30,19 @@ interface CategoryFormProps {
 
 export default function CategoryForm({ refetchDataAction, onError }: CategoryFormProps) {
     const {
+        control,
         register,
         handleSubmit,
         formState: { errors },
         reset,
     } = useForm<CategoryFormData>();
 
-    const [currency, setCurrency] = useState("EUR");
     const [open, setOpen] = useState<boolean>(false);
-    const { execute } = useApi<CategoryRequest>(`/category`, "POST");
+    const { execute } = useApi<CategoryRequest>(`/category`);
 
     const onSubmit = async (data: CategoryFormData) => {
         try {
-            await execute({
-                name: data.name,
-                currency: currency,
-            }, "POST");
+            await execute(data, "POST");
 
             reset();
             refetchDataAction();
@@ -80,17 +72,12 @@ export default function CategoryForm({ refetchDataAction, onError }: CategoryFor
                             helperText={errors.name?.message}
                         />
 
-                        <FormControl fullWidth>
-                            <FormLabel>Currency</FormLabel>
-                            <Select value={currency} onChange={(e) => setCurrency(e.target.value)} variant="outlined" error={!!errors.currency}>
-                                {currencies.map((curr) => (
-                                    <MenuItem key={curr.value} value={curr.value}>
-                                        {curr.label}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                            {errors.currency && <FormHelperText>{errors.currency.message}</FormHelperText>}
-                        </FormControl>
+                        <FormSelect
+                            name='amountType'
+                            label='Type'
+                            control={control}
+                            options={[{ value: AmountType.EXPENSE, label: 'Expense' }, { value: AmountType.INCOME, label: 'Income' }]}
+                        />
 
                         <DialogActions sx={{ gap: "8px" }}>
                             <Button onClick={() => setOpen(false)} color="error" sx={{ backgroundColor: "error.main", color: "error.contrastText", "&:hover": { backgroundColor: "#b83838" } }}>
