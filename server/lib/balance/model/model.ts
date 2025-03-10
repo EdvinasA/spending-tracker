@@ -14,8 +14,7 @@ export const CreateBalanceRequestSchema = Joi.object({
     category: Joi.string().required(),
     amount: Joi.number().required(),
     type: Joi.string().required(),
-    createdAt: Joi.string().isoDate().required(),
-    note: Joi.string().optional(),
+    createdAt: Joi.string().isoDate().required()
 });
 
 export interface CreateBalanceRequest {
