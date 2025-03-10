@@ -15,16 +15,15 @@ import { useApi } from "@/shared/use-api/useApi";
 interface ConfirmDeleteModalProps {
     categoryId: string;
     categoryName: string;
-    userEmail: string;
     onSuccess: () => void;
     onError: () => void;
 }
 
-export default function ConfirmDeleteModal({ categoryId, categoryName, userEmail, onSuccess, onError }: ConfirmDeleteModalProps) {
+export default function ConfirmDeleteModal({ categoryId, categoryName, onSuccess, onError }: ConfirmDeleteModalProps) {
     const [open, setOpen] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const { execute: deleteExecute, loading } = useApi(`/category/${categoryId}?email=${userEmail}`, "DELETE");
+    const { execute: deleteExecute, loading } = useApi(`/category/${categoryId}`, "DELETE");
 
     const handleDelete = async () => {
         setError(null);

@@ -25,6 +25,7 @@ export default function NavBar() {
     };
 
     const tabs = [
+        { label: "Balance", value: "Balance", path: "/balance" },
         { label: "Categories", value: "Categories", path: "/categories" },
         { label: "Expenses", value: "Expenses", path: "/expenses" },
     ];

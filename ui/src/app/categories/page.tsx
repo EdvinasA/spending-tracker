@@ -1,9 +1,5 @@
-import Category from "@/components/category/Category";
-import { cookies } from "next/headers";
+import Category from "./_components/Category";
 
 export default async function Page() {
-    const cookieStore = await cookies();
-    const userEmail = cookieStore.get("email")?.value || "";
-
-    return <Category userEmail={userEmail} />;
+    return <Category/>;
 }

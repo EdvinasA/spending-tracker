@@ -60,7 +60,7 @@ app.get('/user', handleLambdaRoute(getUser));
 app.post('/register', handleLambdaRoute(postUser));
 app.post('/login', handleLambdaRoute(loginUser));
 app.post('/category', handleLambdaRoute(createCategory));
-app.get('/category/:email', handleLambdaRoute(getCategory));
+app.get('/category', handleLambdaRoute(getCategory));
 app.post('/balance', handleLambdaRoute(createBalance));
 app.get('/balance', handleLambdaRoute(getBalance));
 app.delete('/category/:categoryId', handleLambdaRoute(deleteCategory));
