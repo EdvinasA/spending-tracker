@@ -8,9 +8,9 @@ export async function handler(event: APIGatewayRequestAuthorizerEventV2, _: Cont
 
     const authorizerService = new AuthorizerService();
 
-    console.log(authorizerService.validateToken(token!));
+    console.log(await authorizerService.validateToken(token!));
 
-    return { isAuthorized: authorizerService.validateToken(token!) }
+    return { isAuthorized: await authorizerService.validateToken(token!) }
   } catch (error) {
     throw new Error("Unauthorized")
   }
