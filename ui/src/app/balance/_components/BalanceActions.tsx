@@ -6,7 +6,7 @@ import {
 } from "@mui/material";
 
 import CustomDialog from "@/shared/dialog/CustomDialog";
-import { Category } from "@/app/categories/_components/Category";
+import { Category } from "@/app/category/_components/Category";
 import { useForm } from "react-hook-form";
 import FormSelect from "@/shared/form-select/FormSelect";
 import FormDatePicker from "@/shared/form-date-picker/FormDatePicker";
