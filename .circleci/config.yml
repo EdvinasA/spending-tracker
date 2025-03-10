@@ -214,9 +214,9 @@ workflows:
           filters:
             branches:
               only:
-                - task/options-request-handling
+                - develop
       - deploy-nextjs:
           filters:
             branches:
               only:
-                - task/options-request-handling
+                - develop
