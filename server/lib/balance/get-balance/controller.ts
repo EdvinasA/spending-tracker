@@ -8,6 +8,8 @@ export const handler = async (event: APIGatewayEvent, _: Context, callback: APIG
         const token = event.headers?.authorization?.split(' ')[1];
         const queryParams = event.queryStringParameters || {};
 
+        console.log(event);
+
         const service = new GetBalanceService();
 
         const balance = await service.getBalance(token!, queryParams as unknown as GetBalanceQueryFilters);
