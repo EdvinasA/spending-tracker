@@ -5,7 +5,7 @@ import {
     Dialog, DialogTitle, DialogContent,
     DialogActions
 } from "@mui/material";
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 
 
 interface DialogProps {

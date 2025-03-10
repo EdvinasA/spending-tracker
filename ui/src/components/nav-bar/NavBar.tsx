@@ -26,8 +26,7 @@ export default function NavBar() {
 
     const tabs = [
         { label: "Balance", value: "Balance", path: "/balance" },
-        { label: "Categories", value: "Categories", path: "/categories" },
-        { label: "Expenses", value: "Expenses", path: "/expenses" },
+        { label: "Categories", value: "Categories", path: "/category" },
     ];
 
     const handleChange = (_: React.SyntheticEvent, newIndex: number) => {
