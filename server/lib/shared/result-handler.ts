@@ -11,3 +11,15 @@ export const handleResult = (callback: APIGatewayProxyCallback, data: any, statu
         body: JSON.stringify(responseBody),
     });
 };
+
+export const handleOptionsResult = (callback: APIGatewayProxyCallback, statusCode: number) => {
+    callback(null, {
+        statusCode: 200,
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "*",
+            "Access-Control-Allow-Headers": "*"
+        },
+        body: ""
+    });
+};
