@@ -1,6 +1,5 @@
 export enum Routes {
-    Categories = '/categories',
-    Expenses = '/expenses',
+    Categories = '/category',
     Balance = '/balance',
     Login = '/login',
     Register = '/register'
