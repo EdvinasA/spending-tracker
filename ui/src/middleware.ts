@@ -9,21 +9,20 @@ export default async function middleware(req: NextRequest) {
     const isProtectedRoute = protectedRoutes.includes(path)
     const isPublicRoute = publicRoutes.includes(path)
 
-    const cookieStore = await cookies();
-    cookieStore.set('email', process.env.NEXT_PUBLIC_DEFAULT_EMAIL!);
-    // if (isProtectedRoute && !session?.userId) {
-    //     return NextResponse.redirect(new URL('/login', req.nextUrl))
-    // }
+    const cookieStore = cookies();
+    const token = cookieStore.get('token');
 
-    // if (
-    //     isPublicRoute
-    // ) {
-    //     return NextResponse.redirect(new URL(path, req.nextUrl))
-    // }
+    if (isProtectedRoute && !token) {
+        return NextResponse.redirect(new URL('/login', req.nextUrl))
+    }
 
-    return NextResponse.next()
+    if (isPublicRoute && token) {
+        return NextResponse.redirect(new URL('/category', req.nextUrl))
+    }
+
+    return NextResponse.next();
 }
 
 export const config = {
     matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)'],
-}
+};
