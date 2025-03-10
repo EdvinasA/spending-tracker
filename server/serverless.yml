@@ -5,6 +5,19 @@ provider:
   stage: dev
   region: eu-west-1
   runtime: nodejs20.x
+  httpApi:
+    cors:
+      allowedOrigins:
+        - "*"
+      allowedMethods:
+        - GET
+        - POST
+        - PATCH
+        - PUT
+        - DELETE
+        - OPTIONS
+      allowedHeaders:
+        - "*"
   environment:
     REGION: eu-west-1
     ENVIRONMENT: dev
@@ -50,7 +63,7 @@ functions:
     events:
       - httpApi:
           method: GET
-          path: /category/{email}
+          path: /category
   saveBalance:
     handler: lib/balance/create-balance/controller.handler
     events:
