@@ -5,6 +5,19 @@ provider:
   stage: dev
   region: eu-west-1
   runtime: nodejs20.x
+  httpApi:
+    cors:
+      allowedOrigins:
+        - "*"
+      allowedMethods:
+        - GET
+        - POST
+        - PATCH
+        - PUT
+        - DELETE
+        - OPTIONS
+      allowedHeaders:
+        - "*"
   environment:
     REGION: eu-west-1
     ENVIRONMENT: dev
@@ -45,48 +58,48 @@ functions:
       - httpApi:
           method: POST
           path: /category
-  saveCategoryOptions:
-    handler: lib/category/create-category/controller-options.handler
-    events:
-      - httpApi:
-          method: OPTIONS
-          path: /category
+  # saveCategoryOptions:
+  #   handler: lib/category/create-category/controller-options.handler
+  #   events:
+  #     - httpApi:
+  #         method: OPTIONS
+  #         path: /category
   getCategory:
     handler: lib/category/get-category/controller.handler
     events:
       - httpApi:
           method: GET
           path: /category
-  getCategoryOptions:
-    handler: lib/category/get-category/controller-options.handler
-    events:
-      - httpApi:
-          method: OPTIONS
-          path: /category
+  # getCategoryOptions:
+  #   handler: lib/category/get-category/controller-options.handler
+  #   events:
+  #     - httpApi:
+  #         method: OPTIONS
+  #         path: /category
   saveBalance:
     handler: lib/balance/create-balance/controller.handler
     events:
       - httpApi:
           method: POST
           path: /balance
-  saveBalanceOptions:
-    handler: lib/balance/create-balance/controller-options.handler
-    events:
-      - httpApi:
-          method: OPTIONS
-          path: /balance
+  # saveBalanceOptions:
+  #   handler: lib/balance/create-balance/controller-options.handler
+  #   events:
+  #     - httpApi:
+  #         method: OPTIONS
+  #         path: /balance
   getBalance:
     handler: lib/balance/get-balance/controller.handler
     events:
       - httpApi:
           method: GET
           path: /balance
-  getBalanceOptions:
-    handler: lib/balance/get-balance/controller-options.handler
-    events:
-      - httpApi:
-          method: OPTIONS
-          path: /balance
+  # getBalanceOptions:
+  #   handler: lib/balance/get-balance/controller-options.handler
+  #   events:
+  #     - httpApi:
+  #         method: OPTIONS
+  #         path: /balance
 
 resources:
   Resources:
