@@ -18,7 +18,7 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { StyledTableCell, StyledBodyTableCell } from "@/shared/style-components";
-import { Category } from "@/app/categories/_components/Category";
+import { Category } from "@/app/category/_components/Category";
 import { formatDate } from "@/shared/utils/data-utils";
 import BalanceActions from "./BalanceActions";
 

@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 
-const protectedRoutes = ['/dashboard']
-const publicRoutes = ['/login', '/signup', '/home', '/']
+const protectedRoutes = ['/category', '/balance']
+const publicRoutes = ['/login', '/register', '/']
 
 export default async function middleware(req: NextRequest) {
     const path = req.nextUrl.pathname
@@ -10,20 +10,19 @@ export default async function middleware(req: NextRequest) {
     const isPublicRoute = publicRoutes.includes(path)
 
     const cookieStore = await cookies();
-    cookieStore.set('email', process.env.NEXT_PUBLIC_DEFAULT_EMAIL!);
-    // if (isProtectedRoute && !session?.userId) {
-    //     return NextResponse.redirect(new URL('/login', req.nextUrl))
-    // }
+    const token = cookieStore.get('token');
 
-    // if (
-    //     isPublicRoute
-    // ) {
-    //     return NextResponse.redirect(new URL(path, req.nextUrl))
-    // }
+    if (isProtectedRoute && !token) {
+        return NextResponse.redirect(new URL('/login', req.nextUrl))
+    }
 
-    return NextResponse.next()
+    if (isPublicRoute && token) {
+        return NextResponse.redirect(new URL('/category', req.nextUrl))
+    }
+
+    return NextResponse.next();
 }
 
 export const config = {
     matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)'],
-}
+};

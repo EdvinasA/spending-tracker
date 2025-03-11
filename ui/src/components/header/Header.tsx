@@ -4,9 +4,16 @@ import { Menu as MenuIcon } from "@mui/icons-material";
 import { Box, AppBar, Toolbar, IconButton, Typography, Button } from "@mui/material";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Cookies from "js-cookie";
 
 export default function Header() {
   const pathname = usePathname();
+
+  const handleLogout = () => {
+    Cookies.remove('token')
+  }
+
+  const token = Cookies.get('token');
 
   return (
     <>
@@ -26,6 +33,8 @@ export default function Header() {
               <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 600 }}>
                 Spending tracker
               </Typography>
+
+              { !token ?
               <Button
                 variant="outlined"
                 component={Link}
@@ -33,6 +42,16 @@ export default function Header() {
               >
                 Login
               </Button>
+                  :
+                  <Button
+                      onClick={handleLogout}
+                      variant="outlined"
+                      component={Link}
+                      href="/"
+                  >
+                    Logout
+                  </Button>
+              }
             </Toolbar>
           </AppBar>
         </Box>

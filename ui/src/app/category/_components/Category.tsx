@@ -68,7 +68,7 @@ export default function Category() {
                     <TableHead sx={{ backgroundColor: "background.default" }}>
                         <TableRow>
                             <StyledTableCell>Name</StyledTableCell>
-                            <StyledTableCell>Currency</StyledTableCell>
+                            <StyledTableCell>Type</StyledTableCell>
                             <StyledTableCell>Created At</StyledTableCell>
                             <StyledTableCell></StyledTableCell>
                         </TableRow>
@@ -86,7 +86,11 @@ export default function Category() {
                                 }}
                             >
                                 <StyledBodyTableCell>{category.name}</StyledBodyTableCell>
-                                <StyledBodyTableCell>{category.currency}</StyledBodyTableCell>
+                                <StyledBodyTableCell
+                                    sx={{
+                                        textTransform: "capitalize"
+                                }}
+                                >{category.amountType}</StyledBodyTableCell>
                                 <StyledBodyTableCell>{formatDate(category.createdAt)}</StyledBodyTableCell>
                                 <StyledBodyTableCell>
                                     <ConfirmDeleteModal
