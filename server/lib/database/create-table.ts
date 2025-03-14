@@ -43,19 +43,18 @@ const createTable = async () => {
         {
             TableName: 'Balance',
             KeySchema: [
-                { AttributeName: "id", KeyType: "HASH" },
-                { AttributeName: "category", KeyType: "RANGE" }
+                { AttributeName: 'userId', KeyType: 'HASH' },
+                { AttributeName: 'createdAt', KeyType: 'RANGE' }
             ],
             AttributeDefinitions: [
-                { AttributeName: "id", AttributeType: "S" },
-                { AttributeName: "category", AttributeType: "S" }
+                { AttributeName: 'userId', AttributeType: 'S' },
+                { AttributeName: 'createdAt', AttributeType: 'S' }
             ],
             ProvisionedThroughput: {
                 ReadCapacityUnits: 5,
                 WriteCapacityUnits: 5
             }
         }
-
     ];
 
     try {
