@@ -1,6 +1,5 @@
 import { DynamoDBClient, CreateTableCommand, CreateTableCommandInput, DescribeTableCommand } from '@aws-sdk/client-dynamodb';
 
-// Create a DynamoDB client
 const dynamoDbClient = new DynamoDBClient({
     region: process.env.REGION || 'us-east-1',
     endpoint: process.env.ENDPOINT || "http://localhost:8000",
@@ -29,9 +28,11 @@ const createTable = async () => {
             TableName: 'Categories',
             KeySchema: [
                 { AttributeName: "userId", KeyType: "HASH" },
+                { AttributeName: "id", KeyType: "RANGE" },
             ],
             AttributeDefinitions: [
                 { AttributeName: "userId", AttributeType: "S" },
+                { AttributeName: "id", AttributeType: "S" },
             ],
             ProvisionedThroughput: {
                 ReadCapacityUnits: 5,
@@ -42,11 +43,11 @@ const createTable = async () => {
             TableName: 'Balance',
             KeySchema: [
                 { AttributeName: 'userId', KeyType: 'HASH' },
-                { AttributeName: 'createdAt', KeyType: 'RANGE' }
+                { AttributeName: 'id', KeyType: 'RANGE' }
             ],
             AttributeDefinitions: [
                 { AttributeName: 'userId', AttributeType: 'S' },
-                { AttributeName: 'createdAt', AttributeType: 'S' }
+                { AttributeName: 'id', AttributeType: 'S' }
             ],
             ProvisionedThroughput: {
                 ReadCapacityUnits: 5,

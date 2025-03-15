@@ -5,15 +5,19 @@ import { Box, AppBar, Toolbar, IconButton, Typography, Button } from "@mui/mater
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
 
 export default function Header() {
   const pathname = usePathname();
+  const [token, setToken] = useState<string | undefined>(undefined)
+
+  useEffect(() => {
+    setToken(Cookies.get('token'))
+  }, [])
 
   const handleLogout = () => {
     Cookies.remove('token')
   }
-
-  const token = Cookies.get('token');
 
   return (
     <>

@@ -3,7 +3,7 @@ import { Category } from "category/model";
 import { executeQuery, TableName } from "shared";
 
 export class GetCategoryRepository {
-    public async getCategory(userId: string): Promise<Category[]> {
+    public async getCategories(userId: string): Promise<Category[]> {
         const input = new QueryCommand({
             TableName: TableName.CATEGORIES,
             KeyConditions: {
