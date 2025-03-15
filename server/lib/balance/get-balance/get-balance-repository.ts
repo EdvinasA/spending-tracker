@@ -10,11 +10,11 @@ export class GetBalanceRepository {
                 'userId': {
                     AttributeValueList: [userId],
                     ComparisonOperator: 'EQ'
+                },
+                'createdAt': {
+                    AttributeValueList: [filters.date],
+                    ComparisonOperator: 'EQ'
                 }
-            },
-            FilterExpression: 'createdAt = :date',
-            ExpressionAttributeValues: {
-                ':date': filters.date,
             }
         })
         const response = await executeQuery<Balance>(input);

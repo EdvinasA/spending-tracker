@@ -1,5 +1,5 @@
 import { Balance, GetBalanceQueryFilters } from "../model";
-import { getByField, TableName, TokenData, verifyToken } from "shared";
+import { TokenData, verifyToken } from "shared";
 import { GetBalanceRepository } from "./get-balance-repository";
 
 export class GetBalanceService {

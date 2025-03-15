@@ -28,12 +28,10 @@ const createTable = async () => {
         {
             TableName: 'Categories',
             KeySchema: [
-                { AttributeName: "id", KeyType: "HASH" },
-                { AttributeName: "email", KeyType: "RANGE" }
+                { AttributeName: "userId", KeyType: "HASH" },
             ],
             AttributeDefinitions: [
-                { AttributeName: "id", AttributeType: "S" },
-                { AttributeName: "email", AttributeType: "S" }
+                { AttributeName: "userId", AttributeType: "S" },
             ],
             ProvisionedThroughput: {
                 ReadCapacityUnits: 5,
