@@ -20,7 +20,7 @@ export const useGetFetch = <T>(endpoint: string) => {
 
     useEffect(() => {
         fetchData();
-    }, [fetchData]);
+    }, []);
 
     return { data, loading, error, refetch: fetchData };
 };

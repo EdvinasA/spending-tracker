@@ -117,7 +117,7 @@ export default function Balance() {
                                 >
                                     <StyledBodyTableCell>{findCategory(item.category)?.name}</StyledBodyTableCell>
                                     <StyledBodyTableCell>{formatDate(item.createdAt)}</StyledBodyTableCell>
-                                    <StyledBodyTableCell>{item.type === AmountType.EXPENSE ? '-' : '+'}{item.amount}$</StyledBodyTableCell>
+                                    <StyledBodyTableCell>{item.type === AmountType.EXPENSE ? '- ' : '+ '}{item.amount} $</StyledBodyTableCell>
                                 </TableRow>
                             ))}
                     </TableBody>
@@ -126,15 +126,15 @@ export default function Balance() {
                             <>
                                 <TableRow>
                                     <StyledBodyTableCell colSpan={2}>Total Income</StyledBodyTableCell>
-                                    <StyledBodyTableCell>{totalIncome}</StyledBodyTableCell>
+                                    <StyledBodyTableCell>+ {totalIncome} $</StyledBodyTableCell>
                                 </TableRow>
                                 <TableRow>
                                     <StyledBodyTableCell colSpan={2}>Total Expenses</StyledBodyTableCell>
-                                    <StyledBodyTableCell>{totalExpense}</StyledBodyTableCell>
+                                    <StyledBodyTableCell>- {totalExpense} $</StyledBodyTableCell>
                                 </TableRow>
                                 <TableRow>
                                     <StyledBodyTableCell colSpan={2}>Balance</StyledBodyTableCell>
-                                    <StyledBodyTableCell>{totalIncome - totalExpense}</StyledBodyTableCell>
+                                    <StyledBodyTableCell>{totalIncome - totalExpense} $</StyledBodyTableCell>
                                 </TableRow>
                             </>
                         )}

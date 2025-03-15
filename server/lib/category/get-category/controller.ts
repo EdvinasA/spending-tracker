@@ -1,6 +1,6 @@
 import { APIGatewayEvent, APIGatewayProxyCallback, Context } from "aws-lambda";
 import { handleError, handleResult } from "shared";
-import { GetCategoriesService } from "./get-categories-service";
+import { GetCategoriesService } from "./get-category-service";
 
 export const handler = async (event: APIGatewayEvent, _: Context, callback: APIGatewayProxyCallback) => {
     try {

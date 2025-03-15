@@ -1,12 +1,15 @@
-import { compareEncryptedData, getOneByField, signToken, TableName, UnauthorizedException, validateRequestObject } from 'shared';
-import { LoginRequest, LoginRequestRequestSchema, User } from 'user/model';
+import { compareEncryptedData, signToken, UnauthorizedException, validateRequestObject } from 'shared';
+import { LoginRequest, LoginRequestRequestSchema } from 'user/model';
+import { LoginRepository } from './login-repository';
 
 
 export class LoginService {
+    private loginRepository = new LoginRepository();
+
     public getSignedToken = async (request: LoginRequest): Promise<string> => {
         await validateRequestObject(LoginRequestRequestSchema, request);
 
-        const user = await getOneByField<User>(TableName.USERS, 'email', request.email);
+        const user = await this.loginRepository.getUserByEmail(request.email);
 
         const isCorrectPassword: boolean = await compareEncryptedData(request.password, user.password);
 

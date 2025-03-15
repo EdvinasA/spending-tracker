@@ -21,6 +21,42 @@ export const dynamoDbClient = new DynamoDBClient({
     }
 });
 
+export const executeQuery = async <T>(
+    input: QueryCommand
+): Promise<T[]> => {
+    const dynamoDBDocumentClient = DynamoDBDocumentClient.from(dynamoDbClient);
+    try {
+        const response = await dynamoDBDocumentClient.send(input);
+
+        if (response.Items && response.Items.length > 0) {
+            return response.Items as T[];
+        }
+
+        return [];
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+};
+
+export const executeScan = async <T>(
+    input: ScanCommand
+): Promise<T[]> => {
+    const dynamoDBDocumentClient = DynamoDBDocumentClient.from(dynamoDbClient);
+    try {
+        const response = await dynamoDBDocumentClient.send(input);
+
+        if (response.Items && response.Items.length > 0) {
+            return response.Items as T[];
+        }
+
+        return [];
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+};
+
 export const getOneByField = async <T>(tableName: string, fieldName: string, fieldValue: string): Promise<T> => {
     const dynamoDBDocumentClient = DynamoDBDocumentClient.from(dynamoDbClient);
 
@@ -102,21 +138,3 @@ export const deleteItem = async (tableName: string, itemId: string, sortKey: str
         return Promise.reject(null);
     }
 }
-
-export const executeScan = async <T>(
-    input: ScanCommand
-): Promise<T[]> => {
-    const dynamoDBDocumentClient = DynamoDBDocumentClient.from(dynamoDbClient);
-    try {
-        const response = await dynamoDBDocumentClient.send(input);
-
-        if (response.Items && response.Items.length > 0) {
-            return response.Items as T[];
-        }
-
-        return [];
-    } catch (err) {
-        console.error(err);
-        throw err;
-    }
-};
