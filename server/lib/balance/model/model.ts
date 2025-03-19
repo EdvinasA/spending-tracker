@@ -31,6 +31,10 @@ export enum AmountType {
     EXPENSE = "EXPENSE"
 }
 
+export type DateFilterType = 'day' | 'month' | 'year';
+
 export interface GetBalanceQueryFilters {
     date: string;
+    view: DateFilterType;
+    endDate?: string;
 }

@@ -12,13 +12,20 @@ export class GetBalanceRepository {
                     ComparisonOperator: 'EQ'
                 }
             },
-            FilterExpression: 'createdAt = :date',
-            ExpressionAttributeValues: {
-                ':date': filters.date
-            }
-        })
+            FilterExpression: filters.endDate 
+                ? 'createdAt BETWEEN :startDate AND :endDate'
+                : 'createdAt = :startDate',
+            ExpressionAttributeValues: filters.endDate 
+                ? {
+                    ':startDate': filters.date,
+                    ':endDate': filters.endDate
+                  }
+                : {
+                    ':startDate': filters.date
+                  }
+        });
+        
         const response = await executeQuery<Balance>(input);
-
         return response;
     }
 }

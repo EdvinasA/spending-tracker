@@ -1,7 +1,7 @@
 "use client";
 
 import { useGetFetch } from "@/shared/use-get-fetch/useGetFetch";
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import {
     Table,
     TableBody,
@@ -12,9 +12,11 @@ import {
     Box,
     Container,
     TableFooter,
+    ToggleButton,
+    ToggleButtonGroup,
 } from "@mui/material";
 
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { DatePicker, DateView, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { StyledTableCell, StyledBodyTableCell } from "@/shared/style-components";
@@ -23,6 +25,7 @@ import { formatDate } from "@/shared/utils/data-utils";
 import BalanceActions from "./BalanceActions";
 
 import utc from 'dayjs/plugin/utc';
+
 dayjs.extend(utc);
 
 export interface Balance {
@@ -40,14 +43,47 @@ export enum AmountType {
     EXPENSE = "EXPENSE"
 }
 
+type DateFilterType = 'day' | 'month' | 'year';
+
+interface DateFilter {
+    date: string;
+}
+
+const formatDateByFilterType = (date: Dayjs, filterType: DateFilterType): string => {
+    switch (filterType) {
+        case 'day':
+            return date.format('YYYY-MM-DD');
+        case 'month':0
+            return date.startOf('month').format('YYYY-MM-DD');
+        case 'year':
+            return date.startOf('year').format('YYYY-MM-DD');
+    }
+};
+
+const getDatePickerWidth = (filterType: DateFilterType): string => {
+    switch (filterType) {
+        case 'day':
+            return '150px';
+        case 'month':
+            return '150px';
+        case 'year':
+            return '100px';
+    }
+};
+
 export default function Balance() {
-    const [dateFilter, setDateFilter] = useState<string | null>(dayjs(new Date()).format("YYYY-MM-DD"));
+    const [filterType, setFilterType] = useState<DateFilterType>('day');
+    const [dateFilter, setDateFilter] = useState<DateFilter>({
+        date: dayjs().format('YYYY-MM-DD')
+    });
     const { data: categories, loading: categoriesLoading } = useGetFetch<Category[]>('/category');
-    const { data, loading, refetch } = useGetFetch<Balance[]>(`/balance?date=${dateFilter}`);
+    const { data, loading, refetch } = useGetFetch<Balance[]>(
+        `/balance?date=${dateFilter.date}&view=${filterType}`
+    );
 
     useEffect(() => {
         refetch();
-    }, [dateFilter])
+    }, [dateFilter.date, filterType])
 
     const totalIncome = useMemo(() => {
         if (!data) return 0;
@@ -70,22 +106,80 @@ export default function Balance() {
         [categories]
     );
 
+    const handleFilterTypeChange = (_: React.MouseEvent<HTMLElement>, newFilterType: DateFilterType) => {
+        if (!newFilterType) return;
+        setFilterType(newFilterType);
+        
+        const today = dayjs();
+        setDateFilter({
+            date: formatDateByFilterType(today, newFilterType)
+        });
+    };
+
+    const handleDateChange = (newValue: Dayjs | null) => {
+        if (!newValue) return;
+        
+        setDateFilter({
+            date: formatDateByFilterType(newValue, filterType)
+        });
+    };
+
+    const getDatePickerViews = () => {
+        switch (filterType) {
+            case 'year':
+                return ['year'];
+            case 'month':
+                return ['year', 'month'];
+            default:
+                return ['year', 'month', 'day'];
+        }
+    };
+
     return (
         <Container>
             <Box sx={{
                 display: "flex",
-                justifyContent: "flex-end",
+                flexDirection: "column",
+                gap: 2,
                 paddingTop: '12px'
             }}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                        sx={{
-                            width: "150px",
-                        }}
-                        value={dayjs(dateFilter)}
-                        onChange={(newValue) => setDateFilter(dayjs(newValue).format("YYYY-MM-DD"))}
-                    />
-                </LocalizationProvider>
+                <Box sx={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    gap: 2,
+                    alignItems: "center"
+                }}>
+                    <ToggleButtonGroup
+                        value={filterType}
+                        exclusive
+                        onChange={handleFilterTypeChange}
+                        size="small"
+                    >
+                        <ToggleButton value="day">Day</ToggleButton>
+                        <ToggleButton value="month">Month</ToggleButton>
+                        <ToggleButton value="year">Year</ToggleButton>
+                    </ToggleButtonGroup>
+
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DatePicker
+                                sx={{ 
+                                    width: getDatePickerWidth(filterType),
+                                    transition: 'width 0.2s ease-in-out'
+                                }}
+                                value={dayjs(dateFilter.date)}
+                                onChange={handleDateChange}
+                                views={getDatePickerViews() as DateView[]}
+                                showDaysOutsideCurrentMonth={false}
+                                slotProps={{
+                                    textField: {
+                                        size: "small"
+                                    }
+                                }}
+                            />
+                        </LocalizationProvider>
+                    </Box>
+                </Box>
             </Box>
             <TableContainer component={Paper}
                 sx={{
