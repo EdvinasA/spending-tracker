@@ -36,16 +36,14 @@ export function useApi<T>(
           body: body ? JSON.stringify(body) : undefined,
         });
 
-        if (!response.ok) {
-          setStatusCode(response.status);
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
 
         const result = await response.json();
         setStatusCode(response.status);
-        setData(result);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Something went wrong");
+        if (response.ok) {
+          setData(result);
+        } else {
+          setError(result.message)
+        }
       } finally {
         setLoading(false);
       }
