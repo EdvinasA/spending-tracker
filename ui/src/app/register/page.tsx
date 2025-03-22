@@ -23,7 +23,7 @@ export default function RegisterPage() {
     });
     const [error, setError] = useState<string | null>(null);
 
-    const { statusCode, execute } = useApi('/register', 'POST');
+    const { statusCode, error: apiError, loading, execute } = useApi('/register', 'POST');
 
     const onSubmit = async () => {
         setError(null);
@@ -57,11 +57,17 @@ export default function RegisterPage() {
                     <TextField onChange={onChange} name='email' label="Email" type="email" variant="outlined" size="small" fullWidth />
                     <PasswordField onChange={onChange} name='password' label="Password" variant="outlined" size="small" fullWidth />
                     <PasswordField onChange={onChange} name='confirmPassword' label="Confirm Password" variant="outlined" size="small" fullWidth />
-                    {statusCode >= 400 && statusCode < 409 && <Typography variant="body2" color="error">User with this email already exists</Typography>}
+                    {apiError && <Typography variant="body2" color="error">{apiError}</Typography>}
                     {error && <Typography variant="body2" color="error">{error}</Typography>}
 
-                    <Button onClick={onSubmit} variant="contained" color="primary" fullWidth>
-                        Sign Up
+                    <Button 
+                        onClick={onSubmit} 
+                        variant="contained" 
+                        color="primary" 
+                        fullWidth
+                        disabled={loading}
+                    >
+                        {loading ? 'Signing up...' : 'Sign Up'}
                     </Button>
 
                     {/*Google Sign Up*/}
