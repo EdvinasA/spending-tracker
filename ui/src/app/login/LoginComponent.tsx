@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, TextField, Typography } from "@mui/material";
+import { Button, TextField, Typography, CircularProgress } from "@mui/material";
 import { FormBox, ImageBox, LoginContainer, MainBox } from "@/components/login/LoginComponents";
 import CustomLink from "@/components/login/CustomLink";
 import PasswordField from "@/components/common/PasswordField";
@@ -48,10 +48,44 @@ export default function LoginComponent() {
                     <Typography variant="h4" fontWeight="bold">
                         Login To Your Account
                     </Typography>
-                    <TextField onChange={onChange} name='email' label="Email" variant="outlined" size="small" fullWidth />
-                    <PasswordField onChange={onChange} name='password' label="Password" variant="outlined" size="small" fullWidth />
-                    <Button onClick={onSubmit} variant="contained" color="primary" fullWidth>
-                        LOGIN
+                    <TextField 
+                        onChange={onChange} 
+                        name='email' 
+                        label="Email" 
+                        variant="outlined" 
+                        size="small" 
+                        fullWidth 
+                        disabled={loading}
+                    />
+                    <PasswordField 
+                        onChange={onChange} 
+                        name='password' 
+                        label="Password" 
+                        variant="outlined" 
+                        size="small" 
+                        fullWidth 
+                        disabled={loading}
+                    />
+                    <Button 
+                        onClick={onSubmit} 
+                        variant="contained" 
+                        color="primary" 
+                        fullWidth
+                        disabled={loading}
+                        sx={{ 
+                            height: '45px',
+                            position: 'relative'
+                        }}
+                    >
+                        {loading ? (
+                            <CircularProgress 
+                                size={24} 
+                                sx={{ 
+                                    color: 'white',
+                                    position: 'absolute'
+                                }}
+                            />
+                        ) : 'LOGIN'}
                     </Button>
 
                     {/*<Divider sx={{ width: "100%", my: 2 }}>Or log in with</Divider>*/}

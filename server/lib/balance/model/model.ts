@@ -15,7 +15,7 @@ export const CreateBalanceRequestSchema = Joi.object({
     amount: Joi.number().required(),
     type: Joi.string().required(),
     createdAt: Joi.string().isoDate().required(),
-    note: Joi.string().optional(),
+    note: Joi.string().optional().allow('').allow(null),
 });
 
 export interface CreateBalanceRequest {
@@ -31,6 +31,10 @@ export enum AmountType {
     EXPENSE = "EXPENSE"
 }
 
+export type DateFilterType = 'day' | 'month' | 'year';
+
 export interface GetBalanceQueryFilters {
     date: string;
+    view: DateFilterType;
+    endDate?: string;
 }

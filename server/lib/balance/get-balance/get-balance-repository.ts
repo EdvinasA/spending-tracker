@@ -1,19 +1,31 @@
-import { ScanCommand } from "@aws-sdk/lib-dynamodb";
+import { QueryCommand } from "@aws-sdk/lib-dynamodb";
 import { Balance, GetBalanceQueryFilters } from "balance/model";
-import { executeScan } from "shared";
+import { executeQuery, TableName } from "shared";
 
 export class GetBalanceRepository {
     public async getBalance(userId: string, filters: GetBalanceQueryFilters): Promise<Balance[]> {
-        const input = new ScanCommand({
-            TableName: 'Balance',
-            FilterExpression: 'userId = :userId AND createdAt = :date',
-            ExpressionAttributeValues: {
-                ':userId': userId,
-                ':date': filters.date,      
-            }
-        })
-        const response = await executeScan<Balance>(input);
-
+        const input = new QueryCommand({
+            TableName: TableName.BALANCE,
+            KeyConditions: {
+                'userId': {
+                    AttributeValueList: [userId],
+                    ComparisonOperator: 'EQ'
+                }
+            },
+            FilterExpression: filters.endDate 
+                ? 'createdAt BETWEEN :startDate AND :endDate'
+                : 'createdAt = :startDate',
+            ExpressionAttributeValues: filters.endDate 
+                ? {
+                    ':startDate': filters.date,
+                    ':endDate': filters.endDate
+                  }
+                : {
+                    ':startDate': filters.date
+                  }
+        });
+        
+        const response = await executeQuery<Balance>(input);
         return response;
     }
 }

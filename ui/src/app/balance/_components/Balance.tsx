@@ -9,13 +9,10 @@ import {
     TableHead,
     TableRow,
     Paper,
-    Box,
     Container,
     TableFooter,
 } from "@mui/material";
 
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { StyledTableCell, StyledBodyTableCell } from "@/shared/style-components";
 import { Category } from "@/app/category/_components/Category";
@@ -23,6 +20,8 @@ import { formatDate } from "@/shared/utils/data-utils";
 import BalanceActions from "./BalanceActions";
 
 import utc from 'dayjs/plugin/utc';
+import BalanceDatePicker from "./BalanceDatePicker";
+
 dayjs.extend(utc);
 
 export interface Balance {
@@ -40,14 +39,25 @@ export enum AmountType {
     EXPENSE = "EXPENSE"
 }
 
+export type DateFilterType = 'day' | 'month' | 'year';
+
+export interface DateFilter {
+    date: string;
+}
+
 export default function Balance() {
-    const [dateFilter, setDateFilter] = useState<string | null>(dayjs(new Date()).format("YYYY-MM-DD"));
+    const [filterType, setFilterType] = useState<DateFilterType>('day');
+    const [dateFilter, setDateFilter] = useState<DateFilter>({
+        date: dayjs().format('YYYY-MM-DD')
+    });
     const { data: categories, loading: categoriesLoading } = useGetFetch<Category[]>('/category');
-    const { data, loading, refetch } = useGetFetch<Balance[]>(`/balance?date=${dateFilter}`);
+    const { data, loading, refetch } = useGetFetch<Balance[]>(
+        `/balance?date=${dateFilter.date}&view=${filterType}`
+    );
 
     useEffect(() => {
         refetch();
-    }, [dateFilter])
+    }, [dateFilter.date, filterType])
 
     const totalIncome = useMemo(() => {
         if (!data) return 0;
@@ -72,21 +82,11 @@ export default function Balance() {
 
     return (
         <Container>
-            <Box sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-                paddingTop: '12px'
-            }}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                        sx={{
-                            width: "150px",
-                        }}
-                        value={dayjs(dateFilter)}
-                        onChange={(newValue) => setDateFilter(dayjs(newValue).format("YYYY-MM-DD"))}
-                    />
-                </LocalizationProvider>
-            </Box>
+            <BalanceDatePicker
+                filterType={filterType}
+                setDateFilter={setDateFilter}
+                setFilterType={setFilterType}
+                dateFilter={dateFilter} />
             <TableContainer component={Paper}
                 sx={{
                     backgroundColor: "background.paper",
@@ -117,27 +117,23 @@ export default function Balance() {
                                 >
                                     <StyledBodyTableCell>{findCategory(item.category)?.name}</StyledBodyTableCell>
                                     <StyledBodyTableCell>{formatDate(item.createdAt)}</StyledBodyTableCell>
-                                    <StyledBodyTableCell>{item.type === AmountType.EXPENSE ? '-' : '+'}{item.amount}$</StyledBodyTableCell>
+                                    <StyledBodyTableCell>{item.type === AmountType.EXPENSE ? '- ' : '+ '}{item.amount} $</StyledBodyTableCell>
                                 </TableRow>
                             ))}
                     </TableBody>
                     <TableFooter sx={{ backgroundColor: "background.default", position: "sticky", bottom: 0 }}>
-                        {!loading && !categoriesLoading && data && (
-                            <>
-                                <TableRow>
-                                    <StyledBodyTableCell colSpan={2}>Total Income</StyledBodyTableCell>
-                                    <StyledBodyTableCell>{totalIncome}</StyledBodyTableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <StyledBodyTableCell colSpan={2}>Total Expenses</StyledBodyTableCell>
-                                    <StyledBodyTableCell>{totalExpense}</StyledBodyTableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <StyledBodyTableCell colSpan={2}>Balance</StyledBodyTableCell>
-                                    <StyledBodyTableCell>{totalIncome - totalExpense}</StyledBodyTableCell>
-                                </TableRow>
-                            </>
-                        )}
+                        <TableRow>
+                            <StyledBodyTableCell colSpan={2}>Total Income</StyledBodyTableCell>
+                            <StyledBodyTableCell>+ {totalIncome} $</StyledBodyTableCell>
+                        </TableRow>
+                        <TableRow>
+                            <StyledBodyTableCell colSpan={2}>Total Expenses</StyledBodyTableCell>
+                            <StyledBodyTableCell>- {totalExpense} $</StyledBodyTableCell>
+                        </TableRow>
+                        <TableRow>
+                            <StyledBodyTableCell colSpan={2}>Balance</StyledBodyTableCell>
+                            <StyledBodyTableCell>{totalIncome - totalExpense} $</StyledBodyTableCell>
+                        </TableRow>
                     </TableFooter>
                 </Table>
             </TableContainer>

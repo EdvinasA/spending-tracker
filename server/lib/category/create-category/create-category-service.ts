@@ -17,7 +17,7 @@ export class CreateCategoryService {
         await addItemToTable(TableName.CATEGORIES, {
             id: uuidv4(),
             name: request.name,
-            email: userData.email,
+            userId: userData.id,
             amountType: request.amountType,
             createdAt: new Date().toISOString(),
         });

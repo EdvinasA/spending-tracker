@@ -5,15 +5,29 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Cookies from "js-cookie";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+
 
 export default function Header() {
   const pathname = usePathname();
+  const [token, setToken] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const checkToken = () => {
+      setToken(Cookies.get('token'));
+    };
+
+    checkToken();
+
+    const interval = setInterval(checkToken, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleLogout = () => {
-    Cookies.remove('token')
-  }
-
-  const token = Cookies.get('token');
+    Cookies.remove('token');
+    setToken(undefined);
+  };
 
   return (
     <>
@@ -35,24 +49,24 @@ export default function Header() {
                 Spending tracker
               </Typography>
 
-              { !token ?
-              <Button
-                variant="outlined"
-                component={Link}
-                href="/login"
-              >
-                Login
-              </Button>
-                  :
-                  <Button
-                      onClick={handleLogout}
-                      variant="outlined"
-                      component={Link}
-                      href="/"
-                  >
-                    Logout
-                  </Button>
-              }
+              {!token ? (
+                <Button
+                  variant="outlined"
+                  component={Link}
+                  href="/login"
+                >
+                  Login
+                </Button>
+              ) : (
+                <Button
+                  onClick={handleLogout}
+                  variant="outlined"
+                  component={Link}
+                  href="/"
+                >
+                  Logout
+                </Button>
+              )}
             </Toolbar>
           </AppBar>
         </Box>
