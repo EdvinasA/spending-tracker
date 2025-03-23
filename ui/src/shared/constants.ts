@@ -6,3 +6,4 @@ export enum Routes {
 }
 
 export const HIDDEN_HEADER_PATHS = ['/login', '/register']
+export const HIDDEN_NAVBAR_PATHS = ['/login', '/register', '/']

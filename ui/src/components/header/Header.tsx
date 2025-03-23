@@ -1,11 +1,12 @@
 'use client';
 import { HIDDEN_HEADER_PATHS } from "@/shared/constants";
-import { Menu as MenuIcon } from "@mui/icons-material";
-import { Box, AppBar, Toolbar, IconButton, Typography, Button } from "@mui/material";
+import { Box, AppBar, Toolbar, Typography, Button } from "@mui/material";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Cookies from "js-cookie";
+import Image from "next/image";
 import { useEffect, useState } from "react";
+
 
 export default function Header() {
   const pathname = usePathname();
@@ -34,16 +35,17 @@ export default function Header() {
         <Box sx={{ flexGrow: 1 }}>
           <AppBar position="static">
             <Toolbar>
-              <IconButton
-                size="large"
-                edge="start"
-                color="inherit"
-                aria-label="menu"
-                sx={{ mr: 2 }}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 600 }}>
+              <Image src="/assets/logotest.svg" alt="Logo" width={40} height={40}/>
+              {/*<IconButton*/}
+              {/*  size="large"*/}
+              {/*  edge="start"*/}
+              {/*  color="inherit"*/}
+              {/*  aria-label="menu"*/}
+              {/*  sx={{ mr: 2 }}*/}
+              {/*>*/}
+              {/*  <MenuIcon />*/}
+              {/*</IconButton>*/}
+              <Typography variant="h6" component="div" sx={{ marginLeft: 2, flexGrow: 1, fontWeight: 600 }}>
                 Spending tracker
               </Typography>
 
