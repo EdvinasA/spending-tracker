@@ -33,7 +33,7 @@ export default function Header() {
     <>
       {!HIDDEN_HEADER_PATHS.includes(pathname) &&
         <Box sx={{ flexGrow: 1 }}>
-          <AppBar position="fixed">
+          <AppBar position="static">
             <Toolbar>
               <Image src="/assets/logotest.svg" alt="Logo" width={40} height={40}/>
               {/*<IconButton*/}
