@@ -15,7 +15,8 @@ export default function NavBar() {
         if (currentTab) {
             setSelectedTab(currentTab.value);
         }
-    });
+    }, [pathname]);
+
 
     const a11yProps = (name: string) => {
         return {

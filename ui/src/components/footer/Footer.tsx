@@ -1,23 +1,27 @@
+'use client';
 import { Box, Typography } from '@mui/material';
-import CopyrightIcon from '@mui/icons-material/Copyright';
+import { Copyright } from '@mui/icons-material';
+import { useTheme } from '@mui/material/styles';
 
 export default function Footer() {
+    const theme = useTheme();
+    const currentYear = new Date().getFullYear();
+
     return (
         <Box sx={{
-            textAlign: 'center',
             padding: 2,
-            backgroundColor: '#1a1a1a',
+            marginTop: 2,
+            backgroundColor: theme.palette.background.paper,
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            gap: 1
+            gap: 1,
+            flexShrink: 0
         }}>
-            <CopyrightIcon sx={{ fontSize: 18, color: 'white' }} />
-            <Typography variant="body2" color="white">
-                2025 Spending Tracker. All rights reserved.
+            <Copyright sx={{ fontSize: theme.typography.h6.fontSize, color: theme.palette.text.primary }} />
+            <Typography variant="body2" sx={{ color: theme.palette.text.primary }}>
+                {currentYear} Spending Tracker. All rights reserved.
             </Typography>
         </Box>
-
-
     );
 }
