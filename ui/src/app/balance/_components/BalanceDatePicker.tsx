@@ -117,12 +117,12 @@ export default function BalanceActions({ dateFilter, filterType, setDateFilter, 
                         <ToggleButton value="year">Year</ToggleButton>
                     </ToggleButtonGroup>
 
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <IconButton
                             size="small"
                             onClick={() => handleDateNavigation('prev')}
                             sx={{
-                                padding: '4px',
+                                padding: '4px 1px',
                                 color: 'white'
                             }}
                         >
@@ -157,7 +157,7 @@ export default function BalanceActions({ dateFilter, filterType, setDateFilter, 
                             size="small"
                             onClick={() => handleDateNavigation('next')}
                             sx={{
-                                padding: '4px',
+                                padding: '4px 1px',
                                 color: 'white'
                             }}
                         >

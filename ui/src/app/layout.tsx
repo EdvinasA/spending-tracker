@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
-import { CssBaseline, ThemeProvider } from "@mui/material";
+import { Container, CssBaseline, ThemeProvider } from "@mui/material";
 import theme from "@/theme";
 import Header from "@/components/header/Header";
 import NavBar from "@/components/nav-bar/NavBar";
@@ -37,7 +37,9 @@ export default function RootLayout({
             <CssBaseline />
             <Header />
             <NavBar />
-            {children}
+            <Container maxWidth={false} sx={{ padding: 2 }}>
+              {children}
+            </Container>
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
