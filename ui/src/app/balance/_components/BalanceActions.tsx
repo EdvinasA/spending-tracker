@@ -32,64 +32,60 @@ export default function BalanceActions({ categories, refetch }: BalanceActionsPr
     const [openExpense, setOpenExpense] = useState<boolean>(false);
     const [openIncome, setOpenIncome] = useState<boolean>(false);
 
+    const expenseForm = useForm<BalanceForm>();
+    const incomeForm = useForm<BalanceForm>();
+
     const handleExpenseOpen = () => {
-        setValue("type", AmountType.EXPENSE)
+        expenseForm.setValue("type", AmountType.EXPENSE)
         setOpenExpense(true);
     };
 
     const handleExpenseClose = () => {
         setOpenExpense(false);
+        expenseForm.reset();
     };
 
     const handleIncomeOpen = () => {
-        setValue("type", AmountType.INCOME)
+        incomeForm.setValue("type", AmountType.INCOME)
         setOpenIncome(true);
     };
 
     const handleIncomeClose = () => {
         setOpenIncome(false);
+        incomeForm.reset();
     };
-
-    const {
-        register,
-        handleSubmit,
-        control,
-        setValue,
-        formState: { errors },
-        reset,
-    } = useForm<BalanceForm>();
 
     const { execute } = useApi<BalanceForm>(`/balance`);
 
     const onSubmit = async (data: BalanceForm) => {
         await execute({ ...data, amount: Number(data.amount), createdAt: formatDate(data.createdAt.toString()) }, "POST");
 
-
         handleIncomeClose()
         handleExpenseClose()
         refetch();
-        reset();
+        expenseForm.reset();
+        incomeForm.reset();
     };
 
-    const formFields = (filteredCategories: Category[]) => {
+    const formFields = (filteredCategories: Category[], form: any) => {
         return (<>
             <TextField
                 label="Amount"
                 type="number"
-                {...register("amount", { required: "Amount name is required" })}
-                error={!!errors.amount}
-                helperText={errors.amount?.message}
+                {...form.register("amount", { required: "Amount name is required" })}
+                error={!!form.formState.errors.amount}
+                helperText={form.formState.errors.amount?.message}
             />
 
             <FormDatePicker
                 name='createdAt'
                 label='Create At'
-                control={control} />
+                control={form.control} />
 
             <FormSelect
                 name='category'
                 label='Category'
-                control={control}
+                control={form.control}
                 options={filteredCategories.map((category) => ({
                     value: category.id,
                     label: category.name,
@@ -97,7 +93,7 @@ export default function BalanceActions({ categories, refetch }: BalanceActionsPr
 
             <TextField
                 label="Note"
-                {...register("note")}
+                {...form.register("note")}
             />
         </>)
     }
@@ -105,22 +101,22 @@ export default function BalanceActions({ categories, refetch }: BalanceActionsPr
     return (
         <Box sx={{ display: "flex", justifyContent: "flex-end", gap: '12px', marginTop: "12px" }}>
             <CustomDialog
-                buttonTitle={'Add Expense'}
-                title={'Add Expense'}
+                buttonTitle='Add Expense'
+                title='Add Expense'
                 handleOpen={handleExpenseOpen}
                 handleClose={handleExpenseClose}
-                onSubmit={handleSubmit(onSubmit)}
+                onSubmit={expenseForm.handleSubmit(onSubmit)}
                 open={openExpense}>
-                {formFields(categories.filter(category => category.amountType === AmountType.EXPENSE))}
+                {formFields(categories.filter(category => category.amountType === AmountType.EXPENSE), expenseForm)}
             </CustomDialog>
             <CustomDialog
-                buttonTitle={'Add Income'}
-                title={'Add Income'}
+                buttonTitle='Add Income'
+                title='Add Income'
                 handleOpen={handleIncomeOpen}
                 handleClose={handleIncomeClose}
-                onSubmit={handleSubmit(onSubmit)}
+                onSubmit={incomeForm.handleSubmit(onSubmit)}
                 open={openIncome} >
-                {formFields(categories.filter(category => category.amountType === AmountType.INCOME))}
+                {formFields(categories.filter(category => category.amountType === AmountType.INCOME), incomeForm)}
             </CustomDialog>
         </Box >
     );

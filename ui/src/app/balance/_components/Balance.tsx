@@ -3,13 +3,13 @@
 import { useGetFetch } from "@/shared/use-get-fetch/useGetFetch";
 import dayjs from 'dayjs';
 import {
+    Box,
     Table,
     TableBody,
     TableContainer,
     TableHead,
     TableRow,
     Paper,
-    Container,
     TableFooter,
 } from "@mui/material";
 
@@ -81,7 +81,7 @@ export default function Balance() {
     );
 
     return (
-        <Container>
+        <Box>
             <BalanceDatePicker
                 filterType={filterType}
                 setDateFilter={setDateFilter}
@@ -138,6 +138,6 @@ export default function Balance() {
                 </Table>
             </TableContainer>
             <BalanceActions categories={categories || []} refetch={refetch} />
-        </Container>
+        </Box>
     );
 }

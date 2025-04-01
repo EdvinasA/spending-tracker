@@ -11,6 +11,7 @@ interface FormSelectProps {
     label: string;
     control: Control<any, any>;
     options: FormSelectOption[];
+    defaultValue?: any;
 }
 
 interface FormSelectOption {
@@ -23,6 +24,7 @@ export default function FormSelect({
     label,
     control,
     options,
+    defaultValue = undefined
 }: FormSelectProps) {
     const labelId = `${name}-label`;
     return (
@@ -39,7 +41,7 @@ export default function FormSelect({
                         ))}
                     </Select>
                 )}
-                defaultValue={options[0].value}
+                defaultValue={defaultValue ?? options[0].value}
                 name={name}
             />
         </FormControl>

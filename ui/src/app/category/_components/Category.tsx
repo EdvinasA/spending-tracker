@@ -41,8 +41,7 @@ export default function Category() {
     };
 
     return (
-        <Box sx={{ padding: "16px 16px 0" }}>
-
+        <Box>
             <Snackbar
                 open={snackbarOpen}
                 autoHideDuration={3000}
